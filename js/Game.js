@@ -15,6 +15,8 @@ export class Game {
         this.wordLength = 5;
 
         this.hintUsed = false;
+
+        this.setupModalButtons();
     }
 
 
@@ -33,11 +35,13 @@ export class Game {
 
         this.showMessage("");
 
-        // Enable hint again
-        document.getElementById("hintButton").disabled = false;
+        document.getElementById(
+            "hintButton"
+        ).disabled = false;
 
-        // Close game-over popup
-        document.getElementById("gameOverModal").style.display = "none";
+        document.getElementById(
+            "gameOverModal"
+        ).style.display = "none";
     }
 
 
@@ -83,76 +87,76 @@ export class Game {
 
     submitGuess() {
 
-    if (this.gameOver) {
-        return;
-    }
+        if (this.gameOver) {
+            return;
+        }
 
 
-    if (this.currentGuess.length !== 5) {
+        if (this.currentGuess.length !== 5) {
 
-        this.showMessage(
-            "ENTER A 5 LETTER WORD"
-        );
+            this.showMessage(
+                "ENTER A 5 LETTER WORD"
+            );
 
-        return;
-    }
-
-
-    if (!this.wordManager.isValidWord(
-        this.currentGuess
-    )) {
-
-        this.showMessage(
-            "WORD NOT FOUND"
-        );
-
-        this.board.shakeRow(
-            this.currentRow
-        );
-
-        setTimeout(() => {
-
-            this.showMessage("");
-
-        }, 2000);
-
-        return;
-    }
+            return;
+        }
 
 
-    const result =
-        this.wordManager.checkGuess(
+        if (!this.wordManager.isValidWord(
             this.currentGuess
+        )) {
+
+            this.showMessage(
+                "WORD NOT FOUND"
+            );
+
+            this.board.shakeRow(
+                this.currentRow
+            );
+
+            setTimeout(() => {
+
+                this.showMessage("");
+
+            }, 2000);
+
+            return;
+        }
+
+
+        const result =
+            this.wordManager.checkGuess(
+                this.currentGuess
+            );
+
+
+        this.board.showResult(
+            this.currentRow,
+            result
         );
 
 
-    this.board.showResult(
-        this.currentRow,
-        result
-    );
+        if (
+            this.currentGuess ===
+            this.wordManager.secretWord
+        ) {
+
+            this.gameWon();
+
+            return;
+        }
 
 
-    if (
-        this.currentGuess ===
-        this.wordManager.secretWord
-    ) {
+        this.currentRow++;
 
-        this.gameWon();
+        this.currentGuess = "";
 
-        return;
+
+        if (this.currentRow >= this.maxAttempts) {
+
+            this.gameLost();
+        }
     }
-
-
-    this.currentRow++;
-
-    this.currentGuess = "";
-
-
-    if (this.currentRow >= this.maxAttempts) {
-
-        this.gameLost();
-    }
-}
 
 
     gameWon() {
@@ -163,9 +167,36 @@ export class Game {
 
         setTimeout(() => {
 
-            this.showMessage("YOU WIN!");
+            this.showWinModal();
 
-        }, 1500);
+        }, 500);
+    }
+
+
+    showWinModal() {
+
+        const modal =
+            document.getElementById(
+                "gameOverModal"
+            );
+
+        const title =
+            document.getElementById(
+                "modalTitle"
+            );
+
+        const answer =
+            document.getElementById(
+                "answerWord"
+            );
+
+        title.textContent =
+            "YOU WON!";
+
+        answer.textContent =
+            this.wordManager.secretWord;
+
+        modal.style.display = "flex";
     }
 
 
@@ -180,6 +211,58 @@ export class Game {
             this.showGameOverModal();
 
         }, 1500);
+    }
+
+
+    showGameOverModal() {
+
+        const modal =
+            document.getElementById(
+                "gameOverModal"
+            );
+
+        const answer =
+            document.getElementById(
+                "answerWord"
+            );
+
+        const title =
+            document.getElementById(
+                "modalTitle"
+            );
+
+        title.textContent =
+            "GAME OVER";
+
+        answer.textContent =
+            this.wordManager.secretWord;
+
+        modal.style.display = "flex";
+    }
+
+
+    setupModalButtons() {
+
+        document.getElementById(
+            "modalNewGame"
+        ).addEventListener("click", () => {
+
+            this.startGame();
+
+        });
+
+
+        document.getElementById(
+            "modalExit"
+        ).addEventListener("click", () => {
+
+            document.getElementById(
+                "gameOverModal"
+            ).style.display = "none";
+
+            this.showMessage("GAME EXITED");
+
+        });
     }
 
 
@@ -258,38 +341,6 @@ export class Game {
         document.getElementById(
             "hintButton"
         ).disabled = true;
-    }
-
-
-    showGameOverModal() {
-
-        const modal =
-            document.getElementById(
-                "gameOverModal"
-            );
-
-
-        const answer =
-            document.getElementById(
-                "answerWord"
-            );
-
-
-        const title =
-            document.getElementById(
-                "modalTitle"
-            );
-
-
-        title.textContent =
-            "GAME OVER";
-
-
-        answer.textContent =
-            this.wordManager.secretWord;
-
-
-        modal.style.display = "flex";
     }
 
 
