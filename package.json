@@ -1,19 +1,22 @@
 {
-  "name": "wordgame",
-  "version": "1.0.0",
-  "description": "Word guessing game",
-  "main": "index.js",
-  "scripts": {
-    "start": "vite"
-  },
-  "author": "",
-  "license": "ISC",
-  "keywords": [],
-  "type": "commonjs",
-  "dependencies": {
-    "@skedwards88/word_lists": "^3.0.20"
-  },
-  "devDependencies": {
-    "vite": "^8.3.0"
-  }
+    "name": "wordrush",
+    "version": "1.0.0",
+    "description": "Word guessing game",
+    "main": "index.js",
+    "scripts": {
+        "start": "vite",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "author": "",
+    "license": "ISC",
+    "keywords": [],
+    "type": "commonjs",
+    "dependencies": {
+        "@skedwards88/word_lists": "^3.0.20"
+    },
+    "devDependencies": {
+        "vite": "^8.3.0"
+    }
 }
