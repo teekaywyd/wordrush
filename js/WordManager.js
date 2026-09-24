@@ -1,58 +1,43 @@
-import { commonWordsLen5 } from "@skedwards88/word_lists";
+checkGuess(guess) {
 
-export class WordManager {
+    const result = [];
+    const remainingLetters = this.secretWord.split("");
 
-    constructor() {
+    // First check for correct letters
+    for (let i = 0; i < 5; i++) {
 
-        this.words = commonWordsLen5.map(
-            word => word.toUpperCase()
-        );
+        if (guess[i] === this.secretWord[i]) {
 
-        this.secretWord = this.getRandomWord();
+            result[i] = "correct";
+
+            // Remove the matched letter
+            remainingLetters[i] = null;
+        }
     }
 
+    // Then check for letters in the wrong position
+    for (let i = 0; i < 5; i++) {
 
-    getRandomWord() {
-
-        const randomIndex =
-            Math.floor(Math.random() * this.words.length);
-
-        return this.words[randomIndex];
-    }
-
-
-    newWord() {
-
-        this.secretWord = this.getRandomWord();
-    }
-
-
-    isValidWord(word) {
-
-        return this.words.includes(word);
-    }
-
-
-    checkGuess(guess) {
-
-        const result = [];
-
-        for (let i = 0; i < 5; i++) {
-
-            if (guess[i] === this.secretWord[i]) {
-
-                result.push("correct");
-
-            } else if (this.secretWord.includes(guess[i])) {
-
-                result.push("present");
-
-            } else {
-
-                result.push("incorrect");
-            }
+        // Skip letters already marked correct
+        if (result[i] === "correct") {
+            continue;
         }
 
-        return result;
+        const letterIndex =
+            remainingLetters.indexOf(guess[i]);
+
+        if (letterIndex !== -1) {
+
+            result[i] = "present";
+
+            // Remove the letter so it cannot be used again
+            remainingLetters[letterIndex] = null;
+
+        } else {
+
+            result[i] = "incorrect";
+        }
     }
+
+    return result;
 }
