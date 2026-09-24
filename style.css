@@ -1,175 +1,209 @@
+
 * {
     box-sizing: border-box;
 }
 
-body {
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
 
+body {
     margin: 0;
+    width: 100%;
+    min-height: 100vh;
 
     font-family: Arial, sans-serif;
 
     background-color: #ffffff;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
+
+    overflow-x: hidden;
+
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 
+/* =========================
+   HEADER
+========================= */
+
 header {
-
     width: 100%;
-
     max-width: 500px;
 
-    padding: 20px;
+    padding: 15px 12px;
 
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
 
     border-bottom: 1px solid #d3d6da;
+
+    gap: 8px;
 }
 
-
 h1 {
-
     margin: 0;
 
     font-size: 28px;
-
     letter-spacing: 3px;
-}
 
+    white-space: nowrap;
+}
 
 button {
-
     cursor: pointer;
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
-
 #newGameButton {
-
-    padding: 10px 15px;
+    padding: 10px 12px;
 
     border: none;
-
     border-radius: 5px;
 
     background-color: #333;
-
     color: white;
 
     font-weight: bold;
+
+    white-space: nowrap;
+}
+
+#hintButton {
+    padding: 10px 12px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #c9b458;
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+#hintButton:disabled {
+    background-color: #999;
+    cursor: not-allowed;
 }
 
 
+/* =========================
+   MAIN
+========================= */
+
 main {
-
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
 
     width: 100%;
 
-    padding-top: 20px;
+    padding: 15px 8px 20px;
 }
 
+
+/* =========================
+   MESSAGE
+========================= */
 
 #message {
-
     height: 40px;
 
-    font-weight: bold;
+    width: 100%;
+    max-width: 500px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
     font-size: 18px;
+
+    text-align: center;
 }
 
 
-#board {
+/* =========================
+   BOARD
+========================= */
 
+#board {
     display: grid;
 
     grid-template-columns: repeat(5, 60px);
-
     grid-template-rows: repeat(6, 60px);
 
     gap: 5px;
+
+    margin: 0 auto;
 }
 
-
 .tile {
-
     width: 60px;
-
     height: 60px;
 
     border: 2px solid #d3d6da;
 
     display: flex;
-
     justify-content: center;
-
     align-items: center;
 
     font-size: 30px;
-
     font-weight: bold;
 
     text-transform: uppercase;
 
     transition: transform 0.6s;
+
+    user-select: none;
 }
-
-
-.tile.flip {
-
-    transform: rotateX(180deg);
-}
-
 
 .tile.correct {
-
     background-color: #6aaa64;
-
     border-color: #6aaa64;
 
     color: white;
 }
 
-
 .tile.present {
-
     background-color: #c9b458;
-
     border-color: #c9b458;
 
     color: white;
 }
 
-
 .tile.incorrect {
-
     background-color: #787c7e;
-
     border-color: #787c7e;
 
     color: white;
 }
 
 
-#keyboard {
+/* =========================
+   KEYBOARD
+========================= */
 
-    margin-top: 25px;
+#keyboard {
+    width: 100%;
+    max-width: 500px;
+
+    margin-top: 20px;
 
     display: flex;
-
     flex-direction: column;
 
     gap: 6px;
@@ -177,17 +211,17 @@ main {
     align-items: center;
 }
 
-
 .keyboard-row {
-
     display: flex;
+
+    width: 100%;
+
+    justify-content: center;
 
     gap: 5px;
 }
 
-
 .key {
-
     height: 55px;
 
     min-width: 40px;
@@ -195,69 +229,43 @@ main {
     padding: 0 10px;
 
     border: none;
-
     border-radius: 4px;
 
     background-color: #d3d6da;
 
     font-weight: bold;
+    font-size: 14px;
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
+.key:active {
+    transform: scale(0.94);
+}
 
 .key.correct {
-
     background-color: #6aaa64;
-
     color: white;
 }
-
 
 .key.present {
-
     background-color: #c9b458;
-
     color: white;
 }
-
 
 .key.incorrect {
-
     background-color: #787c7e;
-
     color: white;
 }
 
 
-@media (max-width: 500px) {
-
-    #board {
-
-        grid-template-columns: repeat(5, 55px);
-
-        grid-template-rows: repeat(6, 55px);
-
-    }
-
-    .tile {
-
-        width: 55px;
-
-        height: 55px;
-
-        font-size: 25px;
-
-    }
-
-    .key {
-
-        min-width: 30px;
-
-        height: 50px;
-
-        padding: 0 7px;
-
-    }
-}
+/* =========================
+   FLIP ANIMATION
+========================= */
 
 @keyframes flip {
     0% {
@@ -277,24 +285,12 @@ main {
     animation: flip 0.6s ease;
 }
 
-#hintButton {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #c9b458;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 5px;
-}
 
-#hintButton:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-}
+/* =========================
+   SHAKE ANIMATION
+========================= */
 
 @keyframes shake {
-
     0% {
         transform: translateX(0);
     }
@@ -320,17 +316,16 @@ main {
     }
 }
 
-
 .tile.shake {
     animation: shake 0.5s ease;
 }
 
+
 /* =========================
-   GAME OVER MODAL
+   GAME OVER / WIN MODAL
 ========================= */
 
 .modal {
-
     display: none;
 
     position: fixed;
@@ -347,17 +342,17 @@ main {
     align-items: center;
 
     z-index: 1000;
+
+    padding: 20px;
 }
 
-
 .modal-content {
-
     background-color: white;
 
-    width: 90%;
+    width: 100%;
     max-width: 400px;
 
-    padding: 30px;
+    padding: 30px 20px;
 
     border-radius: 12px;
 
@@ -366,25 +361,19 @@ main {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-
 .modal-content h2 {
-
     margin-top: 0;
 
     font-size: 28px;
 }
 
-
 .modal-content p {
-
     font-size: 16px;
 
     margin-bottom: 5px;
 }
 
-
 .modal-content h3 {
-
     font-size: 35px;
 
     letter-spacing: 5px;
@@ -392,9 +381,7 @@ main {
     margin: 10px 0 25px;
 }
 
-
 .modal-buttons {
-
     display: flex;
 
     justify-content: center;
@@ -402,38 +389,193 @@ main {
     gap: 10px;
 }
 
-
 .modal-buttons button {
-
-    padding: 12px 20px;
+    padding: 13px 20px;
 
     border: none;
-
     border-radius: 6px;
 
     font-weight: bold;
 
     cursor: pointer;
-}
 
+    min-width: 110px;
+
+    touch-action: manipulation;
+}
 
 #modalNewGame {
-
     background-color: #6aaa64;
-
     color: white;
 }
-
 
 #modalExit {
-
     background-color: #787c7e;
-
     color: white;
 }
 
+.modal-buttons button:active {
+    transform: scale(0.96);
+}
 
 .modal-buttons button:hover {
-
     opacity: 0.85;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    header {
+        padding: 12px 8px;
+
+        gap: 5px;
+    }
+
+    h1 {
+        font-size: 22px;
+
+        letter-spacing: 2px;
+    }
+
+    #newGameButton,
+    #hintButton {
+        padding: 9px 9px;
+
+        font-size: 12px;
+    }
+
+    main {
+        padding-top: 10px;
+    }
+
+    #message {
+        height: 35px;
+
+        font-size: 15px;
+    }
+
+    #board {
+        grid-template-columns: repeat(5, 52px);
+        grid-template-rows: repeat(6, 52px);
+
+        gap: 4px;
+    }
+
+    .tile {
+        width: 52px;
+        height: 52px;
+
+        font-size: 25px;
+    }
+
+    #keyboard {
+        margin-top: 15px;
+
+        width: 100%;
+
+        padding: 0 2px;
+
+        gap: 5px;
+    }
+
+    .keyboard-row {
+        gap: 3px;
+
+        width: 100%;
+    }
+
+    .key {
+        flex: 1;
+
+        min-width: 0;
+
+        height: 48px;
+
+        padding: 0;
+
+        font-size: 13px;
+
+        max-width: 42px;
+    }
+
+    .modal {
+        padding: 15px;
+    }
+
+    .modal-content {
+        padding: 25px 15px;
+    }
+
+    .modal-content h2 {
+        font-size: 25px;
+    }
+
+    .modal-content h3 {
+        font-size: 30px;
+
+        letter-spacing: 4px;
+    }
+
+    .modal-buttons {
+        gap: 8px;
+    }
+
+    .modal-buttons button {
+        min-width: 100px;
+
+        padding: 13px 15px;
+    }
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width: 360px) {
+
+    h1 {
+        font-size: 19px;
+
+        letter-spacing: 1px;
+    }
+
+    #newGameButton,
+    #hintButton {
+        padding: 8px 7px;
+
+        font-size: 11px;
+    }
+
+    #board {
+        grid-template-columns: repeat(5, 46px);
+        grid-template-rows: repeat(6, 46px);
+
+        gap: 3px;
+    }
+
+    .tile {
+        width: 46px;
+        height: 46px;
+
+        font-size: 22px;
+    }
+
+    #keyboard {
+        gap: 4px;
+    }
+
+    .keyboard-row {
+        gap: 2px;
+    }
+
+    .key {
+        height: 44px;
+
+        font-size: 12px;
+    }
 }
