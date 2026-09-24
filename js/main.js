@@ -1,3 +1,4 @@
+
 import { Game } from "./Game.js";
 import { WordManager } from "./WordManager.js";
 import { Board } from "./Board.js";
@@ -30,33 +31,117 @@ game.startGame();
 
 
 // ================================
+// MOBILE SYSTEM KEYBOARD
+// ================================
+
+const mobileInput =
+    document.getElementById("mobileInput");
+
+
+mobileInput.addEventListener(
+    "input",
+    function() {
+
+        const value =
+            mobileInput.value.toUpperCase();
+
+
+        if (value.length > 0) {
+
+            const lastLetter =
+                value[value.length - 1];
+
+
+            if (
+                lastLetter >= "A" &&
+                lastLetter <= "Z"
+            ) {
+
+                game.addLetter(lastLetter);
+
+            }
+        }
+
+
+        mobileInput.value = "";
+    }
+);
+
+
+mobileInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Backspace") {
+
+            event.preventDefault();
+
+            game.removeLetter();
+
+        }
+
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            game.submitGuess();
+
+            mobileInput.value = "";
+        }
+    }
+);
+
+
+// Focus the system keyboard when the board is touched
+document
+    .getElementById("board")
+    .addEventListener("click", function() {
+
+        mobileInput.focus();
+
+    });
+
+
+// ================================
 // PHYSICAL KEYBOARD
 // ================================
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener(
+    "keydown",
+    function(event) {
 
-    const key = event.key.toUpperCase();
+        // Ignore this listener when using
+        // the mobile input
+        if (event.target === mobileInput) {
+            return;
+        }
 
 
-    if (key === "ENTER") {
+        const key =
+            event.key.toUpperCase();
 
-        game.submitGuess();
 
-    } else if (key === "BACKSPACE") {
+        if (key === "ENTER") {
 
-        game.removeLetter();
+            game.submitGuess();
 
-    } else if (
-        key.length === 1 &&
-        key >= "A" &&
-        key <= "Z"
-    ) {
+        } else if (key === "BACKSPACE") {
 
-        game.addLetter(key);
+            game.removeLetter();
+
+        } else if (
+            key.length === 1 &&
+            key >= "A" &&
+            key <= "Z"
+        ) {
+
+            game.addLetter(key);
+
+        }
 
     }
-
-});
+);
 
 
 // ================================
@@ -65,11 +150,14 @@ document.addEventListener("keydown", function(event) {
 
 document
     .getElementById("newGameButton")
-    .addEventListener("click", function() {
+    .addEventListener(
+        "click",
+        function() {
 
-        game.startGame();
+            game.startGame();
 
-    });
+        }
+    );
 
 
 // ================================
@@ -78,11 +166,14 @@ document
 
 document
     .getElementById("hintButton")
-    .addEventListener("click", function() {
+    .addEventListener(
+        "click",
+        function() {
 
-        game.useHint();
+            game.useHint();
 
-    });
+        }
+    );
 
 
 // ================================
@@ -91,11 +182,14 @@ document
 
 document
     .getElementById("modalNewGame")
-    .addEventListener("click", function() {
+    .addEventListener(
+        "click",
+        function() {
 
-        game.startGame();
+            game.startGame();
 
-    });
+        }
+    );
 
 
 // ================================
@@ -104,13 +198,19 @@ document
 
 document
     .getElementById("modalExit")
-    .addEventListener("click", function() {
+    .addEventListener(
+        "click",
+        function() {
 
-        document.getElementById(
-            "gameOverModal"
-        ).style.display = "none";
+            document.getElementById(
+                "gameOverModal"
+            ).style.display = "none";
 
 
-        game.showMessage("GAME ENDED");
+            game.showMessage(
+                "GAME ENDED"
+            );
 
-    });
+        }
+    );
+

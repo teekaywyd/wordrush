@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +7,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>WordRush</title>
 
@@ -35,6 +36,23 @@
 
         <div id="message"></div>
 
+
+        <!--
+            Hidden input used to activate
+            the phone's system keyboard
+        -->
+
+        <input
+            type="text"
+            id="mobileInput"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            inputmode="text"
+        >
+
+
         <div id="board"></div>
 
         <div id="keyboard"></div>
@@ -42,7 +60,7 @@
     </main>
 
 
-    <!-- GAME OVER POPUP -->
+    <!-- GAME OVER / WIN POPUP -->
 
     <div id="gameOverModal" class="modal">
 
@@ -80,3 +98,4 @@
 </body>
 
 </html>
+

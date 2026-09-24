@@ -579,3 +579,26 @@ main {
         font-size: 12px;
     }
 }
+
+#mobileInput {
+    position: fixed;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    border: none;
+    outline: none;
+
+    left: 50%;
+    bottom: 0;
+}
+
+@media (max-width: 500px) {
+
+    #keyboard {
+        display: none;
+    }
+
+}
