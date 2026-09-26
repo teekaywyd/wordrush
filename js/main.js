@@ -27,7 +27,7 @@ keyboard.game = game;
 
 
 // Start the game
-game.starGame();
+game.startGame();
 
 
 // ================================

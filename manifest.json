@@ -1,0 +1,16 @@
+{
+    "name": "WordRush",
+    "short_name": "WordRush",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "description": "A fun 5-letter word guessing game.",
+    "icons": [
+        {
+            "src": "./assets/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

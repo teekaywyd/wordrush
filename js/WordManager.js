@@ -29,17 +29,22 @@ export class WordManager {
 
     isValidWord(word) {
 
-        return this.words.includes(word);
+        return this.words.includes(
+            word.toUpperCase()
+        );
     }
 
 
     checkGuess(guess) {
 
         const result = [];
+
         const remainingLetters =
             this.secretWord.split("");
 
-        // First pass: find correct letters
+
+        // FIRST PASS: correct letters
+
         for (let i = 0; i < 5; i++) {
 
             if (guess[i] === this.secretWord[i]) {
@@ -51,15 +56,18 @@ export class WordManager {
         }
 
 
-        // Second pass: find letters in the wrong position
+        // SECOND PASS: letters in wrong position
+
         for (let i = 0; i < 5; i++) {
 
             if (result[i] === "correct") {
                 continue;
             }
 
+
             const letterIndex =
                 remainingLetters.indexOf(guess[i]);
+
 
             if (letterIndex !== -1) {
 

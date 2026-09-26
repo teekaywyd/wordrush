@@ -13,7 +13,7 @@
     <title>WordRush</title>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+    
 
 </head>
 
@@ -66,33 +66,39 @@
 
     <div id="gameOverModal" class="modal">
 
-        <div class="modal-content">
+    <div id="confetti"></div>
 
-            <h2 id="modalTitle">
-                GAME OVER
-            </h2>
+    <div class="modal-content">
 
-            <p>
-                The word was:
-            </p>
+        <div class="modal-icon" id="modalIcon">
+            🎉
+        </div>
 
-            <h3 id="answerWord"></h3>
+        <h2 id="modalTitle">
+            YOU WON!
+        </h2>
 
-            <div class="modal-buttons">
+        <p>
+            The word was:
+        </p>
 
-                <button id="modalNewGame">
-                    NEW GAME
-                </button>
+        <h3 id="answerWord"></h3>
 
-                <button id="modalExit">
-                    EXIT
-                </button>
+        <div class="modal-buttons">
 
-            </div>
+            <button id="modalNewGame">
+                NEW GAME
+            </button>
+
+            <button id="modalExit">
+                EXIT
+            </button>
 
         </div>
 
     </div>
+
+</div>
 
 
     <script type="module" src="js/main.js"></script>

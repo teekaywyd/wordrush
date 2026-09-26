@@ -41,6 +41,19 @@ export class Board {
             );
 
         tile.textContent = letter;
+
+        // Small pop animation when a letter is entered
+        tile.classList.remove("pop");
+
+        void tile.offsetWidth;
+
+        tile.classList.add("pop");
+
+        setTimeout(() => {
+
+            tile.classList.remove("pop");
+
+        }, 100);
     }
 
 
@@ -56,45 +69,99 @@ export class Board {
 
 
     showResult(row, result) {
-    for (let column = 0; column < result.length; column++) {
 
-        const tile = document.getElementById(
-            `tile-${row}-${column}`
-        );
+        for (
+            let column = 0;
+            column < result.length;
+            column++
+        ) {
 
-        setTimeout(() => {
+            const tile =
+                document.getElementById(
+                    `tile-${row}-${column}`
+                );
 
-            tile.classList.add("flip");
 
             setTimeout(() => {
-                tile.classList.add(result[column]);
 
-                // Remove flip after animation finishes
+                tile.classList.add("flip");
+
+
                 setTimeout(() => {
-                    tile.classList.remove("flip");
+
+                    tile.classList.add(
+                        result[column]
+                    );
+
                 }, 300);
 
-            }, 300);
 
-        }, column * 250);
+                setTimeout(() => {
+
+                    tile.classList.remove("flip");
+
+                }, 600);
+
+            }, column * 250);
+        }
     }
-}
 
-shakeRow(row) {
 
-    for (let column = 0; column < this.columns; column++) {
+    shakeRow(row) {
 
-        const tile = document.getElementById(
-            `tile-${row}-${column}`
-        );
+        for (
+            let column = 0;
+            column < this.columns;
+            column++
+        ) {
 
-        tile.classList.add("shake");
+            const tile =
+                document.getElementById(
+                    `tile-${row}-${column}`
+                );
+
+
+            tile.classList.add("shake");
+
+
+            setTimeout(() => {
+
+                tile.classList.remove("shake");
+
+            }, 500);
+        }
+    }
+
+    celebrateRow(row) {
+
+    for (
+        let column = 0;
+        column < this.columns;
+        column++
+    ) {
+
+        const tile =
+            document.getElementById(
+                `tile-${row}-${column}`
+            );
+
 
         setTimeout(() => {
 
-            tile.classList.remove("shake");
+            tile.classList.add(
+                "celebrate"
+            );
 
-        }, 500);
+
+            setTimeout(() => {
+
+                tile.classList.remove(
+                    "celebrate"
+                );
+
+            }, 500);
+
+        }, column * 100);
     }
 }
 }

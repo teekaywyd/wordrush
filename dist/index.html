@@ -1,18 +1,21 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/wordrush/assets/favicon-BS81fjEU.png">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>WordRush</title>
 
+    
 
-  <script type="module" crossorigin src="/wordrush/assets/index-BZDIOnn9.js"></script>
-  <link rel="stylesheet" crossorigin href="/wordrush/assets/index-BE6ECAbv.css">
+  <script type="module" crossorigin src="/wordrush/assets/index-DlkxcfKo.js"></script>
+  <link rel="stylesheet" crossorigin href="/wordrush/assets/index-BCvZZ9Tx.css">
 </head>
 
 <body>
@@ -36,6 +39,23 @@
 
         <div id="message"></div>
 
+
+        <!--
+            Hidden input used to activate
+            the phone's system keyboard
+        -->
+
+        <input
+            type="text"
+            id="mobileInput"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            inputmode="text"
+        >
+
+
         <div id="board"></div>
 
         <div id="keyboard"></div>
@@ -43,40 +63,47 @@
     </main>
 
 
-    <!-- GAME OVER POPUP -->
+    <!-- GAME OVER / WIN POPUP -->
 
     <div id="gameOverModal" class="modal">
 
-        <div class="modal-content">
+    <div id="confetti"></div>
 
-            <h2 id="modalTitle">
-                GAME OVER
-            </h2>
+    <div class="modal-content">
 
-            <p>
-                The word was:
-            </p>
+        <div class="modal-icon" id="modalIcon">
+            🎉
+        </div>
 
-            <h3 id="answerWord"></h3>
+        <h2 id="modalTitle">
+            YOU WON!
+        </h2>
 
-            <div class="modal-buttons">
+        <p>
+            The word was:
+        </p>
 
-                <button id="modalNewGame">
-                    NEW GAME
-                </button>
+        <h3 id="answerWord"></h3>
 
-                <button id="modalExit">
-                    EXIT
-                </button>
+        <div class="modal-buttons">
 
-            </div>
+            <button id="modalNewGame">
+                NEW GAME
+            </button>
+
+            <button id="modalExit">
+                EXIT
+            </button>
 
         </div>
 
     </div>
+
+</div>
 
 
 
 </body>
 
 </html>
+

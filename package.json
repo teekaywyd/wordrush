@@ -13,10 +13,10 @@
     "license": "ISC",
     "keywords": [],
     "type": "commonjs",
-    "dependencies": {
-        "@skedwards88/word_lists": "^3.0.20"
-    },
     "devDependencies": {
         "vite": "^8.3.0"
+    },
+    "dependencies": {
+        "@skedwards88/word_lists": "^3.0.20"
     }
 }

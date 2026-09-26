@@ -20,6 +20,10 @@ export class Game {
     }
 
 
+    // ================================
+    // START GAME
+    // ================================
+
     startGame() {
 
         this.currentRow = 0;
@@ -35,6 +39,8 @@ export class Game {
 
         this.showMessage("");
 
+        
+
         document.getElementById(
             "hintButton"
         ).disabled = false;
@@ -42,8 +48,18 @@ export class Game {
         document.getElementById(
             "gameOverModal"
         ).style.display = "none";
+
+        document.getElementById(
+            "gameOverModal"
+        ).classList.remove(
+            "game-lost"
+        );
     }
 
+
+    // ================================
+    // ADD LETTER
+    // ================================
 
     addLetter(letter) {
 
@@ -65,6 +81,10 @@ export class Game {
     }
 
 
+    // ================================
+    // REMOVE LETTER
+    // ================================
+
     removeLetter() {
 
         if (this.gameOver) {
@@ -85,6 +105,10 @@ export class Game {
     }
 
 
+    // ================================
+    // SUBMIT GUESS
+    // ================================
+
     submitGuess() {
 
         if (this.gameOver) {
@@ -92,15 +116,29 @@ export class Game {
         }
 
 
+        // =========================
+        // NOT ENOUGH LETTERS
+        // =========================
+
         if (this.currentGuess.length !== 5) {
 
             this.showMessage(
                 "ENTER A 5 LETTER WORD"
             );
 
+            this.board.shakeRow(
+                this.currentRow
+            );
+
+            this.clearMessageAfter(1500);
+
             return;
         }
 
+
+        // =========================
+        // WORD NOT FOUND
+        // =========================
 
         if (!this.wordManager.isValidWord(
             this.currentGuess
@@ -114,15 +152,15 @@ export class Game {
                 this.currentRow
             );
 
-            setTimeout(() => {
-
-                this.showMessage("");
-
-            }, 2000);
+            this.clearMessageAfter(1500);
 
             return;
         }
 
+
+        // =========================
+        // CHECK WORD
+        // =========================
 
         const result =
             this.wordManager.checkGuess(
@@ -136,6 +174,10 @@ export class Game {
         );
 
 
+        // =========================
+        // WIN
+        // =========================
+
         if (
             this.currentGuess ===
             this.wordManager.secretWord
@@ -147,17 +189,32 @@ export class Game {
         }
 
 
+        // =========================
+        // NEXT ROW
+        // =========================
+
         this.currentRow++;
 
         this.currentGuess = "";
 
 
-        if (this.currentRow >= this.maxAttempts) {
+        // =========================
+        // GAME LOST
+        // =========================
+
+        if (
+            this.currentRow >=
+            this.maxAttempts
+        ) {
 
             this.gameLost();
         }
     }
 
+
+    // ================================
+    // GAME WON
+    // ================================
 
     gameWon() {
 
@@ -165,46 +222,133 @@ export class Game {
 
         this.player.addWin();
 
+
+        // Wait for the tiles to finish flipping
+
         setTimeout(() => {
 
-            this.showWinModal();
+            this.board.celebrateRow(
+                this.currentRow
+            );
 
-        }, 500);
+
+            // Show the popup after celebration
+
+            setTimeout(() => {
+
+                this.showWinModal();
+
+            }, 700);
+
+        }, 1600);
     }
 
+
+    // ================================
+    // WIN MODAL
+    // ================================
 
     showWinModal() {
 
-        const modal =
-            document.getElementById(
-                "gameOverModal"
-            );
+    const modal =
+        document.getElementById(
+            "gameOverModal"
+        );
 
-        const title =
-            document.getElementById(
-                "modalTitle"
-            );
+    const title =
+        document.getElementById(
+            "modalTitle"
+        );
 
-        const answer =
-            document.getElementById(
-                "answerWord"
-            );
+    const answer =
+        document.getElementById(
+            "answerWord"
+        );
 
-        title.textContent =
-            "YOU WON!";
+    const icon =
+        document.getElementById(
+            "modalIcon"
+        );
 
-        answer.textContent =
-            this.wordManager.secretWord;
 
-        modal.style.display = "flex";
+    icon.textContent = "🎉";
+
+    title.textContent =
+        "YOU WON!";
+
+    answer.textContent =
+        this.wordManager.secretWord;
+
+    modal.style.display = "flex";
+
+    this.createConfetti();
+}
+
+createConfetti() {
+
+    const confetti =
+        document.getElementById(
+            "confetti"
+        );
+
+
+    confetti.innerHTML = "";
+
+
+    for (let i = 0; i < 40; i++) {
+
+        const piece =
+            document.createElement("div");
+
+        piece.classList.add(
+            "confetti-piece"
+        );
+
+
+        const x =
+            (Math.random() - 0.5) * 500;
+
+        const y =
+            (Math.random() - 0.5) * 500;
+
+
+        piece.style.setProperty(
+            "--x",
+            `${x}px`
+        );
+
+        piece.style.setProperty(
+            "--y",
+            `${y}px`
+        );
+
+
+        piece.style.transform =
+            `rotate(${Math.random() * 360}deg)`;
+
+
+        confetti.appendChild(piece);
     }
 
+
+    setTimeout(() => {
+
+        confetti.innerHTML = "";
+
+    }, 1200);
+}
+
+
+    // ================================
+    // GAME LOST
+    // ================================
 
     gameLost() {
 
         this.gameOver = true;
 
         this.player.addLoss();
+
 
         setTimeout(() => {
 
@@ -214,32 +358,63 @@ export class Game {
     }
 
 
-    showGameOverModal() {
+    // ================================
+    // GAME OVER MODAL
+    // ================================
 
-        const modal =
-            document.getElementById(
-                "gameOverModal"
-            );
+        showGameOverModal() {
 
-        const answer =
-            document.getElementById(
-                "answerWord"
-            );
+    const modal =
+        document.getElementById(
+            "gameOverModal"
+        );
 
-        const title =
-            document.getElementById(
-                "modalTitle"
-            );
+    const answer =
+        document.getElementById(
+            "answerWord"
+        );
 
-        title.textContent =
-            "GAME OVER";
+    const title =
+        document.getElementById(
+            "modalTitle"
+        );
 
-        answer.textContent =
-            this.wordManager.secretWord;
+    const icon =
+        document.getElementById(
+            "modalIcon"
+        );
 
-        modal.style.display = "flex";
-    }
 
+    // Remove win styling
+
+    modal.classList.remove(
+        "game-lost"
+    );
+
+
+    // Add game-over styling
+
+    modal.classList.add(
+        "game-lost"
+    );
+
+
+    icon.textContent = "😔";
+
+    title.textContent =
+        "GAME OVER";
+
+    answer.textContent =
+        this.wordManager.secretWord;
+
+
+    modal.style.display = "flex";
+}
+
+
+    // ================================
+    // MODAL BUTTONS
+    // ================================
 
     setupModalButtons() {
 
@@ -260,11 +435,17 @@ export class Game {
                 "gameOverModal"
             ).style.display = "none";
 
-            this.showMessage("GAME EXITED");
+            this.showMessage(
+                "GAME EXITED"
+            );
 
         });
     }
 
+
+    // ================================
+    // HINT
+    // ================================
 
     useHint() {
 
@@ -272,10 +453,11 @@ export class Game {
             return;
         }
 
+
         if (this.hintUsed) {
 
             this.showMessage(
-                "HINT ALREADY USED"
+                "💡 HINT ALREADY USED"
             );
 
             return;
@@ -331,7 +513,7 @@ export class Game {
 
 
         this.showMessage(
-            `HINT: VOWEL = ${vowel} | CONSONANT = ${consonant}`
+            `💡 HINT  •  VOWEL: ${vowel}  •  CONSONANT: ${consonant}`
         );
 
 
@@ -344,6 +526,24 @@ export class Game {
     }
 
 
+    // ================================
+    // CLEAR MESSAGE
+    // ================================
+
+    clearMessageAfter(time) {
+
+        setTimeout(() => {
+
+            this.showMessage("");
+
+        }, time);
+    }
+
+
+    // ================================
+    // SHOW MESSAGE
+    // ================================
+
     showMessage(message) {
 
         const messageElement =
@@ -354,4 +554,6 @@ export class Game {
         messageElement.textContent =
             message;
     }
+
+    
 }
