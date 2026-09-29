@@ -1076,3 +1076,822 @@ main {
         font-size: 9px;
     }
 }
+
+/* =========================================
+   PROFILE BUTTON
+========================================= */
+
+#profileButton {
+
+    position: absolute;
+
+    left: 15px;
+
+    transform: translateY(34px);
+
+    background: #e9e9e9;
+
+    color: #000000;
+
+    border: none;
+
+    border-radius: 6px;
+
+    padding: 8px 10px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+#profileButton:active {
+
+    transform:
+        translateY(34px)
+        scale(0.95);
+}
+
+
+/* =========================================
+   PROFILE MODAL
+========================================= */
+
+.profile-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(0, 0, 0, 0.45);
+
+    backdrop-filter:
+        blur(4px);
+
+    -webkit-backdrop-filter:
+        blur(4px);
+
+    z-index: 2000;
+
+    padding: 20px;
+}
+
+
+/* =========================================
+   PROFILE CONTENT
+========================================= */
+
+.profile-content {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 420px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.2);
+
+    animation:
+        profilePop 0.3s ease;
+}
+
+
+/* =========================================
+   CLOSE X
+========================================= */
+
+.close-profile {
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 15px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    color: #777;
+}
+
+
+.close-profile:hover {
+
+    color: #000000;
+}
+
+
+/* =========================================
+   PROFILE ICON
+========================================= */
+
+.profile-icon {
+
+    font-size: 55px;
+
+    margin-bottom: 5px;
+}
+
+
+#profileUsername {
+
+    margin: 5px 0;
+
+    font-size: 26px;
+
+    letter-spacing: 1px;
+}
+
+
+.profile-subtitle {
+
+    margin:
+        0 0 25px;
+
+    font-size: 12px;
+
+    color: #777;
+
+    letter-spacing: 1px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   PROFILE STATS
+========================================= */
+
+.profile-stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+}
+
+
+.stat-card {
+
+    background: #f4f4f4;
+
+    border-radius: 10px;
+
+    padding: 14px 5px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.stat-value {
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    margin-bottom: 4px;
+}
+
+
+.stat-label {
+
+    font-size: 9px;
+
+    color: #777;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   TOTAL SCORE
+========================================= */
+
+.profile-score {
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: #000000;
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.profile-score span {
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.profile-score strong {
+
+    font-size: 22px;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+#closeProfileBottom {
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #e9e9e9;
+
+    color: #000000;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+#closeProfileBottom:active {
+
+    transform: scale(0.97);
+}
+
+
+/* =========================================
+   PROFILE ANIMATION
+========================================= */
+
+@keyframes profilePop {
+
+    0% {
+
+        transform:
+            scale(0.8);
+
+        opacity: 0;
+    }
+
+    70% {
+
+        transform:
+            scale(1.03);
+
+        opacity: 1;
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================================
+   PROFILE MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+    #profileButton {
+
+        left: 10px;
+
+        transform:
+            translateY(32px);
+
+        font-size: 9px;
+
+        padding: 7px 8px;
+    }
+
+
+    #profileButton:active {
+
+        transform:
+            translateY(32px)
+            scale(0.95);
+    }
+
+
+    .profile-content {
+
+        max-width: 360px;
+
+        padding: 28px 15px;
+    }
+
+
+    .profile-icon {
+
+        font-size: 48px;
+    }
+
+
+    #profileUsername {
+
+        font-size: 23px;
+    }
+
+
+    .profile-stats {
+
+        gap: 7px;
+    }
+
+
+    .stat-card {
+
+        padding: 12px 3px;
+    }
+
+
+    .stat-value {
+
+        font-size: 19px;
+    }
+}
+
+/* =========================================
+   USERNAME SETUP
+========================================= */
+
+#usernameInput {
+
+    width: 100%;
+
+    padding: 13px 12px;
+
+    margin-top: 5px;
+
+    border: 2px solid #d3d6da;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 16px;
+
+    text-align: center;
+
+    user-select: text;
+}
+
+
+#usernameInput:focus {
+
+    border-color: #000000;
+}
+
+
+#usernameError {
+
+    min-height: 18px;
+
+    margin: 8px 0;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #d9534f;
+}
+
+
+#saveUsername {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #000000;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+#saveUsername:active {
+
+    transform: scale(0.97);
+}
+
+/* =========================================
+   AUTHENTICATION
+========================================= */
+
+#emailInput,
+#passwordInput,
+#authUsernameInput {
+
+    width: 100%;
+
+    padding: 13px 12px;
+
+    margin-top: 8px;
+
+    border: 2px solid #d3d6da;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 15px;
+
+    font-family: inherit;
+
+    user-select: text;
+}
+
+
+#emailInput:focus,
+#passwordInput:focus,
+#authUsernameInput:focus {
+
+    border-color: #000000;
+}
+
+
+#authMessage {
+
+    min-height: 20px;
+
+    margin: 10px 0;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+#authSubmit {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #000000;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+#authSubmit:active {
+
+    transform: scale(0.97);
+}
+
+
+.auth-switch {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 8px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #555555;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.auth-switch:hover {
+
+    color: #000000;
+}
+
+/* =========================
+   LEADERBOARD
+========================= */
+
+#leaderboardList {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.leaderboard-row {
+    display: grid;
+
+    grid-template-columns:
+        45px 1fr 80px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 12px 10px;
+
+    margin-bottom: 6px;
+
+    background-color: #f3f3f3;
+
+    border-radius: 6px;
+
+    text-align: left;
+}
+
+.leaderboard-rank {
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.leaderboard-username {
+    font-weight: bold;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.leaderboard-score {
+    font-weight: bold;
+
+    text-align: right;
+}
+
+
+@media (max-width: 500px) {
+
+    .leaderboard-row {
+        grid-template-columns:
+            35px 1fr 65px;
+
+        padding: 10px 8px;
+
+        font-size: 14px;
+    }
+
+}
+
+/* =========================
+   LEADERBOARD CLOSE BUTTON
+========================= */
+
+#closeLeaderboardBottom {
+    width: 100%;
+
+    padding: 13px 20px;
+
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: #787c7e;
+
+    color: white;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+#closeLeaderboardBottom:hover {
+    opacity: 0.85;
+}
+
+#closeLeaderboardBottom:active {
+    transform: scale(0.96);
+}
+
+/* =========================
+   CURRENT PLAYER
+========================= */
+
+.leaderboard-row.current-player {
+    border: 2px solid #000;
+
+    background-color: #e8e8e8;
+
+    transform: scale(1.02);
+}
+
+.you-label {
+    display: inline-block;
+
+    margin-left: 8px;
+
+    padding: 3px 6px;
+
+    border-radius: 4px;
+
+    background-color: #000;
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    vertical-align: middle;
+}
+
+/* =========================
+   MY LEADERBOARD RANK
+========================= */
+
+.my-rank-divider {
+    width: 100%;
+
+    height: 1px;
+
+    margin: 14px 0;
+
+    background-color: #d0d0d0;
+}
+
+.my-rank {
+    display: grid;
+
+    grid-template-columns:
+        45px 1fr auto auto;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    padding: 12px 10px;
+
+    border: 2px solid #000;
+
+    border-radius: 6px;
+
+    background-color: #e8e8e8;
+
+    box-sizing: border-box;
+}
+
+.my-rank-number {
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.my-rank-username {
+    font-weight: bold;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.my-rank-score {
+    font-weight: bold;
+
+    text-align: right;
+}
+
+
+@media (max-width: 500px) {
+
+    .my-rank {
+        grid-template-columns:
+            35px 1fr auto auto;
+
+        padding: 10px 8px;
+
+        font-size: 14px;
+    }
+
+}
+
+/* =========================
+   WIN SCORE
+========================= */
+
+.win-score {
+    font-size: 42px;
+    font-weight: bold;
+    margin-top: 8px;
+    line-height: 1;
+}
+
+.win-score-label {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   ATTEMPT RESULT
+========================= */
+
+.attempt-result {
+    margin-top: 12px;
+    margin-bottom: 18px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}

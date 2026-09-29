@@ -1,166 +1,233 @@
 export class Game {
 
-    constructor(wordManager, board, keyboard, player) {
+    constructor(
+        wordManager,
+        board,
+        keyboard,
+        player
+    ) {
 
-        this.wordManager = wordManager;
-        this.board = board;
-        this.keyboard = keyboard;
-        this.player = player;
+        this.wordManager =
+            wordManager;
+
+        this.board =
+            board;
+
+        this.keyboard =
+            keyboard;
+
+        this.player =
+            player;
+
 
         this.currentRow = 0;
+
         this.currentGuess = "";
+
         this.gameOver = false;
 
+
         this.maxAttempts = 6;
+
         this.wordLength = 5;
+
 
         this.hintUsed = false;
 
+
         this.setupModalButtons();
+
     }
 
 
-    // ================================
+    // ========================================
     // START GAME
-    // ================================
+    // ========================================
 
     startGame() {
 
         this.currentRow = 0;
+
         this.currentGuess = "";
+
         this.gameOver = false;
+
         this.hintUsed = false;
+
 
         this.wordManager.newWord();
 
+
         this.board.createBoard();
+
 
         this.keyboard.createKeyboard();
 
+
         this.showMessage("");
 
-        
 
         document.getElementById(
             "hintButton"
         ).disabled = false;
 
+
         document.getElementById(
             "gameOverModal"
         ).style.display = "none";
+
 
         document.getElementById(
             "gameOverModal"
         ).classList.remove(
             "game-lost"
         );
+
     }
 
 
-    // ================================
+    // ========================================
     // ADD LETTER
-    // ================================
+    // ========================================
 
     addLetter(letter) {
 
         if (this.gameOver) {
+
             return;
+
         }
 
-        if (this.currentGuess.length >= this.wordLength) {
+
+        if (
+            this.currentGuess.length >=
+            this.wordLength
+        ) {
+
             return;
+
         }
 
-        this.currentGuess += letter;
+
+        this.currentGuess +=
+            letter;
+
 
         this.board.displayLetter(
+
             this.currentRow,
+
             this.currentGuess.length - 1,
+
             letter
+
         );
+
     }
 
 
-    // ================================
+    // ========================================
     // REMOVE LETTER
-    // ================================
+    // ========================================
 
     removeLetter() {
 
         if (this.gameOver) {
+
             return;
+
         }
 
-        if (this.currentGuess.length === 0) {
+
+        if (
+            this.currentGuess.length === 0
+        ) {
+
             return;
+
         }
+
 
         this.currentGuess =
-            this.currentGuess.slice(0, -1);
+            this.currentGuess.slice(
+                0,
+                -1
+            );
+
 
         this.board.removeLetter(
+
             this.currentRow,
+
             this.currentGuess.length
+
         );
+
     }
 
 
-    // ================================
+    // ========================================
     // SUBMIT GUESS
-    // ================================
+    // ========================================
 
     submitGuess() {
 
         if (this.gameOver) {
+
             return;
+
         }
 
 
-        // =========================
-        // NOT ENOUGH LETTERS
-        // =========================
-
-        if (this.currentGuess.length !== 5) {
+        if (
+            this.currentGuess.length !== 5
+        ) {
 
             this.showMessage(
                 "ENTER A 5 LETTER WORD"
             );
 
+
             this.board.shakeRow(
                 this.currentRow
             );
 
-            this.clearMessageAfter(1500);
+
+            this.clearMessageAfter(
+                1500
+            );
+
 
             return;
+
         }
 
 
-        // =========================
-        // WORD NOT FOUND
-        // =========================
-
-        if (!this.wordManager.isValidWord(
-            this.currentGuess
-        )) {
+        if (
+            !this.wordManager.isValidWord(
+                this.currentGuess
+            )
+        ) {
 
             this.showMessage(
                 "WORD NOT FOUND"
             );
 
+
             this.board.shakeRow(
                 this.currentRow
             );
 
-            this.clearMessageAfter(1500);
+
+            this.clearMessageAfter(
+                1500
+            );
+
 
             return;
+
         }
 
-
-        // =========================
-        // CHECK WORD
-        // =========================
 
         const result =
             this.wordManager.checkGuess(
@@ -169,38 +236,32 @@ export class Game {
 
 
         this.board.showResult(
+
             this.currentRow,
+
             result
+
         );
 
 
-        // =========================
-        // WIN
-        // =========================
-
         if (
+
             this.currentGuess ===
             this.wordManager.secretWord
+
         ) {
 
             this.gameWon();
 
             return;
+
         }
 
-
-        // =========================
-        // NEXT ROW
-        // =========================
 
         this.currentRow++;
 
         this.currentGuess = "";
 
-
-        // =========================
-        // GAME LOST
-        // =========================
 
         if (
             this.currentRow >=
@@ -208,22 +269,95 @@ export class Game {
         ) {
 
             this.gameLost();
+
         }
+
     }
 
 
-    // ================================
-    // GAME WON
-    // ================================
+    // ========================================
+    // CALCULATE SCORE
+    // ========================================
 
-    gameWon() {
+    calculateScore() {
+
+        const attempt =
+            this.currentRow + 1;
+
+
+        if (attempt === 1) {
+
+            return 500;
+
+        }
+
+
+        if (attempt === 2) {
+
+            return 400;
+
+        }
+
+
+        if (attempt === 3) {
+
+            return 300;
+
+        }
+
+
+        if (attempt === 4) {
+
+            return 200;
+
+        }
+
+
+        if (attempt === 5) {
+
+            return 150;
+
+        }
+
+
+        if (attempt === 6) {
+
+            return 100;
+
+        }
+
+
+        return 0;
+
+    }
+
+
+    // ========================================
+    // GAME WON
+    // ========================================
+
+    async gameWon() {
 
         this.gameOver = true;
 
-        this.player.addWin();
+
+        const score =
+            this.calculateScore();
 
 
-        // Wait for the tiles to finish flipping
+        const attempt =
+            this.currentRow + 1;
+
+
+        await this.player.addWin(
+            score
+        );
+
+
+        console.log(
+            `WORDRUSH SCORE: +${score}`
+        );
+
 
         setTimeout(() => {
 
@@ -232,122 +366,144 @@ export class Game {
             );
 
 
-            // Show the popup after celebration
-
             setTimeout(() => {
 
-                this.showWinModal();
+                this.showWinModal(
+                    score,
+                    attempt
+                );
 
             }, 700);
 
         }, 1600);
+
     }
 
 
-    // ================================
-    // WIN MODAL
-    // ================================
+    // ========================================
+    // SHOW WIN MODAL
+    // ========================================
 
-    showWinModal() {
+    showWinModal(
+        score,
+        attempt
+    ) {
 
-    const modal =
-        document.getElementById(
-            "gameOverModal"
-        );
-
-    const title =
-        document.getElementById(
-            "modalTitle"
-        );
-
-    const answer =
-        document.getElementById(
-            "answerWord"
-        );
-
-    const icon =
-        document.getElementById(
-            "modalIcon"
-        );
+        const modal =
+            document.getElementById(
+                "gameOverModal"
+            );
 
 
-    icon.textContent = "🎉";
-
-    title.textContent =
-        "YOU WON!";
-
-    answer.textContent =
-        this.wordManager.secretWord;
-
-    modal.style.display = "flex";
-
-    this.createConfetti();
-}
-
-createConfetti() {
-
-    const confetti =
-        document.getElementById(
-            "confetti"
-        );
+        const title =
+            document.getElementById(
+                "modalTitle"
+            );
 
 
-    confetti.innerHTML = "";
+        const answer =
+            document.getElementById(
+                "answerWord"
+            );
 
 
-    for (let i = 0; i < 40; i++) {
-
-        const piece =
-            document.createElement("div");
-
-        piece.classList.add(
-            "confetti-piece"
-        );
+        const icon =
+            document.getElementById(
+                "modalIcon"
+            );
 
 
-        const x =
-            (Math.random() - 0.5) * 500;
-
-        const y =
-            (Math.random() - 0.5) * 500;
-
-
-        piece.style.setProperty(
-            "--x",
-            `${x}px`
-        );
-
-        piece.style.setProperty(
-            "--y",
-            `${y}px`
-        );
+        const winScore =
+            document.getElementById(
+                "winScore"
+            );
 
 
-        piece.style.transform =
-            `rotate(${Math.random() * 360}deg)`;
+        const winScoreLabel =
+            document.getElementById(
+                "winScoreLabel"
+            );
 
 
-        confetti.appendChild(piece);
+        const attemptResult =
+            document.getElementById(
+                "attemptResult"
+            );
+
+
+        icon.textContent =
+            "🎉";
+
+
+        title.textContent =
+            "YOU WON!";
+
+
+        winScore.textContent =
+            `+${score}`;
+
+
+        winScoreLabel.textContent =
+            "POINTS";
+
+
+        attemptResult.textContent =
+            `SOLVED IN ${attempt}/6 ATTEMPTS`;
+
+
+        answer.textContent =
+            this.wordManager.secretWord;
+
+
+        modal.style.display =
+            "flex";
+
+
+        this.createConfetti();
+
     }
 
 
-    setTimeout(() => {
-
-        confetti.innerHTML = "";
-
-    }, 1200);
-}
-
-
-    // ================================
+    // ========================================
     // GAME LOST
-    // ================================
+    // ========================================
 
-    gameLost() {
+    async gameLost() {
 
         this.gameOver = true;
 
-        this.player.addLoss();
+
+        await this.player.addLoss();
+
+
+        const winScore =
+            document.getElementById(
+                "winScore"
+            );
+
+
+        const winScoreLabel =
+            document.getElementById(
+                "winScoreLabel"
+            );
+
+
+        const attemptResult =
+            document.getElementById(
+                "attemptResult"
+            );
+
+
+        winScore.textContent =
+            "";
+
+
+        winScoreLabel.textContent =
+            "";
+
+
+        attemptResult.textContent =
+            "";
 
 
         setTimeout(() => {
@@ -355,102 +511,118 @@ createConfetti() {
             this.showGameOverModal();
 
         }, 1500);
+
     }
 
 
-    // ================================
-    // GAME OVER MODAL
-    // ================================
+    // ========================================
+    // SHOW GAME OVER MODAL
+    // ========================================
 
-        showGameOverModal() {
+    showGameOverModal() {
 
-    const modal =
-        document.getElementById(
-            "gameOverModal"
+        const modal =
+            document.getElementById(
+                "gameOverModal"
+            );
+
+
+        const answer =
+            document.getElementById(
+                "answerWord"
+            );
+
+
+        const title =
+            document.getElementById(
+                "modalTitle"
+            );
+
+
+        const icon =
+            document.getElementById(
+                "modalIcon"
+            );
+
+
+        modal.classList.remove(
+            "game-lost"
         );
 
-    const answer =
-        document.getElementById(
-            "answerWord"
-        );
 
-    const title =
-        document.getElementById(
-            "modalTitle"
-        );
-
-    const icon =
-        document.getElementById(
-            "modalIcon"
+        modal.classList.add(
+            "game-lost"
         );
 
 
-    // Remove win styling
-
-    modal.classList.remove(
-        "game-lost"
-    );
+        icon.textContent =
+            "😔";
 
 
-    // Add game-over styling
-
-    modal.classList.add(
-        "game-lost"
-    );
+        title.textContent =
+            "GAME OVER";
 
 
-    icon.textContent = "😔";
-
-    title.textContent =
-        "GAME OVER";
-
-    answer.textContent =
-        this.wordManager.secretWord;
+        answer.textContent =
+            this.wordManager.secretWord;
 
 
-    modal.style.display = "flex";
-}
+        modal.style.display =
+            "flex";
+
+    }
 
 
-    // ================================
+    // ========================================
     // MODAL BUTTONS
-    // ================================
+    // ========================================
 
     setupModalButtons() {
 
         document.getElementById(
             "modalNewGame"
-        ).addEventListener("click", () => {
+        ).addEventListener(
+            "click",
+            () => {
 
-            this.startGame();
+                this.startGame();
 
-        });
+            }
+        );
 
 
         document.getElementById(
             "modalExit"
-        ).addEventListener("click", () => {
+        ).addEventListener(
+            "click",
+            () => {
 
-            document.getElementById(
-                "gameOverModal"
-            ).style.display = "none";
+                document.getElementById(
+                    "gameOverModal"
+                ).style.display =
+                    "none";
 
-            this.showMessage(
-                "GAME EXITED"
-            );
 
-        });
+                this.showMessage(
+                    "GAME EXITED"
+                );
+
+            }
+        );
+
     }
 
 
-    // ================================
+    // ========================================
     // HINT
-    // ================================
+    // ========================================
 
     useHint() {
 
         if (this.gameOver) {
+
             return;
+
         }
 
 
@@ -461,6 +633,7 @@ createConfetti() {
             );
 
             return;
+
         }
 
 
@@ -469,11 +642,13 @@ createConfetti() {
 
 
         const vowels = [
+
             "A",
             "E",
             "I",
             "O",
             "U"
+
         ];
 
 
@@ -482,38 +657,52 @@ createConfetti() {
         let consonant = "";
 
 
-        for (let letter of word) {
+        for (
+            let letter of word
+        ) {
 
             if (
+
                 vowels.includes(letter) &&
                 vowel === ""
+
             ) {
 
                 vowel = letter;
+
             }
 
 
             if (
+
                 !vowels.includes(letter) &&
                 consonant === ""
+
             ) {
 
                 consonant = letter;
+
             }
 
 
             if (
+
                 vowel !== "" &&
                 consonant !== ""
+
             ) {
 
                 break;
+
             }
+
         }
 
 
         this.showMessage(
+
             `💡 HINT  •  VOWEL: ${vowel}  •  CONSONANT: ${consonant}`
+
         );
 
 
@@ -523,12 +712,13 @@ createConfetti() {
         document.getElementById(
             "hintButton"
         ).disabled = true;
+
     }
 
 
-    // ================================
+    // ========================================
     // CLEAR MESSAGE
-    // ================================
+    // ========================================
 
     clearMessageAfter(time) {
 
@@ -537,12 +727,13 @@ createConfetti() {
             this.showMessage("");
 
         }, time);
+
     }
 
 
-    // ================================
+    // ========================================
     // SHOW MESSAGE
-    // ================================
+    // ========================================
 
     showMessage(message) {
 
@@ -551,9 +742,84 @@ createConfetti() {
                 "message"
             );
 
+
         messageElement.textContent =
             message;
+
     }
 
-    
+
+    // ========================================
+    // CONFETTI
+    // ========================================
+
+    createConfetti() {
+
+        const confetti =
+            document.getElementById(
+                "confetti"
+            );
+
+
+        confetti.innerHTML = "";
+
+
+        for (
+            let i = 0;
+            i < 40;
+            i++
+        ) {
+
+            const piece =
+                document.createElement(
+                    "div"
+                );
+
+
+            piece.classList.add(
+                "confetti-piece"
+            );
+
+
+            const x =
+                (Math.random() - 0.5) *
+                500;
+
+
+            const y =
+                (Math.random() - 0.5) *
+                500;
+
+
+            piece.style.setProperty(
+                "--x",
+                `${x}px`
+            );
+
+
+            piece.style.setProperty(
+                "--y",
+                `${y}px`
+            );
+
+
+            piece.style.transform =
+                `rotate(${Math.random() * 360}deg)`;
+
+
+            confetti.appendChild(
+                piece
+            );
+
+        }
+
+
+        setTimeout(() => {
+
+            confetti.innerHTML = "";
+
+        }, 1200);
+
+    }
+
 }
