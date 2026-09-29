@@ -49,6 +49,11 @@
         </button>
 
 
+        <button id="themeButton">
+            🎨
+        </button>
+
+
         <button id="newGameButton">
             NEW GAME
         </button>
@@ -88,7 +93,7 @@
 
         <!-- VIRTUAL KEYBOARD -->
 
-        <div id="keyboard"></div>
+        
 
     </main>
 
@@ -120,8 +125,6 @@
             </h2>
 
 
-            <!-- WIN SCORE -->
-
             <div
                 id="winScore"
                 class="win-score"
@@ -137,8 +140,6 @@
                 POINTS
             </div>
 
-
-            <!-- ATTEMPT PERFORMANCE -->
 
             <div
                 id="attemptResult"
@@ -357,8 +358,6 @@
             </div>
 
 
-            <!-- TOTAL SCORE -->
-
             <div class="profile-score">
 
                 <span>
@@ -430,6 +429,153 @@
 
 
             <button id="closeLeaderboardBottom">
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================
+         THEME MODAL
+    ========================================= -->
+
+    <div
+        id="themeModal"
+        class="profile-modal"
+    >
+
+        <div class="profile-content">
+
+
+            <button
+                id="closeTheme"
+                class="close-profile"
+            >
+                ✕
+            </button>
+
+
+            <div class="profile-icon">
+                🎨
+            </div>
+
+
+            <h2>
+                THEMES
+            </h2>
+
+
+            <p class="profile-subtitle">
+                CHOOSE YOUR WORDRUSH STYLE
+            </p>
+
+
+            <div id="themeList">
+
+
+                <button
+                    class="theme-option"
+                    data-theme="classic"
+                >
+
+                    <span class="theme-name">
+                        ⚪ CLASSIC
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme="dark"
+                >
+
+                    <span class="theme-name">
+                        🌑 DARK
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme="ocean"
+                >
+
+                    <span class="theme-name">
+                        🌊 OCEAN
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme="forest"
+                >
+
+                    <span class="theme-name">
+                        🌲 FOREST
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme="sunset"
+                >
+
+                    <span class="theme-name">
+                        🌅 SUNSET
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme="neon"
+                >
+
+                    <span class="theme-name">
+                        ⚡ NEON
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+                <button
+                    class="theme-option"
+                    data-theme="royal"
+                >
+
+                    <span class="theme-name">
+                        👑 ROYAL
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+            </div>
+
+
+            <button id="closeThemeBottom">
                 CLOSE
             </button>
 

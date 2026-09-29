@@ -1,153 +1,372 @@
-/* =========================================
+/* =========================================================
+   WORDRUSH
+   COMPLETE STYLE SHEET
+   7 THEMES
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT / CLASSIC THEME
+   ========================================================= */
+
+:root {
+    --background: #ffffff;
+    --surface: #f5f5f5;
+    --surface-secondary: #eeeeee;
+
+    --text: #111111;
+    --text-secondary: #666666;
+
+    --border: #d0d0d0;
+
+    --button: #111111;
+    --button-text: #ffffff;
+
+    --accent: #111111;
+
+    --correct: #4CAF50;
+    --present: #D9A900;
+    --incorrect: #5A5A5A;
+}
+
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+body.theme-dark {
+    --background: #0f1115;
+    --surface: #181b21;
+    --surface-secondary: #232730;
+
+    --text: #ffffff;
+    --text-secondary: #a7adb8;
+
+    --border: #3a404c;
+
+    --button: #ffffff;
+    --button-text: #111111;
+
+    --accent: #ffffff;
+}
+
+
+/* =========================================================
+   OCEAN THEME
+   ========================================================= */
+
+body.theme-ocean {
+    --background: #eaf8ff;
+    --surface: #d5f0ff;
+    --surface-secondary: #bde5f7;
+
+    --text: #063b4c;
+    --text-secondary: #397386;
+
+    --border: #8bcce3;
+
+    --button: #087ea4;
+    --button-text: #ffffff;
+
+    --accent: #087ea4;
+}
+
+
+/* =========================================================
+   FOREST THEME
+   ========================================================= */
+
+body.theme-forest {
+    --background: #edf7ed;
+    --surface: #d9edd9;
+    --surface-secondary: #c1dfc1;
+
+    --text: #173b20;
+    --text-secondary: #52705a;
+
+    --border: #98c49d;
+
+    --button: #286b35;
+    --button-text: #ffffff;
+
+    --accent: #286b35;
+}
+
+
+/* =========================================================
+   SUNSET THEME
+   ========================================================= */
+
+body.theme-sunset {
+    --background: #fff3e8;
+    --surface: #ffe0c7;
+    --surface-secondary: #ffc9a3;
+
+    --text: #4a2110;
+    --text-secondary: #8c5d45;
+
+    --border: #e9a77d;
+
+    --button: #d85c2d;
+    --button-text: #ffffff;
+
+    --accent: #d85c2d;
+}
+
+
+/* =========================================================
+   NEON THEME
+   ========================================================= */
+
+body.theme-neon {
+    --background: #070910;
+    --surface: #101522;
+    --surface-secondary: #192238;
+
+    --text: #ffffff;
+    --text-secondary: #aeb8d4;
+
+    --border: #39466d;
+
+    --button: #7c4dff;
+    --button-text: #ffffff;
+
+    --accent: #7c4dff;
+}
+
+
+/* =========================================================
+   ROYAL THEME
+   BURGUNDY + GOLD + WHITE
+   ========================================================= */
+
+body.theme-royal {
+    --background: #fffaf5;
+
+    --surface: #7a2432;
+
+    --surface-secondary: #f3dfb2;
+
+    --text: #3b1018;
+
+    --text-secondary: #6d4650;
+
+    --border: #c9a227;
+
+    --button: #c9a227;
+
+    --button-text: #ffffff;
+
+    --accent: #c9a227;
+
+    --correct: #4CAF50;
+
+    --present: #c9a227;
+
+    --incorrect: #4a4a4a;
+}
+
+
+/* =========================================================
    GLOBAL
-========================================= */
+   ========================================================= */
 
 * {
     box-sizing: border-box;
 }
 
-
 html,
 body {
-    margin: 0;
-    padding: 0;
-
     width: 100%;
     min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-    font-family: Arial, sans-serif;
+body {
+    background: var(--background);
+    color: var(--text);
 
-    background: #ffffff;
-    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
 
     overflow-x: hidden;
 
-    user-select: none;
-    -webkit-user-select: none;
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
 }
 
 
-button {
-    font-family: inherit;
-}
-
-
-/* =========================================
+/* =========================================================
    HEADER
-========================================= */
+   ========================================================= */
 
 header {
-
     width: 100%;
-    max-width: 500px;
 
-    margin: 0 auto;
+    display: grid;
 
-    padding: 18px 15px 14px;
+    grid-template-columns:
+        42px
+        1fr
+        42px
+        42px
+        auto
+        auto;
 
-    display: flex;
     align-items: center;
-    justify-content: center;
 
     gap: 8px;
 
-    border-bottom: 1px solid #eeeeee;
+    padding: 12px 20px;
 
-    position: relative;
+    background: var(--surface);
+
+    border-bottom: 1px solid var(--border);
+
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease;
 }
 
+
+/* =========================================================
+   TITLE
+   ========================================================= */
 
 header h1 {
-
     margin: 0;
 
-    font-size: 28px;
+    text-align: center;
 
-    font-weight: 800;
+    color: var(--text);
 
-    letter-spacing: 3px;
+    font-size: 25px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
 }
 
 
-/* =========================================
-   HEADER BUTTONS
-========================================= */
+/* =========================================================
+   HEADER ICON BUTTONS
+   ========================================================= */
 
-header button {
+#profileButton,
+#leaderboardButton,
+#themeButton {
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
 
     border: none;
 
-    border-radius: 6px;
+    border-radius: 10px;
 
-    padding: 8px 10px;
+    background: transparent;
 
-    font-size: 11px;
+    color: var(--text);
 
-    font-weight: 700;
+    cursor: pointer;
+
+    font-size: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+#profileButton:hover,
+#leaderboardButton:hover,
+#themeButton:hover {
+    background: var(--surface-secondary);
+}
+
+#profileButton:active,
+#leaderboardButton:active,
+#themeButton:active {
+    transform: scale(0.9);
+}
+
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+#newGameButton,
+#hintButton {
+    border: none;
+
+    background: var(--button);
+
+    color: var(--button-text);
+
+    padding: 11px 16px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    white-space: nowrap;
 
     cursor: pointer;
 
     transition:
         transform 0.15s ease,
-        opacity 0.15s ease;
+        opacity 0.2s ease,
+        background-color 0.25s ease,
+        color 0.25s ease;
 }
 
-
-#newGameButton {
-
-    position: absolute;
-
-    left: 15px;
-
-    background: #000000;
-
-    color: #ffffff;
+#newGameButton:hover,
+#hintButton:hover {
+    transform: translateY(-2px);
 }
 
-
-#hintButton {
-
-    position: absolute;
-
-    right: 15px;
-
-    background: #e9e9e9;
-
-    color: #000000;
-}
-
-
-header button:hover {
-
-    transform: translateY(-1px);
-}
-
-
-header button:active {
-
+#newGameButton:active,
+#hintButton:active {
     transform: scale(0.95);
 }
 
 
-/* Disabled hint */
+/* =========================================================
+   DISABLED HINT
+   ========================================================= */
 
 #hintButton:disabled {
+    background: var(--surface-secondary);
 
-    opacity: 0.45;
+    color: var(--text-secondary);
+
+    opacity: 1;
 
     cursor: not-allowed;
 
-    transform: scale(0.97);
+    transform: none;
 }
 
 
-/* =========================================
+/* =========================================================
    MAIN
-========================================= */
+   ========================================================= */
 
 main {
-
     width: 100%;
+
+    min-height: calc(100vh - 73px);
 
     display: flex;
 
@@ -155,717 +374,1135 @@ main {
 
     align-items: center;
 
-    padding-top: 10px;
+    padding: 25px 15px 40px;
 }
 
 
-/* =========================================
+/* =========================================================
    MESSAGE
-========================================= */
+   ========================================================= */
 
 #message {
-
     width: 100%;
 
-    min-height: 40px;
+    min-height: 28px;
 
-    display: flex;
+    margin-bottom: 12px;
 
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 5px 15px;
+    color: var(--text);
 
     font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 800;
 
     letter-spacing: 0.5px;
 
-    transition: all 0.2s ease;
+    text-align: center;
 }
 
 
-/* =========================================
-   BOARD
-========================================= */
-
-#board {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, 60px);
-
-    grid-template-rows:
-        repeat(6, 60px);
-
-    gap: 5px;
-
-    margin-top: 5px;
-}
-
-
-/* =========================================
-   TILES
-========================================= */
-
-.tile {
-
-    width: 60px;
-    height: 60px;
-
-    border: 2px solid #d3d6da;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 30px;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease;
-
-    perspective: 1000px;
-}
-
-
-/* Tile with letter */
-
-.tile:not(:empty) {
-
-    border-color: #878a8c;
-}
-
-
-/* =========================================
-   TILE RESULTS
-========================================= */
-
-.tile.correct {
-
-    background: #6aaa64;
-
-    border-color: #6aaa64;
-
-    color: #ffffff;
-}
-
-
-.tile.present {
-
-    background: #c9b458;
-
-    border-color: #c9b458;
-
-    color: #ffffff;
-}
-
-
-.tile.incorrect {
-
-    background: #787c7e;
-
-    border-color: #787c7e;
-
-    color: #ffffff;
-}
-
-
-/* =========================================
-   FLIP ANIMATION
-========================================= */
-
-@keyframes flip {
-
-    0% {
-
-        transform:
-            rotateX(0deg);
-    }
-
-    50% {
-
-        transform:
-            rotateX(90deg);
-    }
-
-    100% {
-
-        transform:
-            rotateX(0deg);
-    }
-}
-
-
-.tile.flip {
-
-    animation:
-        flip 0.6s ease;
-}
-
-
-/* =========================================
-   LETTER POP
-========================================= */
-
-@keyframes pop {
-
-    0% {
-
-        transform:
-            scale(1);
-    }
-
-    50% {
-
-        transform:
-            scale(1.12);
-    }
-
-    100% {
-
-        transform:
-            scale(1);
-    }
-}
-
-
-.tile.pop {
-
-    animation:
-        pop 0.1s ease;
-}
-
-
-/* =========================================
-   SHAKE
-========================================= */
-
-@keyframes shake {
-
-    0% {
-
-        transform:
-            translateX(0);
-    }
-
-    15% {
-
-        transform:
-            translateX(-6px);
-    }
-
-    30% {
-
-        transform:
-            translateX(6px);
-    }
-
-    45% {
-
-        transform:
-            translateX(-6px);
-    }
-
-    60% {
-
-        transform:
-            translateX(6px);
-    }
-
-    75% {
-
-        transform:
-            translateX(-4px);
-    }
-
-    90% {
-
-        transform:
-            translateX(4px);
-    }
-
-    100% {
-
-        transform:
-            translateX(0);
-    }
-}
-
-
-.tile.shake {
-
-    animation:
-        shake 0.5s ease;
-}
-
-
-/* =========================================
-   WINNING TILE CELEBRATION
-========================================= */
-
-@keyframes celebrate {
-
-    0% {
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-    30% {
-
-        transform:
-            translateY(-12px)
-            scale(1.08);
-    }
-
-    60% {
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-    100% {
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-.tile.celebrate {
-
-    animation:
-        celebrate 0.5s ease;
-}
-
-
-/* =========================================
-   KEYBOARD
-========================================= */
-
-#keyboard {
-
-    width: 100%;
-
-    max-width: 500px;
-
-    margin-top: 20px;
-
-    padding: 0 8px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 6px;
-
-    align-items: center;
-}
-
-
-.keyboard-row {
-
-    display: flex;
-
-    gap: 5px;
-
-    justify-content: center;
-}
-
-
-.key {
-
-    height: 58px;
-
-    min-width: 40px;
-
-    padding: 0 8px;
-
-    border: none;
-
-    border-radius: 4px;
-
-    background: #d3d6da;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-
-.key.correct {
-
-    background: #6aaa64;
-
-    color: #ffffff;
-}
-
-
-.key.present {
-
-    background: #c9b458;
-
-    color: #ffffff;
-}
-
-
-.key.incorrect {
-
-    background: #787c7e;
-
-    color: #ffffff;
-}
-
-
-/* =========================================
-   MOBILE SYSTEM KEYBOARD INPUT
-========================================= */
+/* =========================================================
+   MOBILE INPUT
+   ========================================================= */
 
 #mobileInput {
-
-    position: fixed;
+    position: absolute;
 
     width: 1px;
     height: 1px;
+
+    padding: 0;
+    margin: 0;
 
     opacity: 0;
 
     border: none;
 
-    outline: none;
-
-    padding: 0;
-
-    margin: 0;
-
-    left: -100px;
+    pointer-events: none;
 }
 
 
-/* =========================================
-   MODAL
-========================================= */
+/* =========================================================
+   BOARD
+   ========================================================= */
 
-.modal {
+#board {
+    display: grid;
 
-    position: fixed;
+    grid-template-columns: repeat(5, 58px);
 
-    inset: 0;
+    grid-template-rows: repeat(6, 58px);
 
-    width: 100%;
-    height: 100%;
+    gap: 7px;
 
-    display: none;
+    width: max-content;
 
-    align-items: center;
+    margin: 5px auto 0;
 
-    justify-content: center;
-
-    background:
-        rgba(0, 0, 0, 0.45);
-
-    backdrop-filter:
-        blur(4px);
-
-    -webkit-backdrop-filter:
-        blur(4px);
-
-    z-index: 1000;
+    user-select: none;
 }
 
 
-/* =========================================
-   MODAL CONTENT
-========================================= */
+/* =========================================================
+   TILES
+   ========================================================= */
 
-.modal-content {
-
-    width: 360px;
-
-    max-width: 90%;
-
-    padding: 30px 25px;
-
-    background: #ffffff;
-
-    border-radius: 14px;
-
-    text-align: center;
-
-    box-shadow:
-        0 15px 40px
-        rgba(0, 0, 0, 0.2);
-
-    animation:
-        modalPop 0.35s ease;
-}
-
-
-/* =========================================
-   MODAL ICON
-========================================= */
-
-.modal-icon {
-
-    font-size: 48px;
-
-    margin-bottom: 8px;
-
-    animation:
-        iconBounce 0.6s ease;
-}
-
-
-/* =========================================
-   MODAL TITLE
-========================================= */
-
-#modalTitle {
-
-    font-size: 28px;
-
-    margin:
-        5px 0 10px;
-
-    letter-spacing: 1px;
-}
-
-
-/* =========================================
-   MODAL ANSWER
-========================================= */
-
-#answerWord {
-
-    font-size: 32px;
-
-    letter-spacing: 5px;
-
-    margin:
-        8px 0 25px;
-
-    font-weight: 800;
-}
-
-
-/* =========================================
-   MODAL BUTTONS
-========================================= */
-
-.modal-buttons {
+.tile {
+    width: 58px;
+    height: 58px;
 
     display: flex;
 
+    align-items: center;
     justify-content: center;
 
-    gap: 12px;
+    background: var(--background);
 
-    margin-top: 10px;
-}
+    border: 2px solid var(--border);
 
+    color: var(--text);
 
-.modal-buttons button {
+    font-size: 25px;
 
-    border: none;
+    font-weight: 900;
 
-    border-radius: 8px;
+    text-transform: uppercase;
 
-    padding:
-        13px 22px;
-
-    font-size: 14px;
-
-    font-weight: 800;
-
-    letter-spacing: 0.5px;
-
-    cursor: pointer;
+    user-select: none;
 
     transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        opacity 0.15s ease;
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 
-/* NEW GAME */
+/* =========================================================
+   TILE RESULTS
+   ========================================================= */
 
-#modalNewGame {
+.tile.correct {
+    background: var(--correct);
 
-    background: #000000;
+    border-color: var(--correct);
+
+    color: #ffffff;
+}
+
+.tile.present {
+    background: var(--present);
+
+    border-color: var(--present);
+
+    color: #ffffff;
+}
+
+.tile.incorrect {
+    background: var(--incorrect);
+
+    border-color: var(--incorrect);
 
     color: #ffffff;
 }
 
 
-#modalNewGame:hover {
+/* =========================================================
+   TILE POP
+   ========================================================= */
 
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 5px 12px
-        rgba(0, 0, 0, 0.2);
+.tile.pop {
+    animation: tilePop 0.1s ease;
 }
 
-
-/* EXIT */
-
-#modalExit {
-
-    background: #e9e9e9;
-
-    color: #333333;
-}
-
-
-#modalExit:hover {
-
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 5px 12px
-        rgba(0, 0, 0, 0.12);
-}
-
-
-/* Button press */
-
-.modal-buttons button:active {
-
-    transform:
-        scale(0.94);
-
-    box-shadow: none;
-}
-
-
-/* =========================================
-   MODAL ANIMATIONS
-========================================= */
-
-@keyframes modalPop {
+@keyframes tilePop {
 
     0% {
-
-        transform:
-            scale(0.75);
-
-        opacity: 0;
+        transform: scale(1);
     }
 
-    70% {
-
-        transform:
-            scale(1.05);
-
-        opacity: 1;
+    50% {
+        transform: scale(1.08);
     }
 
     100% {
-
-        transform:
-            scale(1);
-
-        opacity: 1;
+        transform: scale(1);
     }
+}
+
+
+/* =========================================================
+   TILE FLIP
+   ========================================================= */
+
+.tile.flip {
+    animation: tileFlip 0.6s ease;
+}
+
+@keyframes tileFlip {
+
+    0% {
+        transform: rotateX(0);
+    }
+
+    50% {
+        transform: rotateX(90deg);
+    }
+
+    100% {
+        transform: rotateX(0);
+    }
+}
+
+
+/* =========================================================
+   TILE SHAKE
+   ========================================================= */
+
+.tile.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-5px);
+    }
+
+    40% {
+        transform: translateX(5px);
+    }
+
+    60% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+
+/* =========================================================
+   CELEBRATE
+   ========================================================= */
+
+.tile.celebrate {
+    animation: celebrate 0.5s ease;
+}
+
+@keyframes celebrate {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-15px)
+            scale(1.08);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   GAME MODAL
+   ========================================================= */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    backdrop-filter: blur(5px);
+}
+
+
+.modal-content {
+    position: relative;
+
+    width: min(390px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px 25px;
+
+    border-radius: 20px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3);
+
+    animation: modalPop 0.25s ease;
+}
+
+
+/* =========================================================
+   PROFILE MODALS
+   ========================================================= */
+
+.profile-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    backdrop-filter: blur(5px);
+}
+
+
+.profile-content {
+    position: relative;
+
+    width: min(420px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px 25px;
+
+    border-radius: 20px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3);
+
+    animation: modalPop 0.25s ease;
+}
+
+
+@keyframes modalPop {
+
+    from {
+        opacity: 0;
+
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   MODAL ICONS
+   ========================================================= */
+
+.modal-icon {
+    margin-bottom: 5px;
+
+    font-size: 50px;
+
+    animation: iconBounce 0.5s ease;
+}
+
+
+.profile-icon {
+    margin-bottom: 8px;
+
+    font-size: 45px;
+
+    animation: iconBounce 0.5s ease;
 }
 
 
 @keyframes iconBounce {
 
     0% {
-
-        transform:
-            scale(0);
+        transform: scale(0.7);
     }
 
     60% {
-
-        transform:
-            scale(1.2);
+        transform: scale(1.1);
     }
 
     100% {
-
-        transform:
-            scale(1);
+        transform: scale(1);
     }
 }
 
 
-/* =========================================
-   GAME OVER ANIMATION
-========================================= */
+/* =========================================================
+   GAME MODAL TEXT
+   ========================================================= */
 
-.modal.game-lost
-.modal-content {
+#modalTitle {
+    margin: 5px 0 10px;
 
-    animation:
-        gameOverPop 0.4s ease;
+    color: var(--text);
+
+    font-size: 25px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
 }
 
 
-@keyframes gameOverPop {
+.win-score {
+    color: var(--correct);
 
-    0% {
+    font-size: 35px;
 
-        transform:
-            scale(0.8);
-
-        opacity: 0;
-    }
-
-    60% {
-
-        transform:
-            scale(1.04);
-
-        opacity: 1;
-    }
-
-    100% {
-
-        transform:
-            scale(1);
-
-        opacity: 1;
-    }
+    font-weight: 900;
 }
 
 
-/* =========================================
-   WIN CONFETTI
-========================================= */
+.win-score-label {
+    margin-top: -5px;
 
-#confetti {
+    color: var(--text-secondary);
 
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+.attempt-result {
+    margin-top: 10px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+.modal-content p {
+    margin: 18px 0 5px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+#answerWord {
+    margin: 8px 0 18px;
+
+    color: var(--text);
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+}
+
+
+/* =========================================================
+   MODAL BUTTONS
+   ========================================================= */
+
+.modal-buttons {
+    display: flex;
+
+    width: 100%;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+
+#modalNewGame,
+#modalExit {
+    flex: 1;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--button);
+
+    color: var(--button-text);
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.2s ease;
+}
+
+
+#modalNewGame:hover,
+#modalExit:hover {
+    transform: translateY(-2px);
+}
+
+
+#modalNewGame:active,
+#modalExit:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   PROFILE HEADINGS
+   ========================================================= */
+
+.profile-content h2 {
+    margin: 5px 0 8px;
+
+    color: var(--text);
+
+    font-size: 25px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+
+.profile-subtitle {
+    margin: 0 0 22px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   CLOSE X
+   ========================================================= */
+
+.close-profile {
     position: absolute;
 
+    top: 12px;
+    right: 12px;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: var(--surface-secondary);
+
+    color: var(--text);
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.close-profile:hover {
+    opacity: 0.75;
+}
+
+
+.close-profile:active {
+    transform: scale(0.9);
+}
+
+
+/* =========================================================
+   PROFILE STATS
+   ========================================================= */
+
+.profile-stats {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+.stat-card {
+    padding: 15px 10px;
+
+    border-radius: 12px;
+
+    background: var(--surface-secondary);
+
+    color: var(--text);
+}
+
+
+.stat-value {
+    display: block;
+
+    color: var(--text);
+
+    font-size: 24px;
+
+    font-weight: 900;
+}
+
+
+.stat-label {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--text-secondary);
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   TOTAL SCORE
+   ========================================================= */
+
+.profile-score {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: var(--surface-secondary);
+
+    color: var(--text);
+}
+
+
+.profile-score span {
+    color: var(--text-secondary);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+.profile-score strong {
+    color: var(--text);
+
+    font-size: 22px;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   MODAL CLOSE BUTTONS
+   ========================================================= */
+
+#closeProfileBottom,
+#closeLeaderboardBottom,
+#closeThemeBottom {
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--button);
+
+    color: var(--button-text);
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.2s ease;
+}
+
+
+#closeProfileBottom:hover,
+#closeLeaderboardBottom:hover,
+#closeThemeBottom:hover {
+    transform: translateY(-2px);
+}
+
+
+#closeProfileBottom:active,
+#closeLeaderboardBottom:active,
+#closeThemeBottom:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   LEADERBOARD
+   ========================================================= */
+
+#leaderboardList {
+    width: 100%;
+
+    margin-top: 15px;
+}
+
+
+.leaderboard-row {
+    display: grid;
+
+    grid-template-columns:
+        40px
+        minmax(0, 1fr)
+        80px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 7px;
+
+    padding: 12px 14px;
+
+    border: 2px solid transparent;
+
+    border-radius: 10px;
+
+    background: var(--surface-secondary);
+
+    color: var(--text);
+
+    text-align: left;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.leaderboard-row:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CURRENT PLAYER
+   ========================================================= */
+
+.leaderboard-row.current-player {
+    border-color: var(--accent);
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    box-shadow:
+        0 0 0 1px var(--accent);
+}
+
+
+/* =========================================================
+   LEADERBOARD RANK
+   ========================================================= */
+
+.leaderboard-rank {
+    color: var(--text);
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   LEADERBOARD NAME
+   ========================================================= */
+
+.leaderboard-name {
+    display: flex;
+
+    align-items: center;
+
+    min-width: 0;
+
+    gap: 8px;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    overflow: hidden;
+}
+
+
+.leaderboard-name-text {
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: var(--text);
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   YOU BADGE
+   ========================================================= */
+
+.leaderboard-you {
+    flex-shrink: 0;
+
+    padding: 3px 7px;
+
+    border-radius: 6px;
+
+    background: var(--accent);
+
+    color: var(--button-text);
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   LEADERBOARD SCORE
+   ========================================================= */
+
+.leaderboard-score {
+    color: var(--text);
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    text-align: right;
+}
+
+
+#myLeaderboardRank {
+    margin-top: 15px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: var(--surface-secondary);
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   THEME SELECTOR
+   ========================================================= */
+
+#themeList {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+
+.theme-option {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 14px 15px;
+
+    border: 2px solid var(--border);
+
+    border-radius: 12px;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.theme-option:hover {
+    transform: translateY(-1px);
+}
+
+
+.theme-option.selected {
+    border-color: var(--accent);
+
+    background: var(--surface-secondary);
+
+    color: var(--text);
+}
+
+
+.theme-name {
+    color: var(--text);
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+
+.theme-check {
+    width: 22px;
+
+    color: var(--accent);
+
+    font-size: 17px;
+
+    font-weight: 900;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   AUTH / USERNAME INPUTS
+   ========================================================= */
+
+#authModal input,
+#usernameModal input {
+    width: 100%;
+
+    margin-bottom: 10px;
+
+    padding: 13px 14px;
+
+    border: 2px solid var(--border);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.25s ease,
+        color 0.25s ease;
+}
+
+
+#authModal input::placeholder,
+#usernameModal input::placeholder {
+    color: var(--text-secondary);
+
+    opacity: 1;
+}
+
+
+#authModal input:focus,
+#usernameModal input:focus {
+    border-color: var(--accent);
+}
+
+
+/* =========================================================
+   AUTH BUTTON
+   ========================================================= */
+
+#authModal button,
+#saveUsername {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--button);
+
+    color: var(--button-text);
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.2s ease;
+}
+
+
+#authModal button:hover,
+#saveUsername:hover {
+    transform: translateY(-2px);
+}
+
+
+#authModal button:active,
+#saveUsername:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   AUTH SWITCH
+   ========================================================= */
+
+.auth-switch {
+    margin-top: 12px;
+
+    padding: 8px !important;
+
+    background: transparent !important;
+
+    color: var(--accent) !important;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    opacity: 0.85;
+}
+
+
+.auth-switch:hover {
+    opacity: 1;
+
+    transform: none !important;
+}
+
+
+/* =========================================================
+   ERROR / AUTH MESSAGE
+   ========================================================= */
+
+#usernameError,
+#authMessage {
+    min-height: 18px;
+
+    margin: 4px 0 10px;
+
+    color: #d32f2f;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CONFETTI
+   ========================================================= */
+
+#confetti {
+    position: fixed;
+
     inset: 0;
+
+    z-index: 2000;
 
     pointer-events: none;
 
@@ -874,1024 +1511,311 @@ main {
 
 
 .confetti-piece {
-
     position: absolute;
 
-    width: 8px;
-
-    height: 14px;
-
-    top: 45%;
-
+    top: 50%;
     left: 50%;
 
-    opacity: 1;
+    width: 8px;
+    height: 14px;
+
+    background: var(--accent);
 
     animation:
-        confettiFly 1s ease-out forwards;
+        confettiFly 1.2s ease-out forwards;
 }
 
 
 @keyframes confettiFly {
 
-    0% {
+    from {
+        opacity: 1;
 
         transform:
             translate(0, 0)
             rotate(0deg);
-
-        opacity: 1;
     }
 
-    100% {
+    to {
+        opacity: 0;
 
         transform:
-            translate(
-                var(--x),
-                var(--y)
-            )
+            translate(var(--x), var(--y))
             rotate(720deg);
-
-        opacity: 0;
     }
 }
 
 
-/* =========================================
-   MOBILE
-========================================= */
+/* =========================================================
+   GAME LOST MODAL
+   ========================================================= */
 
-@media (max-width: 500px) {
+#gameOverModal.game-lost .modal-content {
+    animation:
+        modalPop 0.25s ease,
+        gameLostModal 0.4s ease;
+}
+
+
+@keyframes gameLostModal {
+
+    0% {
+        transform: scale(0.95);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
 
     header {
+        grid-template-columns:
+            38px
+            1fr
+            38px
+            38px
+            auto
+            auto;
 
-        padding:
-            16px 10px 12px;
+        gap: 5px;
+
+        padding: 10px;
     }
 
 
     header h1 {
-
-        font-size: 24px;
-
-        letter-spacing: 2px;
+        font-size: 21px;
     }
 
 
-    header button {
+    #profileButton,
+    #leaderboardButton,
+    #themeButton {
+        width: 38px;
+        height: 38px;
 
-        padding:
-            7px 9px;
+        font-size: 18px;
+    }
+
+
+    #newGameButton,
+    #hintButton {
+        padding: 10px 12px;
+
+        font-size: 11px;
+    }
+
+
+    main {
+        padding-top: 20px;
+    }
+
+
+    #board {
+        grid-template-columns: repeat(5, 56px);
+
+        grid-template-rows: repeat(6, 56px);
+
+        gap: 6px;
+    }
+
+
+    .tile {
+        width: 56px;
+        height: 56px;
+
+        font-size: 23px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    header {
+        grid-template-columns:
+            34px
+            1fr
+            34px
+            34px
+            auto
+            auto;
+
+        gap: 3px;
+
+        padding: 9px 7px;
+    }
+
+
+    header h1 {
+        font-size: 18px;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    #profileButton,
+    #leaderboardButton,
+    #themeButton {
+        width: 34px;
+        height: 34px;
+
+        font-size: 16px;
+    }
+
+
+    #newGameButton,
+    #hintButton {
+        padding: 9px;
 
         font-size: 10px;
     }
 
 
-    #newGameButton {
+    main {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
 
-        left: 10px;
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    header {
+        grid-template-columns:
+            30px
+            1fr
+            30px
+            30px
+            auto
+            auto;
+
+        gap: 2px;
+
+        padding: 8px 5px;
     }
 
 
-    #hintButton {
+    header h1 {
+        font-size: 16px;
+    }
 
-        right: 10px;
+
+    #profileButton,
+    #leaderboardButton,
+    #themeButton {
+        width: 30px;
+        height: 30px;
+
+        font-size: 14px;
+    }
+
+
+    #newGameButton,
+    #hintButton {
+        padding: 8px 7px;
+
+        font-size: 9px;
     }
 
 
     #board {
+        grid-template-columns: repeat(5, 50px);
 
-        grid-template-columns:
-            repeat(5, 52px);
-
-        grid-template-rows:
-            repeat(6, 52px);
+        grid-template-rows: repeat(6, 50px);
 
         gap: 5px;
     }
 
 
     .tile {
+        width: 50px;
+        height: 50px;
 
-        width: 52px;
-
-        height: 52px;
-
-        font-size: 26px;
+        font-size: 21px;
     }
 
 
-    /* Hide virtual keyboard */
-
-    #keyboard {
-
-        display: none;
-    }
-
-
+    .profile-content,
     .modal-content {
-
-        width: 90%;
-
-        padding:
-            25px 20px;
-    }
-
-
-    .modal-icon {
-
-        font-size: 42px;
-    }
-
-
-    #modalTitle {
-
-        font-size: 24px;
-    }
-
-
-    #answerWord {
-
-        font-size: 27px;
-
-        letter-spacing: 4px;
-    }
-
-
-    .modal-buttons {
-
-        gap: 10px;
-    }
-
-
-    .modal-buttons button {
-
-        padding:
-            12px 18px;
-
-        font-size: 13px;
+        padding: 25px 18px;
     }
 }
 
 
-/* =========================================
-   VERY SMALL PHONES
-========================================= */
+/* =========================================================
+   EXTREMELY SMALL SCREENS
+   ========================================================= */
 
-@media (max-width: 360px) {
+@media (max-width: 330px) {
+
+    header {
+        grid-template-columns:
+            28px
+            1fr
+            28px
+            28px
+            auto
+            auto;
+
+        gap: 2px;
+    }
+
+
+    header h1 {
+        font-size: 14px;
+    }
+
+
+    #profileButton,
+    #leaderboardButton,
+    #themeButton {
+        width: 28px;
+        height: 28px;
+
+        font-size: 13px;
+    }
+
+
+    #newGameButton,
+    #hintButton {
+        padding: 7px 5px;
+
+        font-size: 8px;
+    }
+
 
     #board {
+        grid-template-columns: repeat(5, 45px);
 
-        grid-template-columns:
-            repeat(5, 46px);
-
-        grid-template-rows:
-            repeat(6, 46px);
+        grid-template-rows: repeat(6, 45px);
 
         gap: 4px;
     }
 
 
     .tile {
-
-        width: 46px;
-
-        height: 46px;
-
-        font-size: 23px;
-    }
-
-
-    header h1 {
-
-        font-size: 21px;
-    }
-
-
-    header button {
-
-        padding:
-            6px 7px;
-
-        font-size: 9px;
-    }
-}
-
-/* =========================================
-   PROFILE BUTTON
-========================================= */
-
-#profileButton {
-
-    position: absolute;
-
-    left: 15px;
-
-    transform: translateY(34px);
-
-    background: #e9e9e9;
-
-    color: #000000;
-
-    border: none;
-
-    border-radius: 6px;
-
-    padding: 8px 10px;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-
-#profileButton:active {
-
-    transform:
-        translateY(34px)
-        scale(0.95);
-}
-
-
-/* =========================================
-   PROFILE MODAL
-========================================= */
-
-.profile-modal {
-
-    position: fixed;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        rgba(0, 0, 0, 0.45);
-
-    backdrop-filter:
-        blur(4px);
-
-    -webkit-backdrop-filter:
-        blur(4px);
-
-    z-index: 2000;
-
-    padding: 20px;
-}
-
-
-/* =========================================
-   PROFILE CONTENT
-========================================= */
-
-.profile-content {
-
-    position: relative;
-
-    width: 100%;
-
-    max-width: 420px;
-
-    background: #ffffff;
-
-    border-radius: 16px;
-
-    padding: 30px 20px;
-
-    text-align: center;
-
-    box-shadow:
-        0 15px 40px
-        rgba(0, 0, 0, 0.2);
-
-    animation:
-        profilePop 0.3s ease;
-}
-
-
-/* =========================================
-   CLOSE X
-========================================= */
-
-.close-profile {
-
-    position: absolute;
-
-    top: 12px;
-
-    right: 15px;
-
-    border: none;
-
-    background: transparent;
-
-    font-size: 22px;
-
-    cursor: pointer;
-
-    color: #777;
-}
-
-
-.close-profile:hover {
-
-    color: #000000;
-}
-
-
-/* =========================================
-   PROFILE ICON
-========================================= */
-
-.profile-icon {
-
-    font-size: 55px;
-
-    margin-bottom: 5px;
-}
-
-
-#profileUsername {
-
-    margin: 5px 0;
-
-    font-size: 26px;
-
-    letter-spacing: 1px;
-}
-
-
-.profile-subtitle {
-
-    margin:
-        0 0 25px;
-
-    font-size: 12px;
-
-    color: #777;
-
-    letter-spacing: 1px;
-
-    font-weight: 700;
-}
-
-
-/* =========================================
-   PROFILE STATS
-========================================= */
-
-.profile-stats {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-}
-
-
-.stat-card {
-
-    background: #f4f4f4;
-
-    border-radius: 10px;
-
-    padding: 14px 5px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-
-.stat-value {
-
-    font-size: 22px;
-
-    font-weight: 800;
-
-    margin-bottom: 4px;
-}
-
-
-.stat-label {
-
-    font-size: 9px;
-
-    color: #777;
-
-    font-weight: 700;
-
-    letter-spacing: 0.5px;
-}
-
-
-/* =========================================
-   TOTAL SCORE
-========================================= */
-
-.profile-score {
-
-    margin-top: 15px;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
-    background: #000000;
-
-    color: #ffffff;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-}
-
-
-.profile-score span {
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-}
-
-
-.profile-score strong {
-
-    font-size: 22px;
-}
-
-
-/* =========================================
-   CLOSE BUTTON
-========================================= */
-
-#closeProfileBottom {
-
-    width: 100%;
-
-    margin-top: 15px;
-
-    padding: 12px;
-
-    border: none;
-
-    border-radius: 8px;
-
-    background: #e9e9e9;
-
-    color: #000000;
-
-    font-weight: 800;
-
-    cursor: pointer;
-}
-
-
-#closeProfileBottom:active {
-
-    transform: scale(0.97);
-}
-
-
-/* =========================================
-   PROFILE ANIMATION
-========================================= */
-
-@keyframes profilePop {
-
-    0% {
-
-        transform:
-            scale(0.8);
-
-        opacity: 0;
-    }
-
-    70% {
-
-        transform:
-            scale(1.03);
-
-        opacity: 1;
-    }
-
-    100% {
-
-        transform:
-            scale(1);
-
-        opacity: 1;
-    }
-}
-
-
-/* =========================================
-   PROFILE MOBILE
-========================================= */
-
-@media (max-width: 500px) {
-
-    #profileButton {
-
-        left: 10px;
-
-        transform:
-            translateY(32px);
-
-        font-size: 9px;
-
-        padding: 7px 8px;
-    }
-
-
-    #profileButton:active {
-
-        transform:
-            translateY(32px)
-            scale(0.95);
-    }
-
-
-    .profile-content {
-
-        max-width: 360px;
-
-        padding: 28px 15px;
-    }
-
-
-    .profile-icon {
-
-        font-size: 48px;
-    }
-
-
-    #profileUsername {
-
-        font-size: 23px;
-    }
-
-
-    .profile-stats {
-
-        gap: 7px;
-    }
-
-
-    .stat-card {
-
-        padding: 12px 3px;
-    }
-
-
-    .stat-value {
+        width: 45px;
+        height: 45px;
 
         font-size: 19px;
     }
-}
-
-/* =========================================
-   USERNAME SETUP
-========================================= */
-
-#usernameInput {
-
-    width: 100%;
-
-    padding: 13px 12px;
-
-    margin-top: 5px;
-
-    border: 2px solid #d3d6da;
-
-    border-radius: 8px;
-
-    outline: none;
-
-    font-size: 16px;
-
-    text-align: center;
-
-    user-select: text;
-}
-
-
-#usernameInput:focus {
-
-    border-color: #000000;
-}
-
-
-#usernameError {
-
-    min-height: 18px;
-
-    margin: 8px 0;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    color: #d9534f;
-}
-
-
-#saveUsername {
-
-    width: 100%;
-
-    padding: 13px;
-
-    margin-top: 5px;
-
-    border: none;
-
-    border-radius: 8px;
-
-    background: #000000;
-
-    color: #ffffff;
-
-    font-size: 14px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-}
-
-
-#saveUsername:active {
-
-    transform: scale(0.97);
-}
-
-/* =========================================
-   AUTHENTICATION
-========================================= */
-
-#emailInput,
-#passwordInput,
-#authUsernameInput {
-
-    width: 100%;
-
-    padding: 13px 12px;
-
-    margin-top: 8px;
-
-    border: 2px solid #d3d6da;
-
-    border-radius: 8px;
-
-    outline: none;
-
-    font-size: 15px;
-
-    font-family: inherit;
-
-    user-select: text;
-}
-
-
-#emailInput:focus,
-#passwordInput:focus,
-#authUsernameInput:focus {
-
-    border-color: #000000;
-}
-
-
-#authMessage {
-
-    min-height: 20px;
-
-    margin: 10px 0;
-
-    font-size: 12px;
-
-    font-weight: 700;
-}
-
-
-#authSubmit {
-
-    width: 100%;
-
-    padding: 13px;
-
-    margin-top: 5px;
-
-    border: none;
-
-    border-radius: 8px;
-
-    background: #000000;
-
-    color: #ffffff;
-
-    font-size: 14px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-}
-
-
-#authSubmit:active {
-
-    transform: scale(0.97);
-}
-
-
-.auth-switch {
-
-    width: 100%;
-
-    margin-top: 12px;
-
-    padding: 8px;
-
-    border: none;
-
-    background: transparent;
-
-    color: #555555;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-
-.auth-switch:hover {
-
-    color: #000000;
-}
-
-/* =========================
-   LEADERBOARD
-========================= */
-
-#leaderboardList {
-    width: 100%;
-    margin: 20px 0;
-}
-
-.leaderboard-row {
-    display: grid;
-
-    grid-template-columns:
-        45px 1fr 80px;
-
-    align-items: center;
-
-    gap: 10px;
-
-    width: 100%;
-
-    padding: 12px 10px;
-
-    margin-bottom: 6px;
-
-    background-color: #f3f3f3;
-
-    border-radius: 6px;
-
-    text-align: left;
-}
-
-.leaderboard-rank {
-    font-weight: bold;
-
-    text-align: center;
-}
-
-.leaderboard-username {
-    font-weight: bold;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-}
-
-.leaderboard-score {
-    font-weight: bold;
-
-    text-align: right;
-}
-
-
-@media (max-width: 500px) {
-
-    .leaderboard-row {
-        grid-template-columns:
-            35px 1fr 65px;
-
-        padding: 10px 8px;
-
-        font-size: 14px;
-    }
-
-}
-
-/* =========================
-   LEADERBOARD CLOSE BUTTON
-========================= */
-
-#closeLeaderboardBottom {
-    width: 100%;
-
-    padding: 13px 20px;
-
-    margin-top: 10px;
-
-    border: none;
-    border-radius: 6px;
-
-    background-color: #787c7e;
-
-    color: white;
-
-    font-weight: bold;
-    font-size: 14px;
-
-    cursor: pointer;
-
-    touch-action: manipulation;
-}
-
-#closeLeaderboardBottom:hover {
-    opacity: 0.85;
-}
-
-#closeLeaderboardBottom:active {
-    transform: scale(0.96);
-}
-
-/* =========================
-   CURRENT PLAYER
-========================= */
-
-.leaderboard-row.current-player {
-    border: 2px solid #000;
-
-    background-color: #e8e8e8;
-
-    transform: scale(1.02);
-}
-
-.you-label {
-    display: inline-block;
-
-    margin-left: 8px;
-
-    padding: 3px 6px;
-
-    border-radius: 4px;
-
-    background-color: #000;
-
-    color: white;
-
-    font-size: 10px;
-
-    font-weight: bold;
-
-    vertical-align: middle;
-}
-
-/* =========================
-   MY LEADERBOARD RANK
-========================= */
-
-.my-rank-divider {
-    width: 100%;
-
-    height: 1px;
-
-    margin: 14px 0;
-
-    background-color: #d0d0d0;
-}
-
-.my-rank {
-    display: grid;
-
-    grid-template-columns:
-        45px 1fr auto auto;
-
-    align-items: center;
-
-    gap: 8px;
-
-    width: 100%;
-
-    padding: 12px 10px;
-
-    border: 2px solid #000;
-
-    border-radius: 6px;
-
-    background-color: #e8e8e8;
-
-    box-sizing: border-box;
-}
-
-.my-rank-number {
-    font-weight: bold;
-
-    text-align: center;
-}
-
-.my-rank-username {
-    font-weight: bold;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-}
-
-.my-rank-score {
-    font-weight: bold;
-
-    text-align: right;
-}
-
-
-@media (max-width: 500px) {
-
-    .my-rank {
-        grid-template-columns:
-            35px 1fr auto auto;
-
-        padding: 10px 8px;
-
-        font-size: 14px;
-    }
-
-}
-
-/* =========================
-   WIN SCORE
-========================= */
-
-.win-score {
-    font-size: 42px;
-    font-weight: bold;
-    margin-top: 8px;
-    line-height: 1;
-}
-
-.win-score-label {
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-}
-
-/* =========================
-   ATTEMPT RESULT
-========================= */
-
-.attempt-result {
-    margin-top: 12px;
-    margin-bottom: 18px;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    letter-spacing: 1px;
 }

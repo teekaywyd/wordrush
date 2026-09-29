@@ -3,7 +3,6 @@ export class Game {
     constructor(
         wordManager,
         board,
-        keyboard,
         player
     ) {
 
@@ -12,9 +11,6 @@ export class Game {
 
         this.board =
             board;
-
-        this.keyboard =
-            keyboard;
 
         this.player =
             player;
@@ -59,9 +55,6 @@ export class Game {
 
 
         this.board.createBoard();
-
-
-        this.keyboard.createKeyboard();
 
 
         this.showMessage("");

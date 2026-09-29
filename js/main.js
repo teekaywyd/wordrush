@@ -1,7 +1,6 @@
 import { Game } from "./Game.js";
 import { WordManager } from "./WordManager.js";
 import { Board } from "./Board.js";
-import { Keyboard } from "./Keyboard.js";
 import { Player } from "./Player.js";
 import { supabase } from "./supabase.js";
 
@@ -110,22 +109,255 @@ const myLeaderboardRank =
 
 
 // ========================================
-// GAME
+// THEME ELEMENTS
 // ========================================
 
-const keyboard =
-    new Keyboard(null);
+const themeButton =
+    document.getElementById(
+        "themeButton"
+    );
+
+const themeModal =
+    document.getElementById(
+        "themeModal"
+    );
+
+const closeTheme =
+    document.getElementById(
+        "closeTheme"
+    );
+
+const closeThemeBottom =
+    document.getElementById(
+        "closeThemeBottom"
+    );
+
+const themeOptions =
+    document.querySelectorAll(
+        ".theme-option"
+    );
+
+
+// ========================================
+// GAME
+// ========================================
 
 const game =
     new Game(
         wordManager,
         board,
-        keyboard,
         player
     );
 
-keyboard.game =
-    game;
+
+// ========================================
+// THEME SYSTEM
+// ========================================
+
+const themeClasses = [
+
+    "theme-dark",
+    "theme-ocean",
+    "theme-forest",
+    "theme-sunset",
+    "theme-neon",
+    "theme-royal"
+
+];
+
+
+function applyTheme(theme) {
+
+    themeClasses.forEach(
+        themeClass => {
+
+            document.body.classList.remove(
+                themeClass
+            );
+
+        }
+    );
+
+
+    if (
+        theme !== "classic"
+    ) {
+
+        document.body.classList.add(
+            `theme-${theme}`
+        );
+
+    }
+
+
+    updateThemeSelection(
+        theme
+    );
+
+
+    localStorage.setItem(
+        "wordrush-theme",
+        theme
+    );
+
+}
+
+
+function updateThemeSelection(
+    selectedTheme
+) {
+
+    themeOptions.forEach(
+        option => {
+
+            const theme =
+                option.dataset.theme;
+
+            const check =
+                option.querySelector(
+                    ".theme-check"
+                );
+
+
+            if (
+                theme === selectedTheme
+            ) {
+
+                option.classList.add(
+                    "selected"
+                );
+
+                check.textContent =
+                    "✓";
+
+            }
+
+            else {
+
+                option.classList.remove(
+                    "selected"
+                );
+
+                check.textContent =
+                    "";
+
+            }
+
+        }
+    );
+
+}
+
+
+function loadSavedTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "wordrush-theme"
+        );
+
+
+    const validThemes = [
+
+        "classic",
+        "dark",
+        "ocean",
+        "forest",
+        "sunset",
+        "neon",
+        "royal"
+
+    ];
+
+
+    if (
+        validThemes.includes(
+            savedTheme
+        )
+    ) {
+
+        applyTheme(
+            savedTheme
+        );
+
+    }
+
+    else {
+
+        applyTheme(
+            "classic"
+        );
+
+    }
+
+}
+
+
+// ========================================
+// OPEN THEME MODAL
+// ========================================
+
+themeButton.addEventListener(
+    "click",
+    function() {
+
+        themeModal.style.display =
+            "flex";
+
+    }
+);
+
+
+// ========================================
+// CLOSE THEME MODAL
+// ========================================
+
+closeTheme.addEventListener(
+    "click",
+    function() {
+
+        themeModal.style.display =
+            "none";
+
+    }
+);
+
+
+closeThemeBottom.addEventListener(
+    "click",
+    function() {
+
+        themeModal.style.display =
+            "none";
+
+    }
+);
+
+
+// ========================================
+// SELECT THEME
+// ========================================
+
+themeOptions.forEach(
+    option => {
+
+        option.addEventListener(
+            "click",
+            function() {
+
+                const selectedTheme =
+                    option.dataset.theme;
+
+
+                applyTheme(
+                    selectedTheme
+                );
+
+            }
+        );
+
+    }
+);
 
 
 // ========================================
@@ -297,10 +529,6 @@ async function loadLeaderboard() {
         "";
 
 
-    // ====================================
-    // GET CURRENT USER
-    // ====================================
-
     const {
         data: {
             user
@@ -318,10 +546,6 @@ async function loadLeaderboard() {
 
     }
 
-
-    // ====================================
-    // GET LEADERBOARD
-    // ====================================
 
     const {
         data,
@@ -362,10 +586,7 @@ async function loadLeaderboard() {
     }
 
 
-    // ====================================
-    // FIND CURRENT PLAYER
-    // ====================================
-
+    // Find current user's position
     const myIndex =
         data.findIndex(
             leaderboardPlayer =>
@@ -374,14 +595,11 @@ async function loadLeaderboard() {
         );
 
 
-    // ====================================
-    // DISPLAY TOP 10
-    // ====================================
-
     leaderboardList.innerHTML =
         "";
 
 
+    // Show top 10
     const topPlayers =
         data.slice(0, 10);
 
@@ -404,6 +622,10 @@ async function loadLeaderboard() {
                 leaderboardPlayer.id ===
                 user.id;
 
+
+            // =================================
+            // HIGHLIGHT CURRENT PLAYER
+            // =================================
 
             if (isCurrentPlayer) {
 
@@ -434,7 +656,7 @@ async function loadLeaderboard() {
 
 
             // =================================
-            // USERNAME
+            // NAME CONTAINER
             // =================================
 
             const usernameContainer =
@@ -444,16 +666,36 @@ async function loadLeaderboard() {
 
 
             usernameContainer.classList.add(
-                "leaderboard-username"
+                "leaderboard-name"
             );
 
 
-            usernameContainer.textContent =
+            // =================================
+            // USERNAME
+            // =================================
+
+            const usernameText =
+                document.createElement(
+                    "span"
+                );
+
+
+            usernameText.classList.add(
+                "leaderboard-name-text"
+            );
+
+
+            usernameText.textContent =
                 leaderboardPlayer.username;
 
 
+            usernameContainer.appendChild(
+                usernameText
+            );
+
+
             // =================================
-            // YOU LABEL
+            // YOU BADGE
             // =================================
 
             if (isCurrentPlayer) {
@@ -465,7 +707,7 @@ async function loadLeaderboard() {
 
 
                 youLabel.classList.add(
-                    "you-label"
+                    "leaderboard-you"
                 );
 
 
@@ -500,7 +742,7 @@ async function loadLeaderboard() {
 
 
             // =================================
-            // ADD ROW
+            // BUILD ROW
             // =================================
 
             row.appendChild(
@@ -524,9 +766,9 @@ async function loadLeaderboard() {
     );
 
 
-    // ====================================
-    // DISPLAY CURRENT PLAYER RANK
-    // ====================================
+    // ========================================
+    // CURRENT PLAYER BELOW TOP 10
+    // ========================================
 
     if (
         myIndex !== -1
@@ -534,7 +776,6 @@ async function loadLeaderboard() {
 
         const myPlayer =
             data[myIndex];
-
 
         const myRank =
             myIndex + 1;
@@ -559,7 +800,7 @@ async function loadLeaderboard() {
                         ${myPlayer.username}
                     </span>
 
-                    <span class="you-label">
+                    <span class="leaderboard-you">
                         YOU
                     </span>
 
@@ -1186,5 +1427,7 @@ supabase.auth.onAuthStateChange(
 // ========================================
 // START
 // ========================================
+
+loadSavedTheme();
 
 checkAuthentication();
