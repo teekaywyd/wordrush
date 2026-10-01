@@ -263,6 +263,7 @@ const game =
 
 // The opening screen is CREATE ACCOUNT.
 // Therefore login mode starts as false.
+
 let isLoginMode = false;
 
 
@@ -595,15 +596,18 @@ logoutButton.addEventListener(
                 "";
 
 
-            // Make sure the auth screen
-            // is actually in LOGIN mode.
+            // Reset auth mode to LOGIN
+
             isLoginMode = true;
+
 
             authSubmit.textContent =
                 "LOGIN";
 
+
             authSwitch.textContent =
                 "CREATE ACCOUNT";
+
 
             authUsernameInput.style.display =
                 "none";
@@ -692,12 +696,10 @@ confirmDeleteAccount.addEventListener(
     "click",
     async function() {
 
-        // Prevent multiple clicks
         confirmDeleteAccount.disabled =
             true;
 
 
-        // Loading state
         confirmDeleteAccount.textContent =
             "DELETING...";
 
@@ -716,10 +718,6 @@ confirmDeleteAccount.addEventListener(
                     "delete-account"
                 );
 
-
-            // ----------------------------------------
-            // SUPABASE ERROR
-            // ----------------------------------------
 
             if (error) {
 
@@ -744,10 +742,6 @@ confirmDeleteAccount.addEventListener(
                 return;
             }
 
-
-            // ----------------------------------------
-            // FUNCTION DID NOT RETURN SUCCESS
-            // ----------------------------------------
 
             if (
                 !data ||
@@ -776,9 +770,9 @@ confirmDeleteAccount.addEventListener(
             }
 
 
-            // ----------------------------------------
-            // ACCOUNT SUCCESSFULLY DELETED
-            // ----------------------------------------
+            // ========================================
+            // ACCOUNT DELETED
+            // ========================================
 
             resetDeleteConfirmation();
 
@@ -809,15 +803,18 @@ confirmDeleteAccount.addEventListener(
                 "";
 
 
-            // Make sure the auth screen
-            // is in LOGIN mode.
+            // Reset auth mode to LOGIN
+
             isLoginMode = true;
+
 
             authSubmit.textContent =
                 "LOGIN";
 
+
             authSwitch.textContent =
                 "CREATE ACCOUNT";
+
 
             authUsernameInput.style.display =
                 "none";
@@ -1251,9 +1248,10 @@ document.addEventListener(
     "click",
     function() {
 
-        // Do not focus the hidden game
-        // keyboard while the login/signup
-        // screen is open.
+        // Do not focus the game input
+        // while the authentication modal
+        // is open.
+
         if (
             authModal.style.display ===
             "flex"
@@ -1263,9 +1261,9 @@ document.addEventListener(
         }
 
 
-        // Do not focus the hidden game
-        // keyboard while another modal
-        // is open.
+        // Do not focus the game input
+        // while another modal is open.
+
         if (
             profileModal.style.display ===
             "flex" ||
@@ -1286,6 +1284,7 @@ document.addEventListener(
         ) {
 
             mobileInput.focus();
+
         }
 
     }
@@ -1304,6 +1303,10 @@ document.addEventListener(
             event.key.toUpperCase();
 
 
+        // ========================================
+        // ENTER
+        // ========================================
+
         if (
             key === "ENTER"
         ) {
@@ -1316,6 +1319,10 @@ document.addEventListener(
         }
 
 
+        // ========================================
+        // BACKSPACE
+        // ========================================
+
         if (
             key === "BACKSPACE"
         ) {
@@ -1327,6 +1334,29 @@ document.addEventListener(
             return;
         }
 
+
+        // ========================================
+        // MOBILE LETTER PROTECTION
+        // ========================================
+
+        // Mobile letters are already handled
+        // by mobileInput's "input" event.
+        //
+        // This prevents a mobile letter from
+        // being processed twice.
+
+        if (
+            document.activeElement ===
+            mobileInput
+        ) {
+
+            return;
+        }
+
+
+        // ========================================
+        // DESKTOP LETTERS
+        // ========================================
 
         if (
             /^[A-Z]$/.test(
@@ -1739,7 +1769,6 @@ if ("serviceWorker" in navigator) {
                 .register(
                     "./service-worker.js"
                 )
-
                 .then(
                     () => {
 
@@ -1749,7 +1778,6 @@ if ("serviceWorker" in navigator) {
 
                     }
                 )
-
                 .catch(
                     (error) => {
 
