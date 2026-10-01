@@ -22,6 +22,8 @@ export class Game {
 
         this.gameOver = false;
 
+        this.statsSaved = false;
+
 
         this.maxAttempts = 6;
 
@@ -49,6 +51,8 @@ export class Game {
         this.gameOver = false;
 
         this.hintUsed = false;
+
+        this.statsSaved = false;
 
 
         this.wordManager.newWord();
@@ -220,7 +224,8 @@ export class Game {
 
 
         if (
-            this.currentGuess.length !== 5
+            this.currentGuess.length !==
+            this.wordLength
         ) {
 
             this.showMessage(
@@ -378,7 +383,16 @@ export class Game {
 
     async gameWon() {
 
+        if (this.statsSaved) {
+
+            return;
+
+        }
+
+
         this.gameOver = true;
+
+        this.statsSaved = true;
 
 
         const score =
@@ -510,7 +524,16 @@ export class Game {
 
     async gameLost() {
 
+        if (this.statsSaved) {
+
+            return;
+
+        }
+
+
         this.gameOver = true;
+
+        this.statsSaved = true;
 
 
         await this.player.addLoss();
