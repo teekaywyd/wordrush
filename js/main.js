@@ -261,7 +261,9 @@ const game =
 // AUTH MODE
 // ========================================
 
-let isLoginMode = true;
+// The opening screen is CREATE ACCOUNT.
+// Therefore login mode starts as false.
+let isLoginMode = false;
 
 
 // ========================================
@@ -593,6 +595,20 @@ logoutButton.addEventListener(
                 "";
 
 
+            // Make sure the auth screen
+            // is actually in LOGIN mode.
+            isLoginMode = true;
+
+            authSubmit.textContent =
+                "LOGIN";
+
+            authSwitch.textContent =
+                "CREATE ACCOUNT";
+
+            authUsernameInput.style.display =
+                "none";
+
+
         } catch (error) {
 
             console.error(
@@ -791,6 +807,20 @@ confirmDeleteAccount.addEventListener(
 
             authUsernameInput.value =
                 "";
+
+
+            // Make sure the auth screen
+            // is in LOGIN mode.
+            isLoginMode = true;
+
+            authSubmit.textContent =
+                "LOGIN";
+
+            authSwitch.textContent =
+                "CREATE ACCOUNT";
+
+            authUsernameInput.style.display =
+                "none";
 
 
             confirmDeleteAccount.disabled =
@@ -1221,9 +1251,38 @@ document.addEventListener(
     "click",
     function() {
 
+        // Do not focus the hidden game
+        // keyboard while the login/signup
+        // screen is open.
         if (
-            window.innerWidth <= 600 &&
-            !gameOverModal.style.display
+            authModal.style.display ===
+            "flex"
+        ) {
+
+            return;
+        }
+
+
+        // Do not focus the hidden game
+        // keyboard while another modal
+        // is open.
+        if (
+            profileModal.style.display ===
+            "flex" ||
+            leaderboardModal.style.display ===
+            "flex" ||
+            themeModal.style.display ===
+            "flex" ||
+            gameOverModal.style.display ===
+            "flex"
+        ) {
+
+            return;
+        }
+
+
+        if (
+            window.innerWidth <= 600
         ) {
 
             mobileInput.focus();
@@ -1665,14 +1724,44 @@ async function checkSession() {
 
 checkSession();
 
+
+// ========================================
+// SERVICE WORKER
+// ========================================
+
 if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js")
-            .then(() => {
-                console.log("WordRush service worker registered.");
-            })
-            .catch((error) => {
-                console.error("Service worker registration failed:", error);
-            });
-    });
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register(
+                    "./service-worker.js"
+                )
+
+                .then(
+                    () => {
+
+                        console.log(
+                            "WordRush service worker registered."
+                        );
+
+                    }
+                )
+
+                .catch(
+                    (error) => {
+
+                        console.error(
+                            "Service worker registration failed:",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+    );
+
 }
