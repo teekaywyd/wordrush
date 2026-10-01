@@ -1,0 +1,492 @@
+/* =========================================
+   WORDRUSH LEGAL PAGES
+   privacy.html + copyright.html
+   ========================================= */
+
+:root {
+    --background: #ffffff;
+    --surface: #f5f5f5;
+    --surface-secondary: #eeeeee;
+    --text: #111111;
+    --text-secondary: #666666;
+    --border: #d0d0d0;
+    --button: #111111;
+    --button-text: #ffffff;
+    --accent: #111111;
+}
+
+/* =========================================
+   GENERAL
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+/* =========================================
+   PRIVACY PAGE
+   ========================================= */
+
+.privacy-page {
+    min-height: 100vh;
+    background: var(--background);
+}
+
+/* Header */
+
+.privacy-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 30px;
+
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.privacy-logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.privacy-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--button);
+    color: var(--button-text);
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.privacy-back:hover {
+    transform: translateY(-1px);
+    opacity: 0.85;
+}
+
+/* Main container */
+
+.privacy-container {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 50px 20px 70px;
+}
+
+/* Main card */
+
+.privacy-card {
+    padding: 40px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--surface);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Icon */
+
+.privacy-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    margin-bottom: 20px;
+
+    border-radius: 16px;
+
+    background: var(--button);
+    color: var(--button-text);
+
+    font-size: 30px;
+}
+
+/* Heading */
+
+.privacy-card h1 {
+    margin: 0 0 8px;
+
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.privacy-updated {
+    margin: 0 0 30px;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Text */
+
+.privacy-card p {
+    margin: 0 0 18px;
+
+    color: var(--text);
+}
+
+.privacy-card h2 {
+    margin: 35px 0 12px;
+
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+.privacy-card ul {
+    margin: 0 0 20px;
+    padding-left: 25px;
+}
+
+.privacy-card li {
+    margin-bottom: 8px;
+}
+
+.privacy-card strong {
+    font-weight: 700;
+}
+
+/* Contact section */
+
+.privacy-contact {
+    margin-top: 35px;
+    padding: 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--surface-secondary);
+}
+
+.privacy-contact p {
+    margin-bottom: 0;
+}
+
+/* Footer */
+
+.privacy-footer {
+    margin-top: 40px;
+
+    text-align: center;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.privacy-footer a {
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.privacy-footer a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   COPYRIGHT / LEGAL PAGE
+   ========================================= */
+
+.legal-page {
+    min-height: 100vh;
+    background: var(--background);
+}
+
+/* Header */
+
+.legal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 30px;
+
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.legal-header h1 {
+    margin: 0;
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.legal-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    background: var(--button);
+    color: var(--button-text);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.legal-back:hover {
+    transform: translateY(-1px);
+    opacity: 0.85;
+}
+
+/* Main */
+
+.legal-main {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 50px 20px 70px;
+}
+
+/* Content */
+
+.legal-content {
+    padding: 40px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--surface);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Icon */
+
+.legal-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    margin-bottom: 20px;
+
+    border-radius: 16px;
+
+    background: var(--button);
+    color: var(--button-text);
+
+    font-size: 30px;
+}
+
+/* Headings */
+
+.legal-content h2 {
+    margin: 0 0 8px;
+
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.legal-updated {
+    margin: 0 0 35px;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Sections */
+
+.legal-section {
+    margin-bottom: 30px;
+}
+
+.legal-section h3 {
+    margin: 0 0 10px;
+
+    font-size: 21px;
+    line-height: 1.3;
+}
+
+.legal-section p {
+    margin: 0 0 15px;
+
+    color: var(--text);
+}
+
+.legal-section strong {
+    font-weight: 700;
+}
+
+/* Final section */
+
+.legal-final {
+    margin-top: 40px;
+    padding-top: 25px;
+
+    border-top: 1px solid var(--border);
+}
+
+/* Home button */
+
+.legal-home-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 10px;
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    background: var(--button);
+    color: var(--button-text);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.legal-home-button:hover {
+    transform: translateY(-1px);
+    opacity: 0.85;
+}
+
+/* =========================================
+   GENERAL SITE FOOTER
+   ========================================= */
+
+.site-footer {
+    padding: 25px 20px;
+
+    border-top: 1px solid var(--border);
+
+    text-align: center;
+
+    background: var(--surface);
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+}
+
+.site-footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin-top: 8px;
+}
+
+.site-footer a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .privacy-header,
+    .legal-header {
+        padding: 15px 18px;
+    }
+
+    .privacy-logo,
+    .legal-header h1 {
+        font-size: 20px;
+    }
+
+    .privacy-back,
+    .legal-back {
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+
+    .privacy-container,
+    .legal-main {
+        padding: 30px 14px 50px;
+    }
+
+    .privacy-card,
+    .legal-content {
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    .privacy-card h1,
+    .legal-content h2 {
+        font-size: 28px;
+    }
+
+    .privacy-card h2 {
+        font-size: 20px;
+    }
+
+    .legal-section h3 {
+        font-size: 19px;
+    }
+
+    .privacy-icon,
+    .legal-icon {
+        width: 56px;
+        height: 56px;
+
+        border-radius: 14px;
+
+        font-size: 26px;
+    }
+
+    .site-footer-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
