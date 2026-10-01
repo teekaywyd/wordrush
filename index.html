@@ -23,10 +23,16 @@
         href="style.css"
     >
 
+    <link
+    rel="manifest"
+    href="./manifest.json"
+    >
+
 </head>
 
 
 <body>
+
 
     <!-- ========================================
          HEADER
@@ -66,6 +72,7 @@
     </header>
 
 
+
     <!-- ========================================
          MAIN GAME
     ========================================= -->
@@ -90,12 +97,8 @@
 
         <div id="board"></div>
 
-
-        <!-- VIRTUAL KEYBOARD -->
-
-        
-
     </main>
+
 
 
     <!-- ========================================
@@ -175,6 +178,7 @@
     </div>
 
 
+
     <!-- ========================================
          USERNAME SETUP MODAL
     ========================================= -->
@@ -222,6 +226,7 @@
     </div>
 
 
+
     <!-- ========================================
          PROFILE MODAL
     ========================================= -->
@@ -234,6 +239,8 @@
         <div class="profile-content">
 
 
+            <!-- CLOSE BUTTON -->
+
             <button
                 id="closeProfile"
                 class="close-profile"
@@ -242,10 +249,14 @@
             </button>
 
 
+            <!-- PROFILE ICON -->
+
             <div class="profile-icon">
                 👤
             </div>
 
+
+            <!-- USERNAME -->
 
             <h2 id="profileUsername">
                 PLAYER
@@ -256,6 +267,11 @@
                 YOUR WORDRUSH STATS
             </p>
 
+
+
+            <!-- ========================================
+                 PROFILE STATISTICS
+            ========================================= -->
 
             <div class="profile-stats">
 
@@ -358,6 +374,11 @@
             </div>
 
 
+
+            <!-- ========================================
+                 TOTAL SCORE
+            ========================================= -->
+
             <div class="profile-score">
 
                 <span>
@@ -372,6 +393,155 @@
             </div>
 
 
+
+            <!-- ========================================
+                 ACCOUNT SECTION
+            ========================================= -->
+
+            <div class="profile-account-section">
+
+
+                <div class="account-section-title">
+                    ACCOUNT
+                </div>
+
+
+                <div class="profile-account-actions">
+
+
+                    <!-- LOG OUT -->
+
+                    <button
+                        id="logoutButton"
+                        class="account-button logout-button"
+                    >
+
+                        <span class="account-button-icon">
+                            🚪
+                        </span>
+
+
+                        <span class="account-button-content">
+
+                            <strong>
+                                LOG OUT
+                            </strong>
+
+                            <small>
+                                Sign out of your account
+                            </small>
+
+                        </span>
+
+
+                        <span class="account-button-arrow">
+                            ›
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- DELETE ACCOUNT -->
+
+                    <button
+                        id="deleteAccountButton"
+                        class="account-button delete-button"
+                    >
+
+                        <span class="account-button-icon">
+                            🗑️
+                        </span>
+
+
+                        <span class="account-button-content">
+
+                            <strong>
+                                DELETE ACCOUNT
+                            </strong>
+
+                            <small>
+                                Permanently delete your account
+                            </small>
+
+                        </span>
+
+
+                        <span class="account-button-arrow">
+                            ›
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================================
+                 DELETE CONFIRMATION
+            ========================================= -->
+
+            <div
+                id="deleteConfirmation"
+                class="delete-confirmation"
+            >
+
+
+                <div class="delete-warning-icon">
+                    ⚠️
+                </div>
+
+
+                <p class="delete-confirmation-title">
+                    DELETE ACCOUNT?
+                </p>
+
+
+                <p class="delete-confirmation-text">
+                    Your WordRush account, profile and
+                    statistics will be permanently deleted.
+                </p>
+
+
+                <p class="delete-confirmation-warning">
+                    THIS ACTION CANNOT BE UNDONE.
+                </p>
+
+
+                <div class="delete-confirmation-buttons">
+
+
+                    <!-- CANCEL -->
+
+                    <button
+                        id="cancelDeleteAccount"
+                        class="cancel-delete-button"
+                    >
+                        CANCEL
+                    </button>
+
+
+                    <!-- CONFIRM DELETE -->
+
+                    <button
+                        id="confirmDeleteAccount"
+                        class="confirm-delete-button"
+                    >
+                        DELETE ACCOUNT
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================================
+                 CLOSE PROFILE
+            ========================================= -->
+
             <button id="closeProfileBottom">
                 CLOSE
             </button>
@@ -379,6 +549,7 @@
         </div>
 
     </div>
+
 
 
     <!-- ========================================
@@ -437,6 +608,7 @@
     </div>
 
 
+
     <!-- ========================================
          THEME MODAL
     ========================================= -->
@@ -475,6 +647,8 @@
             <div id="themeList">
 
 
+                <!-- CLASSIC -->
+
                 <button
                     class="theme-option"
                     data-theme="classic"
@@ -488,6 +662,9 @@
 
                 </button>
 
+
+
+                <!-- DARK -->
 
                 <button
                     class="theme-option"
@@ -503,6 +680,9 @@
                 </button>
 
 
+
+                <!-- OCEAN -->
+
                 <button
                     class="theme-option"
                     data-theme="ocean"
@@ -516,6 +696,9 @@
 
                 </button>
 
+
+
+                <!-- FOREST -->
 
                 <button
                     class="theme-option"
@@ -531,6 +714,9 @@
                 </button>
 
 
+
+                <!-- SUNSET -->
+
                 <button
                     class="theme-option"
                     data-theme="sunset"
@@ -545,6 +731,9 @@
                 </button>
 
 
+
+                <!-- NEON -->
+
                 <button
                     class="theme-option"
                     data-theme="neon"
@@ -558,6 +747,9 @@
 
                 </button>
 
+
+
+                <!-- ROYAL -->
 
                 <button
                     class="theme-option"
@@ -582,6 +774,7 @@
         </div>
 
     </div>
+
 
 
     <!-- ========================================
@@ -651,9 +844,19 @@
                 ALREADY HAVE AN ACCOUNT? LOG IN
             </button>
 
+
+            <a
+                href="privacy.html"
+                class="privacy-link"
+                target="_blank"
+            >
+                PRIVACY POLICY
+            </a>
+
         </div>
 
     </div>
+
 
 
     <!-- ========================================
@@ -664,6 +867,7 @@
         type="module"
         src="js/main.js"
     ></script>
+
 
 </body>
 

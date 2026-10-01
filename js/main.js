@@ -6,57 +6,92 @@ import { supabase } from "./supabase.js";
 
 
 // ========================================
-// PLAYER
+// DOM ELEMENTS
 // ========================================
 
-const wordManager =
-    new WordManager();
+const message =
+    document.getElementById("message");
 
-const board =
-    new Board();
-
-const player =
-    new Player();
-
-
-// ========================================
-// AUTH ELEMENTS
-// ========================================
-
-const authModal =
-    document.getElementById("authModal");
-
-const authTitle =
-    document.getElementById("authTitle");
-
-const authSubmit =
-    document.getElementById("authSubmit");
-
-const authSwitch =
-    document.getElementById("authSwitch");
-
-const emailInput =
-    document.getElementById("emailInput");
-
-const passwordInput =
-    document.getElementById("passwordInput");
-
-const authUsernameInput =
-    document.getElementById("authUsernameInput");
-
-const authMessage =
-    document.getElementById("authMessage");
-
-
-// ========================================
-// PROFILE ELEMENTS
-// ========================================
+const mobileInput =
+    document.getElementById("mobileInput");
 
 const profileButton =
     document.getElementById("profileButton");
 
+const leaderboardButton =
+    document.getElementById("leaderboardButton");
+
+const themeButton =
+    document.getElementById("themeButton");
+
+const newGameButton =
+    document.getElementById("newGameButton");
+
+const hintButton =
+    document.getElementById("hintButton");
+
+
+// ========================================
+// GAME OVER MODAL
+// ========================================
+
+const gameOverModal =
+    document.getElementById("gameOverModal");
+
+const modalTitle =
+    document.getElementById("modalTitle");
+
+const modalIcon =
+    document.getElementById("modalIcon");
+
+const winScore =
+    document.getElementById("winScore");
+
+const winScoreLabel =
+    document.getElementById("winScoreLabel");
+
+const attemptResult =
+    document.getElementById("attemptResult");
+
+const answerWord =
+    document.getElementById("answerWord");
+
+const modalNewGame =
+    document.getElementById("modalNewGame");
+
+const modalExit =
+    document.getElementById("modalExit");
+
+
+// ========================================
+// USERNAME MODAL
+// ========================================
+
+const usernameModal =
+    document.getElementById("usernameModal");
+
+const usernameInput =
+    document.getElementById("usernameInput");
+
+const usernameError =
+    document.getElementById("usernameError");
+
+const saveUsername =
+    document.getElementById("saveUsername");
+
+
+// ========================================
+// PROFILE MODAL
+// ========================================
+
 const profileModal =
     document.getElementById("profileModal");
+
+const closeProfile =
+    document.getElementById("closeProfile");
+
+const closeProfileBottom =
+    document.getElementById("closeProfileBottom");
 
 const profileUsername =
     document.getElementById("profileUsername");
@@ -84,17 +119,50 @@ const totalScore =
 
 
 // ========================================
-// LEADERBOARD ELEMENTS
+// ACCOUNT BUTTONS
 // ========================================
 
-const leaderboardButton =
+const logoutButton =
+    document.getElementById("logoutButton");
+
+const deleteAccountButton =
     document.getElementById(
-        "leaderboardButton"
+        "deleteAccountButton"
     );
+
+const deleteConfirmation =
+    document.getElementById(
+        "deleteConfirmation"
+    );
+
+const cancelDeleteAccount =
+    document.getElementById(
+        "cancelDeleteAccount"
+    );
+
+const confirmDeleteAccount =
+    document.getElementById(
+        "confirmDeleteAccount"
+    );
+
+
+// ========================================
+// LEADERBOARD MODAL
+// ========================================
 
 const leaderboardModal =
     document.getElementById(
         "leaderboardModal"
+    );
+
+const closeLeaderboard =
+    document.getElementById(
+        "closeLeaderboard"
+    );
+
+const closeLeaderboardBottom =
+    document.getElementById(
+        "closeLeaderboardBottom"
     );
 
 const leaderboardList =
@@ -109,23 +177,14 @@ const myLeaderboardRank =
 
 
 // ========================================
-// THEME ELEMENTS
+// THEME MODAL
 // ========================================
 
-const themeButton =
-    document.getElementById(
-        "themeButton"
-    );
-
 const themeModal =
-    document.getElementById(
-        "themeModal"
-    );
+    document.getElementById("themeModal");
 
 const closeTheme =
-    document.getElementById(
-        "closeTheme"
-    );
+    document.getElementById("closeTheme");
 
 const closeThemeBottom =
     document.getElementById(
@@ -139,8 +198,56 @@ const themeOptions =
 
 
 // ========================================
-// GAME
+// AUTH MODAL
 // ========================================
+
+const authModal =
+    document.getElementById("authModal");
+
+const authTitle =
+    document.getElementById("authTitle");
+
+const emailInput =
+    document.getElementById("emailInput");
+
+const passwordInput =
+    document.getElementById(
+        "passwordInput"
+    );
+
+const authUsernameInput =
+    document.getElementById(
+        "authUsernameInput"
+    );
+
+const authMessage =
+    document.getElementById(
+        "authMessage"
+    );
+
+const authSubmit =
+    document.getElementById(
+        "authSubmit"
+    );
+
+const authSwitch =
+    document.getElementById(
+        "authSwitch"
+    );
+
+
+// ========================================
+// GAME OBJECTS
+// ========================================
+
+const wordManager =
+    new WordManager();
+
+const board =
+    new Board();
+
+const player =
+    new Player();
 
 const game =
     new Game(
@@ -151,103 +258,29 @@ const game =
 
 
 // ========================================
-// THEME SYSTEM
+// AUTH MODE
+// ========================================
+
+let isLoginMode = true;
+
+
+// ========================================
+// THEME LIST
 // ========================================
 
 const themeClasses = [
-
     "theme-dark",
     "theme-ocean",
     "theme-forest",
     "theme-sunset",
     "theme-neon",
     "theme-royal"
-
 ];
 
 
-function applyTheme(theme) {
-
-    themeClasses.forEach(
-        themeClass => {
-
-            document.body.classList.remove(
-                themeClass
-            );
-
-        }
-    );
-
-
-    if (
-        theme !== "classic"
-    ) {
-
-        document.body.classList.add(
-            `theme-${theme}`
-        );
-
-    }
-
-
-    updateThemeSelection(
-        theme
-    );
-
-
-    localStorage.setItem(
-        "wordrush-theme",
-        theme
-    );
-
-}
-
-
-function updateThemeSelection(
-    selectedTheme
-) {
-
-    themeOptions.forEach(
-        option => {
-
-            const theme =
-                option.dataset.theme;
-
-            const check =
-                option.querySelector(
-                    ".theme-check"
-                );
-
-
-            if (
-                theme === selectedTheme
-            ) {
-
-                option.classList.add(
-                    "selected"
-                );
-
-                check.textContent =
-                    "✓";
-
-            }
-
-            else {
-
-                option.classList.remove(
-                    "selected"
-                );
-
-                check.textContent =
-                    "";
-
-            }
-
-        }
-    );
-
-}
-
+// ========================================
+// THEME LOADING
+// ========================================
 
 function loadSavedTheme() {
 
@@ -256,41 +289,764 @@ function loadSavedTheme() {
             "wordrush-theme"
         );
 
+    if (!savedTheme) {
+        return;
+    }
 
-    const validThemes = [
+    applyTheme(savedTheme);
+}
 
-        "classic",
-        "dark",
-        "ocean",
-        "forest",
-        "sunset",
-        "neon",
-        "royal"
 
-    ];
+function applyTheme(theme) {
 
+    document.body.classList.remove(
+        ...themeClasses
+    );
 
     if (
-        validThemes.includes(
-            savedTheme
-        )
+        theme &&
+        theme !== "classic"
     ) {
 
-        applyTheme(
-            savedTheme
+        document.body.classList.add(
+            `theme-${theme}`
+        );
+    }
+
+    localStorage.setItem(
+        "wordrush-theme",
+        theme
+    );
+
+
+    themeOptions.forEach(
+        function(option) {
+
+            option.classList.remove(
+                "active"
+            );
+
+            if (
+                option.dataset.theme ===
+                theme
+            ) {
+
+                option.classList.add(
+                    "active"
+                );
+            }
+
+        }
+    );
+}
+
+
+// ========================================
+// LOAD ONLINE PLAYER
+// ========================================
+
+async function loadOnlinePlayer() {
+
+    try {
+
+        await player.loadOnline();
+
+        console.log(
+            "ONLINE PLAYER LOADED"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "PLAYER LOAD ERROR:",
+            error
+        );
+    }
+}
+
+
+// ========================================
+// PROFILE
+// ========================================
+
+async function loadProfile() {
+
+    try {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } =
+            await supabase.auth.getUser();
+
+
+        if (
+            userError ||
+            !user
+        ) {
+
+            console.error(
+                "NO USER FOUND:",
+                userError
+            );
+
+            return;
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await supabase
+                .from("profiles")
+                .select("*")
+                .eq(
+                    "id",
+                    user.id
+                )
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "PROFILE LOAD ERROR:",
+                error
+            );
+
+            return;
+        }
+
+
+        if (!data) {
+            return;
+        }
+
+
+        profileUsername.textContent =
+            data.username || "PLAYER";
+
+
+        gamesPlayed.textContent =
+            data.games_played || 0;
+
+
+        wins.textContent =
+            data.wins || 0;
+
+
+        losses.textContent =
+            data.losses || 0;
+
+
+        currentStreak.textContent =
+            data.current_streak || 0;
+
+
+        bestStreak.textContent =
+            data.best_streak || 0;
+
+
+        totalScore.textContent =
+            data.total_score || 0;
+
+
+        const played =
+            Number(
+                data.games_played || 0
+            );
+
+        const won =
+            Number(
+                data.wins || 0
+            );
+
+
+        let percentage = 0;
+
+
+        if (played > 0) {
+
+            percentage =
+                Math.round(
+                    (won / played) * 100
+                );
+        }
+
+
+        winPercentage.textContent =
+            `${percentage}%`;
+
+
+    } catch (error) {
+
+        console.error(
+            "PROFILE ERROR:",
+            error
+        );
+    }
+}
+
+
+// ========================================
+// OPEN PROFILE
+// ========================================
+
+profileButton.addEventListener(
+    "click",
+    async function() {
+
+        await loadProfile();
+
+        profileModal.style.display =
+            "flex";
+    }
+);
+
+
+// ========================================
+// CLOSE PROFILE
+// ========================================
+
+closeProfile.addEventListener(
+    "click",
+    function() {
+
+        profileModal.style.display =
+            "none";
+
+    }
+);
+
+
+closeProfileBottom.addEventListener(
+    "click",
+    function() {
+
+        profileModal.style.display =
+            "none";
+
+    }
+);
+
+
+// ========================================
+// LOG OUT
+// ========================================
+
+logoutButton.addEventListener(
+    "click",
+    async function() {
+
+        logoutButton.disabled =
+            true;
+
+
+        try {
+
+            const {
+                error
+            } =
+                await supabase.auth.signOut();
+
+
+            if (error) {
+
+                console.error(
+                    "LOGOUT ERROR:",
+                    error
+                );
+
+                logoutButton.disabled =
+                    false;
+
+                return;
+            }
+
+
+            profileModal.style.display =
+                "none";
+
+
+            authModal.style.display =
+                "flex";
+
+
+            authTitle.textContent =
+                "LOGIN";
+
+
+            authMessage.textContent =
+                "YOU HAVE BEEN LOGGED OUT.";
+
+
+            emailInput.value =
+                "";
+
+            passwordInput.value =
+                "";
+
+            authUsernameInput.value =
+                "";
+
+
+        } catch (error) {
+
+            console.error(
+                "LOGOUT ERROR:",
+                error
+            );
+
+            logoutButton.disabled =
+                false;
+        }
+
+    }
+);
+
+
+// ========================================
+// DELETE ACCOUNT
+// ========================================
+
+deleteAccountButton.addEventListener(
+    "click",
+    function() {
+
+        deleteConfirmation.classList.add(
+            "show"
+        );
+
+
+        setTimeout(
+            function() {
+
+                deleteConfirmation.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            },
+            100
         );
 
     }
+);
 
-    else {
 
-        applyTheme(
-            "classic"
-        );
+// ========================================
+// CANCEL DELETE
+// ========================================
 
-    }
+function resetDeleteConfirmation() {
+
+    deleteConfirmation.classList.remove(
+        "show"
+    );
+
+
+    confirmDeleteAccount.disabled =
+        false;
+
+
+    confirmDeleteAccount.textContent =
+        "DELETE ACCOUNT";
 
 }
+
+
+cancelDeleteAccount.addEventListener(
+    "click",
+    function() {
+
+        resetDeleteConfirmation();
+
+    }
+);
+
+
+// ========================================
+// CONFIRM DELETE ACCOUNT
+// ========================================
+
+confirmDeleteAccount.addEventListener(
+    "click",
+    async function() {
+
+        // Prevent multiple clicks
+        confirmDeleteAccount.disabled =
+            true;
+
+
+        // Loading state
+        confirmDeleteAccount.textContent =
+            "DELETING...";
+
+
+        authMessage.textContent =
+            "DELETING ACCOUNT...";
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabase.functions.invoke(
+                    "delete-account"
+                );
+
+
+            // ----------------------------------------
+            // SUPABASE ERROR
+            // ----------------------------------------
+
+            if (error) {
+
+                console.error(
+                    "DELETE ACCOUNT ERROR:",
+                    error
+                );
+
+
+                confirmDeleteAccount.disabled =
+                    false;
+
+
+                confirmDeleteAccount.textContent =
+                    "DELETE ACCOUNT";
+
+
+                authMessage.textContent =
+                    "COULD NOT DELETE ACCOUNT.";
+
+
+                return;
+            }
+
+
+            // ----------------------------------------
+            // FUNCTION DID NOT RETURN SUCCESS
+            // ----------------------------------------
+
+            if (
+                !data ||
+                !data.success
+            ) {
+
+                console.error(
+                    "DELETE ACCOUNT ERROR:",
+                    data
+                );
+
+
+                confirmDeleteAccount.disabled =
+                    false;
+
+
+                confirmDeleteAccount.textContent =
+                    "DELETE ACCOUNT";
+
+
+                authMessage.textContent =
+                    "COULD NOT DELETE ACCOUNT.";
+
+
+                return;
+            }
+
+
+            // ----------------------------------------
+            // ACCOUNT SUCCESSFULLY DELETED
+            // ----------------------------------------
+
+            resetDeleteConfirmation();
+
+
+            profileModal.style.display =
+                "none";
+
+
+            authModal.style.display =
+                "flex";
+
+
+            authTitle.textContent =
+                "LOGIN";
+
+
+            authMessage.textContent =
+                "ACCOUNT DELETED.";
+
+
+            emailInput.value =
+                "";
+
+            passwordInput.value =
+                "";
+
+            authUsernameInput.value =
+                "";
+
+
+            confirmDeleteAccount.disabled =
+                false;
+
+
+            confirmDeleteAccount.textContent =
+                "DELETE ACCOUNT";
+
+
+        } catch (error) {
+
+            console.error(
+                "DELETE ACCOUNT ERROR:",
+                error
+            );
+
+
+            confirmDeleteAccount.disabled =
+                false;
+
+
+            confirmDeleteAccount.textContent =
+                "DELETE ACCOUNT";
+
+
+            authMessage.textContent =
+                "COULD NOT DELETE ACCOUNT.";
+
+        }
+
+    }
+);
+
+
+// ========================================
+// LEADERBOARD
+// ========================================
+
+async function loadLeaderboard() {
+
+    leaderboardList.innerHTML =
+        "<p>LOADING...</p>";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabase.rpc(
+                "get_leaderboard"
+            );
+
+
+        if (error) {
+
+            console.error(
+                "LEADERBOARD ERROR:",
+                error
+            );
+
+
+            leaderboardList.innerHTML =
+                "<p>COULD NOT LOAD LEADERBOARD.</p>";
+
+            return;
+        }
+
+
+        leaderboardList.innerHTML =
+            "";
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            leaderboardList.innerHTML =
+                "<p>NO PLAYERS YET.</p>";
+
+            return;
+        }
+
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabase.auth.getUser();
+
+
+        let myRank = null;
+
+
+        data.forEach(
+            function(playerData, index) {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "leaderboard-row";
+
+
+                if (
+                    user &&
+                    playerData.id ===
+                    user.id
+                ) {
+
+                    row.classList.add(
+                        "current-player"
+                    );
+
+                    myRank =
+                        index + 1;
+                }
+
+
+                const rank =
+                    document.createElement(
+                        "span"
+                    );
+
+                rank.className =
+                    "leaderboard-rank";
+
+
+                rank.textContent =
+                    `#${index + 1}`;
+
+
+                const name =
+                    document.createElement(
+                        "span"
+                    );
+
+                name.className =
+                    "leaderboard-name";
+
+
+                name.textContent =
+                    playerData.username ||
+                    "PLAYER";
+
+
+                const score =
+                    document.createElement(
+                        "span"
+                    );
+
+                score.className =
+                    "leaderboard-score";
+
+
+                score.textContent =
+                    playerData.total_score ||
+                    0;
+
+
+                row.appendChild(
+                    rank
+                );
+
+                row.appendChild(
+                    name
+                );
+
+                row.appendChild(
+                    score
+                );
+
+
+                leaderboardList.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+        if (myRank) {
+
+            myLeaderboardRank.textContent =
+                `YOUR RANK: #${myRank}`;
+
+        } else {
+
+            myLeaderboardRank.textContent =
+                "YOUR RANK: OUTSIDE TOP 10";
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "LEADERBOARD ERROR:",
+            error
+        );
+
+
+        leaderboardList.innerHTML =
+            "<p>COULD NOT LOAD LEADERBOARD.</p>";
+    }
+}
+
+
+// ========================================
+// OPEN LEADERBOARD
+// ========================================
+
+leaderboardButton.addEventListener(
+    "click",
+    async function() {
+
+        leaderboardModal.style.display =
+            "flex";
+
+
+        await loadLeaderboard();
+
+    }
+);
+
+
+// ========================================
+// CLOSE LEADERBOARD
+// ========================================
+
+closeLeaderboard.addEventListener(
+    "click",
+    function() {
+
+        leaderboardModal.style.display =
+            "none";
+
+    }
+);
+
+
+closeLeaderboardBottom.addEventListener(
+    "click",
+    function() {
+
+        leaderboardModal.style.display =
+            "none";
+
+    }
+);
 
 
 // ========================================
@@ -335,23 +1091,21 @@ closeThemeBottom.addEventListener(
 
 
 // ========================================
-// SELECT THEME
+// THEME SELECTION
 // ========================================
 
 themeOptions.forEach(
-    option => {
+    function(option) {
 
         option.addEventListener(
             "click",
             function() {
 
-                const selectedTheme =
+                const theme =
                     option.dataset.theme;
 
 
-                applyTheme(
-                    selectedTheme
-                );
+                applyTheme(theme);
 
             }
         );
@@ -361,556 +1115,94 @@ themeOptions.forEach(
 
 
 // ========================================
-// LOAD ONLINE PLAYER
+// NEW GAME
 // ========================================
 
-async function loadOnlinePlayer() {
-
-    await player.loadOnline();
-
-}
-
-
-// ========================================
-// LOAD PROFILE
-// ========================================
-
-async function loadProfile() {
-
-    const {
-        data: {
-            user
-        }
-    } =
-        await supabase.auth.getUser();
-
-
-    if (!user) {
-
-        return null;
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-        await supabase
-            .from("profiles")
-            .select("*")
-            .eq(
-                "id",
-                user.id
-            )
-            .single();
-
-
-    if (error) {
-
-        console.error(
-            "PROFILE ERROR:",
-            error.message
-        );
-
-        return null;
-
-    }
-
-
-    return data;
-
-}
-
-
-// ========================================
-// DISPLAY PROFILE
-// ========================================
-
-async function displayProfile() {
-
-    const profile =
-        await loadProfile();
-
-
-    if (!profile) {
-
-        profileUsername.textContent =
-            "PLAYER";
-
-        gamesPlayed.textContent =
-            "0";
-
-        wins.textContent =
-            "0";
-
-        losses.textContent =
-            "0";
-
-        winPercentage.textContent =
-            "0%";
-
-        currentStreak.textContent =
-            "0";
-
-        bestStreak.textContent =
-            "0";
-
-        totalScore.textContent =
-            "0";
-
-        return;
-
-    }
-
-
-    profileUsername.textContent =
-        profile.username;
-
-    gamesPlayed.textContent =
-        profile.games_played;
-
-    wins.textContent =
-        profile.wins;
-
-    losses.textContent =
-        profile.losses;
-
-    currentStreak.textContent =
-        profile.current_streak;
-
-    bestStreak.textContent =
-        profile.best_streak;
-
-    totalScore.textContent =
-        profile.total_score;
-
-
-    if (
-        profile.games_played > 0
-    ) {
-
-        const percentage =
-            Math.round(
-
-                (
-                    profile.wins /
-                    profile.games_played
-                ) * 100
-
-            );
-
-
-        winPercentage.textContent =
-            percentage + "%";
-
-    }
-
-    else {
-
-        winPercentage.textContent =
-            "0%";
-
-    }
-
-}
-
-
-// ========================================
-// LOAD LEADERBOARD
-// ========================================
-
-async function loadLeaderboard() {
-
-    leaderboardList.innerHTML =
-        "<p>LOADING...</p>";
-
-    myLeaderboardRank.textContent =
-        "";
-
-
-    const {
-        data: {
-            user
-        }
-    } =
-        await supabase.auth.getUser();
-
-
-    if (!user) {
-
-        leaderboardList.innerHTML =
-            "<p>PLEASE LOG IN.</p>";
-
-        return;
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-        await supabase
-            .rpc(
-                "get_leaderboard"
-            );
-
-
-    if (error) {
-
-        console.error(
-            "LEADERBOARD ERROR:",
-            error.message
-        );
-
-
-        leaderboardList.innerHTML =
-            "<p>COULD NOT LOAD LEADERBOARD.</p>";
-
-        return;
-
-    }
-
-
-    if (
-        !data ||
-        data.length === 0
-    ) {
-
-        leaderboardList.innerHTML =
-            "<p>NO PLAYERS YET.</p>";
-
-        return;
-
-    }
-
-
-    // Find current user's position
-    const myIndex =
-        data.findIndex(
-            leaderboardPlayer =>
-                leaderboardPlayer.id ===
-                user.id
-        );
-
-
-    leaderboardList.innerHTML =
-        "";
-
-
-    // Show top 10
-    const topPlayers =
-        data.slice(0, 10);
-
-
-    topPlayers.forEach(
-        (leaderboardPlayer, index) => {
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-
-            row.classList.add(
-                "leaderboard-row"
-            );
-
-
-            const isCurrentPlayer =
-                leaderboardPlayer.id ===
-                user.id;
-
-
-            // =================================
-            // HIGHLIGHT CURRENT PLAYER
-            // =================================
-
-            if (isCurrentPlayer) {
-
-                row.classList.add(
-                    "current-player"
-                );
-
-            }
-
-
-            // =================================
-            // RANK
-            // =================================
-
-            const rank =
-                document.createElement(
-                    "span"
-                );
-
-
-            rank.classList.add(
-                "leaderboard-rank"
-            );
-
-
-            rank.textContent =
-                index + 1;
-
-
-            // =================================
-            // NAME CONTAINER
-            // =================================
-
-            const usernameContainer =
-                document.createElement(
-                    "span"
-                );
-
-
-            usernameContainer.classList.add(
-                "leaderboard-name"
-            );
-
-
-            // =================================
-            // USERNAME
-            // =================================
-
-            const usernameText =
-                document.createElement(
-                    "span"
-                );
-
-
-            usernameText.classList.add(
-                "leaderboard-name-text"
-            );
-
-
-            usernameText.textContent =
-                leaderboardPlayer.username;
-
-
-            usernameContainer.appendChild(
-                usernameText
-            );
-
-
-            // =================================
-            // YOU BADGE
-            // =================================
-
-            if (isCurrentPlayer) {
-
-                const youLabel =
-                    document.createElement(
-                        "span"
-                    );
-
-
-                youLabel.classList.add(
-                    "leaderboard-you"
-                );
-
-
-                youLabel.textContent =
-                    "YOU";
-
-
-                usernameContainer.appendChild(
-                    youLabel
-                );
-
-            }
-
-
-            // =================================
-            // SCORE
-            // =================================
-
-            const score =
-                document.createElement(
-                    "span"
-                );
-
-
-            score.classList.add(
-                "leaderboard-score"
-            );
-
-
-            score.textContent =
-                leaderboardPlayer.total_score;
-
-
-            // =================================
-            // BUILD ROW
-            // =================================
-
-            row.appendChild(
-                rank
-            );
-
-            row.appendChild(
-                usernameContainer
-            );
-
-            row.appendChild(
-                score
-            );
-
-
-            leaderboardList.appendChild(
-                row
-            );
-
-        }
-    );
-
-
-    // ========================================
-    // CURRENT PLAYER BELOW TOP 10
-    // ========================================
-
-    if (
-        myIndex !== -1
-    ) {
-
-        const myPlayer =
-            data[myIndex];
-
-        const myRank =
-            myIndex + 1;
-
-
-        if (
-            myRank > 10
-        ) {
-
-            myLeaderboardRank.innerHTML =
-
-                `
-                <div class="my-rank-divider"></div>
-
-                <div class="my-rank">
-
-                    <span class="my-rank-number">
-                        #${myRank}
-                    </span>
-
-                    <span class="my-rank-username">
-                        ${myPlayer.username}
-                    </span>
-
-                    <span class="leaderboard-you">
-                        YOU
-                    </span>
-
-                    <span class="my-rank-score">
-                        ${myPlayer.total_score}
-                    </span>
-
-                </div>
-                `;
-
-        }
-
-    }
-
-}
-
-
-// ========================================
-// OPEN LEADERBOARD
-// ========================================
-
-leaderboardButton.addEventListener(
+newGameButton.addEventListener(
     "click",
-    async function() {
+    function() {
 
-        leaderboardModal.style.display =
-            "flex";
-
-
-        await loadLeaderboard();
+        game.startGame();
 
     }
 );
 
 
 // ========================================
-// CLOSE LEADERBOARD
+// HINT
 // ========================================
 
-document
-    .getElementById(
-        "closeLeaderboard"
-    )
-    .addEventListener(
-        "click",
-        function() {
+hintButton.addEventListener(
+    "click",
+    function() {
 
-            leaderboardModal.style.display =
-                "none";
+        game.useHint();
 
-        }
-    );
-
-
-document
-    .getElementById(
-        "closeLeaderboardBottom"
-    )
-    .addEventListener(
-        "click",
-        function() {
-
-            leaderboardModal.style.display =
-                "none";
-
-        }
-    );
+    }
+);
 
 
 // ========================================
-// MOBILE SYSTEM KEYBOARD
+// GAME OVER MODAL
 // ========================================
 
-const mobileInput =
-    document.getElementById(
-        "mobileInput"
-    );
+modalNewGame.addEventListener(
+    "click",
+    function() {
 
+        gameOverModal.style.display =
+            "none";
+
+
+        game.startGame();
+
+    }
+);
+
+
+modalExit.addEventListener(
+    "click",
+    function() {
+
+        gameOverModal.style.display =
+            "none";
+
+    }
+);
+
+
+// ========================================
+// MOBILE INPUT
+// ========================================
 
 mobileInput.addEventListener(
     "input",
     function() {
 
         const value =
-            mobileInput.value.toUpperCase();
+            mobileInput.value;
+
+
+        if (!value) {
+            return;
+        }
+
+
+        const lastCharacter =
+            value
+                .slice(-1)
+                .toUpperCase();
 
 
         if (
-            value.length > 0
+            /^[A-Z]$/.test(
+                lastCharacter
+            )
         ) {
 
-            const lastLetter =
-                value[
-                    value.length - 1
-                ];
-
-
-            if (
-
-                lastLetter >= "A" &&
-                lastLetter <= "Z"
-
-            ) {
-
-                game.addLetter(
-                    lastLetter
-                );
-
-            }
-
+            game.handleKey(
+                lastCharacter
+            );
         }
 
 
@@ -921,52 +1213,24 @@ mobileInput.addEventListener(
 );
 
 
-mobileInput.addEventListener(
-    "keydown",
-    function(event) {
+// ========================================
+// MOBILE KEYBOARD FOCUS
+// ========================================
+
+document.addEventListener(
+    "click",
+    function() {
 
         if (
-            event.key === "Backspace"
+            window.innerWidth <= 600 &&
+            !gameOverModal.style.display
         ) {
 
-            event.preventDefault();
-
-            game.removeLetter();
-
-        }
-
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            game.submitGuess();
-
-            mobileInput.value =
-                "";
-
+            mobileInput.focus();
         }
 
     }
 );
-
-
-// ========================================
-// BOARD → MOBILE KEYBOARD
-// ========================================
-
-document
-    .getElementById("board")
-    .addEventListener(
-        "click",
-        function() {
-
-            mobileInput.focus();
-
-        }
-    );
 
 
 // ========================================
@@ -977,15 +1241,6 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-        if (
-            event.target === mobileInput
-        ) {
-
-            return;
-
-        }
-
-
         const key =
             event.key.toUpperCase();
 
@@ -994,30 +1249,35 @@ document.addEventListener(
             key === "ENTER"
         ) {
 
-            game.submitGuess();
+            game.handleKey(
+                "ENTER"
+            );
 
+            return;
         }
 
-        else if (
+
+        if (
             key === "BACKSPACE"
         ) {
 
-            game.removeLetter();
-
-        }
-
-        else if (
-
-            key.length === 1 &&
-            key >= "A" &&
-            key <= "Z"
-
-        ) {
-
-            game.addLetter(
-                key
+            game.handleKey(
+                "BACKSPACE"
             );
 
+            return;
+        }
+
+
+        if (
+            /^[A-Z]$/.test(
+                key
+            )
+        ) {
+
+            game.handleKey(
+                key
+            );
         }
 
     }
@@ -1025,145 +1285,56 @@ document.addEventListener(
 
 
 // ========================================
-// NEW GAME
+// AUTH - SWITCH LOGIN / SIGNUP
 // ========================================
-
-document
-    .getElementById("newGameButton")
-    .addEventListener(
-        "click",
-        function() {
-
-            game.startGame();
-
-        }
-    );
-
-
-// ========================================
-// HINT
-// ========================================
-
-document
-    .getElementById("hintButton")
-    .addEventListener(
-        "click",
-        function() {
-
-            game.useHint();
-
-        }
-    );
-
-
-// ========================================
-// PROFILE BUTTON
-// ========================================
-
-profileButton.addEventListener(
-    "click",
-    async function() {
-
-        await displayProfile();
-
-        profileModal.style.display =
-            "flex";
-
-    }
-);
-
-
-// ========================================
-// CLOSE PROFILE
-// ========================================
-
-document
-    .getElementById("closeProfile")
-    .addEventListener(
-        "click",
-        function() {
-
-            profileModal.style.display =
-                "none";
-
-        }
-    );
-
-
-document
-    .getElementById("closeProfileBottom")
-    .addEventListener(
-        "click",
-        function() {
-
-            profileModal.style.display =
-                "none";
-
-        }
-    );
-
-
-// ========================================
-// LOGIN / SIGN UP SWITCH
-// ========================================
-
-let loginMode =
-    false;
-
 
 authSwitch.addEventListener(
     "click",
     function() {
 
-        loginMode =
-            !loginMode;
+        isLoginMode =
+            !isLoginMode;
 
 
-        authMessage.textContent =
-            "";
-
-
-        emailInput.value =
-            "";
-
-        passwordInput.value =
-            "";
-
-        authUsernameInput.value =
-            "";
-
-
-        if (loginMode) {
+        if (isLoginMode) {
 
             authTitle.textContent =
-                "WELCOME BACK";
+                "LOGIN";
+
 
             authSubmit.textContent =
-                "LOG IN";
+                "LOGIN";
+
 
             authSwitch.textContent =
-                "NEED AN ACCOUNT? SIGN UP";
+                "CREATE ACCOUNT";
+
 
             authUsernameInput.style.display =
                 "none";
 
-        }
 
-        else {
+        } else {
 
             authTitle.textContent =
-                "WELCOME TO WORDRUSH";
-
-            authSubmit.textContent =
                 "CREATE ACCOUNT";
 
+
+            authSubmit.textContent =
+                "SIGN UP";
+
+
             authSwitch.textContent =
-                "ALREADY HAVE AN ACCOUNT? LOG IN";
+                "ALREADY HAVE AN ACCOUNT? LOGIN";
+
 
             authUsernameInput.style.display =
                 "block";
-
         }
+
+
+        authMessage.textContent =
+            "";
 
     }
 );
@@ -1180,228 +1351,219 @@ authSubmit.addEventListener(
         const email =
             emailInput.value.trim();
 
+
         const password =
             passwordInput.value;
+
 
         const username =
             authUsernameInput.value.trim();
 
 
-        if (
-            email === ""
-        ) {
+        authMessage.textContent =
+            "";
+
+
+        if (!email) {
 
             authMessage.textContent =
-                "PLEASE ENTER YOUR EMAIL.";
+                "ENTER YOUR EMAIL.";
 
             return;
-
         }
 
 
-        // =================================
-        // LOGIN
-        // =================================
-
-        if (loginMode) {
-
-            if (
-                password.length < 6
-            ) {
-
-                authMessage.textContent =
-                    "PASSWORD MUST BE AT LEAST 6 CHARACTERS.";
-
-                return;
-
-            }
-
+        if (!password) {
 
             authMessage.textContent =
-                "LOGGING IN...";
+                "ENTER YOUR PASSWORD.";
 
+            return;
+        }
+
+
+        authSubmit.disabled =
+            true;
+
+
+        // ========================================
+        // LOGIN
+        // ========================================
+
+        if (isLoginMode) {
 
             const {
+                data,
                 error
             } =
-                await supabase.auth
-                    .signInWithPassword({
-
-                        email:
-                            email,
-
-                        password:
-                            password
-
-                    });
+                await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
 
 
             if (error) {
 
+                console.error(
+                    "LOGIN ERROR:",
+                    error
+                );
+
+
                 authMessage.textContent =
-                    error.message;
+                    error.message
+                        .toUpperCase();
+
+
+                authSubmit.disabled =
+                    false;
 
                 return;
+            }
 
+
+            if (!data.user) {
+
+                authMessage.textContent =
+                    "LOGIN FAILED.";
+
+                authSubmit.disabled =
+                    false;
+
+                return;
             }
 
 
             authMessage.textContent =
-                "LOGIN SUCCESSFUL!";
+                "LOGIN SUCCESSFUL.";
 
 
             authModal.style.display =
                 "none";
 
 
+            authSubmit.disabled =
+                false;
+
+
             await loadOnlinePlayer();
+
 
             game.startGame();
 
-            return;
 
+            return;
         }
 
 
-        // =================================
+        // ========================================
         // SIGN UP
-        // =================================
+        // ========================================
 
-        if (
-            username.length < 3
-        ) {
+        if (!username) {
 
             authMessage.textContent =
-                "USERNAME MUST BE AT LEAST 3 CHARACTERS.";
+                "ENTER A USERNAME.";
+
+            authSubmit.disabled =
+                false;
 
             return;
-
         }
-
-
-        if (
-            password.length < 6
-        ) {
-
-            authMessage.textContent =
-                "PASSWORD MUST BE AT LEAST 6 CHARACTERS.";
-
-            return;
-
-        }
-
-
-        authMessage.textContent =
-            "CREATING ACCOUNT...";
 
 
         const {
             data,
             error
         } =
-            await supabase.auth
-                .signUp({
-
-                    email:
-                        email,
-
-                    password:
-                        password,
-
-                    options: {
-
-                        data: {
-
-                            username:
-                                username
-
-                        }
-
-                    }
-
-                });
+            await supabase.auth.signUp({
+                email,
+                password
+            });
 
 
         if (error) {
 
+            console.error(
+                "SIGN UP ERROR:",
+                error
+            );
+
+
             authMessage.textContent =
-                error.message;
+                error.message
+                    .toUpperCase();
+
+
+            authSubmit.disabled =
+                false;
 
             return;
-
         }
 
 
         if (!data.user) {
 
             authMessage.textContent =
-                "ACCOUNT COULD NOT BE CREATED.";
+                "SIGN UP FAILED.";
+
+            authSubmit.disabled =
+                false;
 
             return;
-
         }
 
 
-        if (!data.session) {
+        // ========================================
+        // CREATE PROFILE
+        // ========================================
+
+        const {
+            error: profileError
+        } =
+            await supabase
+                .from("profiles")
+                .insert({
+                    id: data.user.id,
+                    username: username,
+                    games_played: 0,
+                    wins: 0,
+                    losses: 0,
+                    current_streak: 0,
+                    best_streak: 0,
+                    total_score: 0
+                });
+
+
+        if (profileError) {
+
+            console.error(
+                "PROFILE CREATION ERROR:",
+                profileError
+            );
+
 
             authMessage.textContent =
-                "ACCOUNT CREATED! PLEASE CONFIRM YOUR EMAIL.";
+                profileError.message
+                    .toUpperCase();
+
+
+            authSubmit.disabled =
+                false;
 
             return;
-
         }
 
 
         authMessage.textContent =
-            "ACCOUNT CREATED!";
+            "ACCOUNT CREATED. CHECK YOUR EMAIL.";
 
 
-        authModal.style.display =
-            "none";
-
-
-        await loadOnlinePlayer();
-
-        game.startGame();
+        authSubmit.disabled =
+            false;
 
     }
 );
-
-
-// ========================================
-// CHECK AUTHENTICATION
-// ========================================
-
-async function checkAuthentication() {
-
-    const {
-        data: {
-            session
-        }
-    } =
-        await supabase.auth.getSession();
-
-
-    if (session) {
-
-        authModal.style.display =
-            "none";
-
-
-        await loadOnlinePlayer();
-
-        game.startGame();
-
-    }
-
-    else {
-
-        authModal.style.display =
-            "flex";
-
-    }
-
-}
 
 
 // ========================================
@@ -1409,14 +1571,38 @@ async function checkAuthentication() {
 // ========================================
 
 supabase.auth.onAuthStateChange(
-    function(event) {
+    async function(
+        event,
+        session
+    ) {
+
+        console.log(
+            "AUTH EVENT:",
+            event
+        );
+
 
         if (
-            event === "SIGNED_OUT"
+            event ===
+            "SIGNED_IN" &&
+            session
         ) {
 
-            authModal.style.display =
-                "flex";
+            await loadOnlinePlayer();
+
+        }
+
+
+        if (
+            event ===
+            "SIGNED_OUT"
+        ) {
+
+            profileModal.style.display =
+                "none";
+
+            leaderboardModal.style.display =
+                "none";
 
         }
 
@@ -1425,9 +1611,68 @@ supabase.auth.onAuthStateChange(
 
 
 // ========================================
-// START
+// INITIAL SETUP
 // ========================================
 
 loadSavedTheme();
 
-checkAuthentication();
+
+// ========================================
+// CHECK EXISTING SESSION
+// ========================================
+
+async function checkSession() {
+
+    try {
+
+        const {
+            data: {
+                session
+            }
+        } =
+            await supabase.auth.getSession();
+
+
+        if (!session) {
+
+            authModal.style.display =
+                "flex";
+
+
+            return;
+        }
+
+
+        await loadOnlinePlayer();
+
+
+        game.startGame();
+
+
+    } catch (error) {
+
+        console.error(
+            "SESSION ERROR:",
+            error
+        );
+
+
+        authModal.style.display =
+            "flex";
+    }
+}
+
+
+checkSession();
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(() => {
+                console.log("WordRush service worker registered.");
+            })
+            .catch((error) => {
+                console.error("Service worker registration failed:", error);
+            });
+    });
+}

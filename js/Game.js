@@ -80,6 +80,53 @@ export class Game {
 
 
     // ========================================
+    // HANDLE KEY
+    // ========================================
+
+    handleKey(key) {
+
+        if (this.gameOver) {
+
+            return;
+
+        }
+
+
+        key = key.toUpperCase();
+
+
+        if (key === "ENTER") {
+
+            this.submitGuess();
+
+            return;
+
+        }
+
+
+        if (
+            key === "BACKSPACE"
+        ) {
+
+            this.removeLetter();
+
+            return;
+
+        }
+
+
+        if (
+            /^[A-Z]$/.test(key)
+        ) {
+
+            this.addLetter(key);
+
+        }
+
+    }
+
+
+    // ========================================
     // ADD LETTER
     // ========================================
 

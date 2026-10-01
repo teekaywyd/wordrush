@@ -1,32 +1,67 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/wordrush/assets/favicon-BS81fjEU.png">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link
+        rel="icon"
+        type="image/png"
+        href="/wordrush/assets/favicon-CuDOk_Wq.png"
+    >
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
     <title>WordRush</title>
 
-    
 
-  <script type="module" crossorigin src="/wordrush/assets/index-DlkxcfKo.js"></script>
-  <link rel="stylesheet" crossorigin href="/wordrush/assets/index-BCvZZ9Tx.css">
+    <link
+    rel="manifest"
+    href="/wordrush/assets/manifest-DmHRUwgz.json"
+    >
+
+  <script type="module" crossorigin src="/wordrush/assets/index-cn_15ysf.js"></script>
+  <link rel="stylesheet" crossorigin href="/wordrush/assets/index-Cs9UgKrE.css">
 </head>
+
 
 <body>
 
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+
     <header>
 
-        <h1>WORDRUSH</h1>
+        <button id="profileButton">
+            👤
+        </button>
+
+
+        <h1>
+            WORDRUSH
+        </h1>
+
+
+        <button id="leaderboardButton">
+            🏆
+        </button>
+
+
+        <button id="themeButton">
+            🎨
+        </button>
+
 
         <button id="newGameButton">
             NEW GAME
         </button>
+
 
         <button id="hintButton">
             HINT
@@ -35,15 +70,15 @@
     </header>
 
 
+
+    <!-- ========================================
+         MAIN GAME
+    ========================================= -->
+
     <main>
 
         <div id="message"></div>
 
-
-        <!--
-            Hidden input used to activate
-            the phone's system keyboard
-        -->
 
         <input
             type="text"
@@ -56,54 +91,778 @@
         >
 
 
-        <div id="board"></div>
+        <!-- GAME BOARD -->
 
-        <div id="keyboard"></div>
+        <div id="board"></div>
 
     </main>
 
 
-    <!-- GAME OVER / WIN POPUP -->
 
-    <div id="gameOverModal" class="modal">
+    <!-- ========================================
+         GAME OVER / WIN MODAL
+    ========================================= -->
 
-    <div id="confetti"></div>
+    <div
+        id="gameOverModal"
+        class="modal"
+    >
 
-    <div class="modal-content">
+        <div id="confetti"></div>
 
-        <div class="modal-icon" id="modalIcon">
-            🎉
+
+        <div class="modal-content">
+
+            <div
+                class="modal-icon"
+                id="modalIcon"
+            >
+                🎉
+            </div>
+
+
+            <h2 id="modalTitle">
+                YOU WON!
+            </h2>
+
+
+            <div
+                id="winScore"
+                class="win-score"
+            >
+                +300
+            </div>
+
+
+            <div
+                id="winScoreLabel"
+                class="win-score-label"
+            >
+                POINTS
+            </div>
+
+
+            <div
+                id="attemptResult"
+                class="attempt-result"
+            >
+                SOLVED IN 3/6 ATTEMPTS
+            </div>
+
+
+            <p>
+                The word was:
+            </p>
+
+
+            <h3 id="answerWord"></h3>
+
+
+            <div class="modal-buttons">
+
+                <button id="modalNewGame">
+                    NEW GAME
+                </button>
+
+
+                <button id="modalExit">
+                    EXIT
+                </button>
+
+            </div>
+
         </div>
 
-        <h2 id="modalTitle">
-            YOU WON!
-        </h2>
+    </div>
 
-        <p>
-            The word was:
-        </p>
 
-        <h3 id="answerWord"></h3>
 
-        <div class="modal-buttons">
+    <!-- ========================================
+         USERNAME SETUP MODAL
+    ========================================= -->
 
-            <button id="modalNewGame">
-                NEW GAME
-            </button>
+    <div
+        id="usernameModal"
+        class="profile-modal"
+    >
 
-            <button id="modalExit">
-                EXIT
+        <div class="profile-content">
+
+            <div class="profile-icon">
+                👤
+            </div>
+
+
+            <h2>
+                WELCOME TO WORDRUSH
+            </h2>
+
+
+            <p class="profile-subtitle">
+                CHOOSE YOUR PLAYER NAME
+            </p>
+
+
+            <input
+                type="text"
+                id="usernameInput"
+                placeholder="Enter username"
+                maxlength="15"
+                autocomplete="off"
+            >
+
+
+            <p id="usernameError"></p>
+
+
+            <button id="saveUsername">
+                CONTINUE
             </button>
 
         </div>
 
     </div>
 
-</div>
 
+
+    <!-- ========================================
+         PROFILE MODAL
+    ========================================= -->
+
+    <div
+        id="profileModal"
+        class="profile-modal"
+    >
+
+        <div class="profile-content">
+
+
+            <!-- CLOSE BUTTON -->
+
+            <button
+                id="closeProfile"
+                class="close-profile"
+            >
+                ✕
+            </button>
+
+
+            <!-- PROFILE ICON -->
+
+            <div class="profile-icon">
+                👤
+            </div>
+
+
+            <!-- USERNAME -->
+
+            <h2 id="profileUsername">
+                PLAYER
+            </h2>
+
+
+            <p class="profile-subtitle">
+                YOUR WORDRUSH STATS
+            </p>
+
+
+
+            <!-- ========================================
+                 PROFILE STATISTICS
+            ========================================= -->
+
+            <div class="profile-stats">
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="gamesPlayed"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        GAMES
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="wins"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        WINS
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="losses"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        LOSSES
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="winPercentage"
+                    >
+                        0%
+                    </span>
+
+                    <span class="stat-label">
+                        WIN %
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="currentStreak"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        STREAK
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="bestStreak"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        BEST
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================================
+                 TOTAL SCORE
+            ========================================= -->
+
+            <div class="profile-score">
+
+                <span>
+                    TOTAL SCORE
+                </span>
+
+
+                <strong id="totalScore">
+                    0
+                </strong>
+
+            </div>
+
+
+
+            <!-- ========================================
+                 ACCOUNT SECTION
+            ========================================= -->
+
+            <div class="profile-account-section">
+
+
+                <div class="account-section-title">
+                    ACCOUNT
+                </div>
+
+
+                <div class="profile-account-actions">
+
+
+                    <!-- LOG OUT -->
+
+                    <button
+                        id="logoutButton"
+                        class="account-button logout-button"
+                    >
+
+                        <span class="account-button-icon">
+                            🚪
+                        </span>
+
+
+                        <span class="account-button-content">
+
+                            <strong>
+                                LOG OUT
+                            </strong>
+
+                            <small>
+                                Sign out of your account
+                            </small>
+
+                        </span>
+
+
+                        <span class="account-button-arrow">
+                            ›
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- DELETE ACCOUNT -->
+
+                    <button
+                        id="deleteAccountButton"
+                        class="account-button delete-button"
+                    >
+
+                        <span class="account-button-icon">
+                            🗑️
+                        </span>
+
+
+                        <span class="account-button-content">
+
+                            <strong>
+                                DELETE ACCOUNT
+                            </strong>
+
+                            <small>
+                                Permanently delete your account
+                            </small>
+
+                        </span>
+
+
+                        <span class="account-button-arrow">
+                            ›
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================================
+                 DELETE CONFIRMATION
+            ========================================= -->
+
+            <div
+                id="deleteConfirmation"
+                class="delete-confirmation"
+            >
+
+
+                <div class="delete-warning-icon">
+                    ⚠️
+                </div>
+
+
+                <p class="delete-confirmation-title">
+                    DELETE ACCOUNT?
+                </p>
+
+
+                <p class="delete-confirmation-text">
+                    Your WordRush account, profile and
+                    statistics will be permanently deleted.
+                </p>
+
+
+                <p class="delete-confirmation-warning">
+                    THIS ACTION CANNOT BE UNDONE.
+                </p>
+
+
+                <div class="delete-confirmation-buttons">
+
+
+                    <!-- CANCEL -->
+
+                    <button
+                        id="cancelDeleteAccount"
+                        class="cancel-delete-button"
+                    >
+                        CANCEL
+                    </button>
+
+
+                    <!-- CONFIRM DELETE -->
+
+                    <button
+                        id="confirmDeleteAccount"
+                        class="confirm-delete-button"
+                    >
+                        DELETE ACCOUNT
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================================
+                 CLOSE PROFILE
+            ========================================= -->
+
+            <button id="closeProfileBottom">
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================
+         LEADERBOARD MODAL
+    ========================================= -->
+
+    <div
+        id="leaderboardModal"
+        class="profile-modal"
+    >
+
+        <div class="profile-content">
+
+
+            <button
+                id="closeLeaderboard"
+                class="close-profile"
+            >
+                ✕
+            </button>
+
+
+            <div class="profile-icon">
+                🏆
+            </div>
+
+
+            <h2>
+                LEADERBOARD
+            </h2>
+
+
+            <p class="profile-subtitle">
+                TOP WORDRUSH PLAYERS
+            </p>
+
+
+            <div id="leaderboardList">
+
+                <p>
+                    LOADING...
+                </p>
+
+            </div>
+
+
+            <div id="myLeaderboardRank"></div>
+
+
+            <button id="closeLeaderboardBottom">
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================
+         THEME MODAL
+    ========================================= -->
+
+    <div
+        id="themeModal"
+        class="profile-modal"
+    >
+
+        <div class="profile-content">
+
+
+            <button
+                id="closeTheme"
+                class="close-profile"
+            >
+                ✕
+            </button>
+
+
+            <div class="profile-icon">
+                🎨
+            </div>
+
+
+            <h2>
+                THEMES
+            </h2>
+
+
+            <p class="profile-subtitle">
+                CHOOSE YOUR WORDRUSH STYLE
+            </p>
+
+
+            <div id="themeList">
+
+
+                <!-- CLASSIC -->
+
+                <button
+                    class="theme-option"
+                    data-theme="classic"
+                >
+
+                    <span class="theme-name">
+                        ⚪ CLASSIC
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+
+                <!-- DARK -->
+
+                <button
+                    class="theme-option"
+                    data-theme="dark"
+                >
+
+                    <span class="theme-name">
+                        🌑 DARK
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+
+                <!-- OCEAN -->
+
+                <button
+                    class="theme-option"
+                    data-theme="ocean"
+                >
+
+                    <span class="theme-name">
+                        🌊 OCEAN
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+
+                <!-- FOREST -->
+
+                <button
+                    class="theme-option"
+                    data-theme="forest"
+                >
+
+                    <span class="theme-name">
+                        🌲 FOREST
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+
+                <!-- SUNSET -->
+
+                <button
+                    class="theme-option"
+                    data-theme="sunset"
+                >
+
+                    <span class="theme-name">
+                        🌅 SUNSET
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+
+                <!-- NEON -->
+
+                <button
+                    class="theme-option"
+                    data-theme="neon"
+                >
+
+                    <span class="theme-name">
+                        ⚡ NEON
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+
+
+                <!-- ROYAL -->
+
+                <button
+                    class="theme-option"
+                    data-theme="royal"
+                >
+
+                    <span class="theme-name">
+                        👑 ROYAL
+                    </span>
+
+                    <span class="theme-check"></span>
+
+                </button>
+
+            </div>
+
+
+            <button id="closeThemeBottom">
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================
+         AUTH MODAL
+    ========================================= -->
+
+    <div
+        id="authModal"
+        class="profile-modal"
+    >
+
+        <div class="profile-content">
+
+
+            <div class="profile-icon">
+                👤
+            </div>
+
+
+            <h2 id="authTitle">
+                WELCOME TO WORDRUSH
+            </h2>
+
+
+            <p class="profile-subtitle">
+                CREATE YOUR ACCOUNT
+            </p>
+
+
+            <input
+                type="email"
+                id="emailInput"
+                placeholder="Email"
+                autocomplete="email"
+            >
+
+
+            <input
+                type="password"
+                id="passwordInput"
+                placeholder="Password"
+                autocomplete="new-password"
+            >
+
+
+            <input
+                type="text"
+                id="authUsernameInput"
+                placeholder="Username"
+                maxlength="15"
+                autocomplete="off"
+            >
+
+
+            <p id="authMessage"></p>
+
+
+            <button id="authSubmit">
+                CREATE ACCOUNT
+            </button>
+
+
+            <button
+                id="authSwitch"
+                class="auth-switch"
+            >
+                ALREADY HAVE AN ACCOUNT? LOG IN
+            </button>
+
+
+            <a
+                href="privacy.html"
+                class="privacy-link"
+                target="_blank"
+            >
+                PRIVACY POLICY
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================
+         JAVASCRIPT
+    ========================================= -->
 
+
 
 </body>
 
 </html>
-

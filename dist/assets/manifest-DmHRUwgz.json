@@ -1,7 +1,7 @@
 {
     "name": "WordRush",
     "short_name": "WordRush",
-    "description": "A fast and challenging five-letter word guessing game.",
+    "description": "A fast and challenging five-letter word game.",
     "start_url": "./",
     "display": "standalone",
     "background_color": "#ffffff",
@@ -10,9 +10,9 @@
     "icons": [
         {
             "src": "./assets/app-icon.png",
-            "sizes": "1024x1024",
+            "sizes": "512x512",
             "type": "image/png",
-            "purpose": "any"
+            "purpose": "any maskable"
         }
     ]
 }
