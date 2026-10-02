@@ -12,6 +12,9 @@ import { supabase } from "./supabase.js";
 const message =
     document.getElementById("message");
 
+const dailyButton =
+    document.getElementById("dailyButton");
+
 const mobileInput =
     document.getElementById("mobileInput");
 
@@ -30,6 +33,15 @@ const newGameButton =
 const hintButton =
     document.getElementById("hintButton");
 
+const dailyStreak =
+    document.getElementById("dailyStreak");
+
+const dailyBestStreak =
+    document.getElementById("dailyBestStreak");
+
+const headerStreak =
+    document.getElementById("headerStreak");
+
 
 // ========================================
 // GAME OVER MODAL
@@ -37,30 +49,6 @@ const hintButton =
 
 const gameOverModal =
     document.getElementById("gameOverModal");
-
-const modalTitle =
-    document.getElementById("modalTitle");
-
-const modalIcon =
-    document.getElementById("modalIcon");
-
-const winScore =
-    document.getElementById("winScore");
-
-const winScoreLabel =
-    document.getElementById("winScoreLabel");
-
-const attemptResult =
-    document.getElementById("attemptResult");
-
-const answerWord =
-    document.getElementById("answerWord");
-
-const modalNewGame =
-    document.getElementById("modalNewGame");
-
-const modalExit =
-    document.getElementById("modalExit");
 
 
 // ========================================
@@ -429,6 +417,37 @@ async function loadProfile() {
         }
 
 
+        // ========================================
+        // REFRESH DAILY STATS
+        // ========================================
+
+        await player.loadDailyStats();
+
+
+        // ========================================
+        // HEADER CURRENT STREAK
+        // ========================================
+
+        headerStreak.textContent =
+            `CURRENT STREAK: ${player.currentStreak || 0} 🔥`;
+
+
+        // ========================================
+        // DAILY STREAK STATS
+        // ========================================
+
+        dailyStreak.textContent =
+            player.dailyCurrentStreak || 0;
+
+
+        dailyBestStreak.textContent =
+            player.dailyBestStreak || 0;
+
+
+        // ========================================
+        // PROFILE STATS
+        // ========================================
+
         profileUsername.textContent =
             data.username || "PLAYER";
 
@@ -461,6 +480,7 @@ async function loadProfile() {
             Number(
                 data.games_played || 0
             );
+
 
         const won =
             Number(
@@ -1142,6 +1162,157 @@ themeOptions.forEach(
 
 
 // ========================================
+// DAILY WORD
+// ========================================
+
+async function startDailyWord() {
+
+    try {
+
+        const today =
+            new Date();
+
+        const year =
+            today.getFullYear();
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const todayDate =
+            `${year}-${month}-${day}`;
+
+
+        // ========================================
+        // CHECK IF ALREADY COMPLETED
+        // ========================================
+
+        const alreadyCompleted =
+            await player.hasCompletedDailyWord(
+                todayDate
+            );
+
+
+        if (alreadyCompleted) {
+
+            game.showMessage(
+                "📅 YOU ALREADY COMPLETED TODAY'S DAILY WORD"
+            );
+
+            return;
+
+        }
+
+
+        // ========================================
+        // GET TODAY'S DAILY WORD
+        // ========================================
+
+        const {
+            data,
+            error
+        } =
+            await supabase
+                .from("daily_words")
+                .select(
+                    "word"
+                )
+                .eq(
+                    "word_date",
+                    todayDate
+                )
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "DAILY WORD ERROR:",
+                error
+            );
+
+
+            game.showMessage(
+                "DAILY WORD IS NOT AVAILABLE YET."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !data ||
+            !data.word
+        ) {
+
+            game.showMessage(
+                "DAILY WORD IS NOT AVAILABLE YET."
+            );
+
+            return;
+
+        }
+
+
+        // ========================================
+        // START DAILY GAME
+        // ========================================
+
+        game.startDailyGame(
+
+            data.word,
+
+            todayDate
+
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "DAILY WORD ERROR:",
+            error
+        );
+
+
+        game.showMessage(
+            "COULD NOT LOAD DAILY WORD."
+        );
+
+    }
+
+}
+
+
+// ========================================
+// DAILY BUTTON
+// ========================================
+
+dailyButton.addEventListener(
+    "click",
+    async function() {
+
+        await startDailyWord();
+
+    }
+);
+
+
+// ========================================
 // NEW GAME
 // ========================================
 
@@ -1164,35 +1335,6 @@ hintButton.addEventListener(
     function() {
 
         game.useHint();
-
-    }
-);
-
-
-// ========================================
-// GAME OVER MODAL
-// ========================================
-
-modalNewGame.addEventListener(
-    "click",
-    function() {
-
-        gameOverModal.style.display =
-            "none";
-
-
-        game.startGame();
-
-    }
-);
-
-
-modalExit.addEventListener(
-    "click",
-    function() {
-
-        gameOverModal.style.display =
-            "none";
 
     }
 );

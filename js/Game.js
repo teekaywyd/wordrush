@@ -33,16 +33,30 @@ export class Game {
         this.hintUsed = false;
 
 
+        // ========================================
+        // DAILY MODE
+        // ========================================
+
+        this.gameMode = "practice";
+
+        this.dailyWordDate = null;
+
+
         this.setupModalButtons();
 
     }
 
 
     // ========================================
-    // START GAME
+    // START NORMAL GAME
     // ========================================
 
     startGame() {
+
+        this.gameMode = "practice";
+
+        this.dailyWordDate = null;
+
 
         this.currentRow = 0;
 
@@ -62,6 +76,63 @@ export class Game {
 
 
         this.showMessage("");
+
+
+        document.getElementById(
+            "hintButton"
+        ).disabled = false;
+
+
+        document.getElementById(
+            "gameOverModal"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "gameOverModal"
+        ).classList.remove(
+            "game-lost"
+        );
+
+    }
+
+
+    // ========================================
+    // START DAILY GAME
+    // ========================================
+
+    startDailyGame(
+        dailyWord,
+        wordDate
+    ) {
+
+        this.gameMode = "daily";
+
+        this.dailyWordDate =
+            wordDate;
+
+
+        this.currentRow = 0;
+
+        this.currentGuess = "";
+
+        this.gameOver = false;
+
+        this.hintUsed = false;
+
+        this.statsSaved = false;
+
+
+        this.wordManager.secretWord =
+            dailyWord.toUpperCase();
+
+
+        this.board.createBoard();
+
+
+        this.showMessage(
+            "📅 DAILY WORD"
+        );
 
 
         document.getElementById(
@@ -290,10 +361,8 @@ export class Game {
 
 
         if (
-
             this.currentGuess ===
             this.wordManager.secretWord
-
         ) {
 
             this.gameWon();
@@ -403,9 +472,43 @@ export class Game {
             this.currentRow + 1;
 
 
-        await this.player.addWin(
-            score
-        );
+        // ========================================
+        // DAILY GAME
+        // ========================================
+
+        if (
+            this.gameMode === "daily"
+        ) {
+
+            await this.player.saveDailyResult(
+
+                this.dailyWordDate,
+
+                score,
+
+                attempt,
+
+                true
+
+            );
+
+
+            await this.player.loadDailyStats();
+
+        }
+
+
+        // ========================================
+        // NORMAL GAME
+        // ========================================
+
+        else {
+
+            await this.player.addWin(
+                score
+            );
+
+        }
 
 
         console.log(
@@ -489,8 +592,19 @@ export class Game {
             "🎉";
 
 
-        title.textContent =
-            "YOU WON!";
+        if (
+            this.gameMode === "daily"
+        ) {
+
+            title.textContent =
+                "DAILY COMPLETE!";
+
+        } else {
+
+            title.textContent =
+                "YOU WON!";
+
+        }
 
 
         winScore.textContent =
@@ -536,7 +650,41 @@ export class Game {
         this.statsSaved = true;
 
 
-        await this.player.addLoss();
+        // ========================================
+        // DAILY GAME
+        // ========================================
+
+        if (
+            this.gameMode === "daily"
+        ) {
+
+            await this.player.saveDailyResult(
+
+                this.dailyWordDate,
+
+                0,
+
+                this.maxAttempts,
+
+                false
+
+            );
+
+
+            await this.player.loadDailyStats();
+
+        }
+
+
+        // ========================================
+        // NORMAL GAME
+        // ========================================
+
+        else {
+
+            await this.player.addLoss();
+
+        }
 
 
         const winScore =
@@ -622,8 +770,19 @@ export class Game {
             "😔";
 
 
-        title.textContent =
-            "GAME OVER";
+        if (
+            this.gameMode === "daily"
+        ) {
+
+            title.textContent =
+                "DAILY COMPLETE";
+
+        } else {
+
+            title.textContent =
+                "GAME OVER";
+
+        }
 
 
         answer.textContent =
@@ -647,6 +806,25 @@ export class Game {
         ).addEventListener(
             "click",
             () => {
+
+                if (
+                    this.gameMode === "daily"
+                ) {
+
+                    this.showMessage(
+                        "DAILY WORD ALREADY COMPLETE"
+                    );
+
+
+                    document.getElementById(
+                        "gameOverModal"
+                    ).style.display =
+                        "none";
+
+                    return;
+
+                }
+
 
                 this.startGame();
 
@@ -725,10 +903,8 @@ export class Game {
         ) {
 
             if (
-
                 vowels.includes(letter) &&
                 vowel === ""
-
             ) {
 
                 vowel = letter;
@@ -737,10 +913,8 @@ export class Game {
 
 
             if (
-
                 !vowels.includes(letter) &&
                 consonant === ""
-
             ) {
 
                 consonant = letter;
@@ -749,10 +923,8 @@ export class Game {
 
 
             if (
-
                 vowel !== "" &&
                 consonant !== ""
-
             ) {
 
                 break;

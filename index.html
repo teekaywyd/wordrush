@@ -24,8 +24,8 @@
     >
 
     <link
-    rel="manifest"
-    href="./manifest.json"
+        rel="manifest"
+        href="./manifest.json"
     >
 
 </head>
@@ -48,6 +48,12 @@
         <h1>
             WORDRUSH
         </h1>
+        <div class="logo">
+    <h1>WORDRUSH</h1>
+    <div id="headerStreak" class="header-streak">
+        CURRENT STREAK: 0 🔥
+    </div>
+</div>
 
 
         <button id="leaderboardButton">
@@ -57,6 +63,11 @@
 
         <button id="themeButton">
             🎨
+        </button>
+
+
+        <button id="dailyButton">
+            📅 DAILY
         </button>
 
 
@@ -103,7 +114,7 @@
 
     <!-- ========================================
          GAME OVER / WIN MODAL
-    ========================================= -->
+    ======================================== -->
 
     <div
         id="gameOverModal"
@@ -370,6 +381,39 @@
                     </span>
 
                 </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="dailyStreak"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        DAILY STREAK
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="dailyBestStreak"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        DAILY BEST
+                    </span>
+
+                </div>
+
 
             </div>
 
@@ -848,7 +892,6 @@
             <a
                 href="privacy.html"
                 class="privacy-link"
-                
             >
                 PRIVACY POLICY
             </a>

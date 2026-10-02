@@ -20,11 +20,11 @@
 
 
     <link
-    rel="manifest"
-    href="/wordrush/assets/manifest-D8LCaf2H.json"
+        rel="manifest"
+        href="/wordrush/assets/manifest-D8LCaf2H.json"
     >
 
-  <script type="module" crossorigin src="/wordrush/assets/index-DKGupDJX.js"></script>
+  <script type="module" crossorigin src="/wordrush/assets/index-DWkiVmTM.js"></script>
   <link rel="stylesheet" crossorigin href="/wordrush/assets/index-DBQ3Is7c.css">
 </head>
 
@@ -55,6 +55,11 @@
 
         <button id="themeButton">
             🎨
+        </button>
+
+
+        <button id="dailyButton">
+            📅 DAILY
         </button>
 
 
@@ -101,7 +106,7 @@
 
     <!-- ========================================
          GAME OVER / WIN MODAL
-    ========================================= -->
+    ======================================== -->
 
     <div
         id="gameOverModal"
@@ -368,6 +373,39 @@
                     </span>
 
                 </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="dailyStreak"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        DAILY STREAK
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span
+                        class="stat-value"
+                        id="dailyBestStreak"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        DAILY BEST
+                    </span>
+
+                </div>
+
 
             </div>
 
@@ -846,7 +884,6 @@
             <a
                 href="privacy.html"
                 class="privacy-link"
-                target="_blank"
             >
                 PRIVACY POLICY
             </a>
