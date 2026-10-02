@@ -10,6 +10,7 @@
    ========================================================= */
 
 :root {
+
     --background: #ffffff;
     --surface: #f5f5f5;
     --surface-secondary: #eeeeee;
@@ -31,6 +32,7 @@
    ========================================================= */
 
 body.theme-dark {
+
     --background: #0f1115;
     --surface: #181b21;
     --surface-secondary: #232730;
@@ -48,6 +50,7 @@ body.theme-dark {
    ========================================================= */
 
 body.theme-ocean {
+
     --background: #eaf8ff;
     --surface: #d5f0ff;
     --surface-secondary: #bde5f7;
@@ -65,6 +68,7 @@ body.theme-ocean {
    ========================================================= */
 
 body.theme-forest {
+
     --background: #edf7ed;
     --surface: #d9edd9;
     --surface-secondary: #c1dfc1;
@@ -82,6 +86,7 @@ body.theme-forest {
    ========================================================= */
 
 body.theme-sunset {
+
     --background: #fff3e8;
     --surface: #ffe0c7;
     --surface-secondary: #ffc9a3;
@@ -99,6 +104,7 @@ body.theme-sunset {
    ========================================================= */
 
 body.theme-neon {
+
     --background: #070910;
     --surface: #101522;
     --surface-secondary: #192238;
@@ -117,6 +123,7 @@ body.theme-neon {
    ========================================================= */
 
 body.theme-royal {
+
     --background: #fffaf5;
     --surface: #7a2432;
     --surface-secondary: #f3dfb2;
@@ -143,6 +150,7 @@ body.theme-royal {
 
 html,
 body {
+
     width: 100%;
     min-height: 100%;
     margin: 0;
@@ -150,9 +158,15 @@ body {
 }
 
 body {
+
     background: var(--background);
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     overflow-x: hidden;
 
     transition:
@@ -171,27 +185,24 @@ input {
    ========================================================= */
 
 header {
+
     width: 100%;
 
-    display: grid;
-
-    grid-template-columns:
-        42px
-        1fr
-        42px
-        42px
-        auto
-        auto;
+    display: flex;
 
     align-items: center;
+    justify-content: center;
 
     gap: 8px;
+
+    flex-wrap: wrap;
 
     padding: 12px 20px;
 
     background: var(--surface);
 
-    border-bottom: 1px solid var(--border);
+    border-bottom:
+        1px solid var(--border);
 
     transition:
         background-color 0.25s ease,
@@ -200,22 +211,60 @@ header {
 
 
 /* =========================================================
-   TITLE
+   WORDRUSH LOGO
    ========================================================= */
 
-header h1 {
-    margin: 0;
+.logo {
 
-    text-align: center;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 150px;
+
+    margin: 0 4px;
+}
+
+.logo h1 {
+
+    margin: 0;
 
     color: var(--text);
 
     font-size: 25px;
+
     font-weight: 900;
 
     letter-spacing: 1px;
 
     white-space: nowrap;
+}
+
+
+/* =========================================================
+   DAILY STREAK
+   ========================================================= */
+
+.header-streak {
+
+    margin-top: 2px;
+
+    color: var(--text-secondary);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.7px;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    opacity: 0.7;
 }
 
 
@@ -226,12 +275,14 @@ header h1 {
 #profileButton,
 #leaderboardButton,
 #themeButton {
+
     width: 42px;
     height: 42px;
 
     padding: 0;
 
     border: none;
+
     border-radius: 10px;
 
     background: transparent;
@@ -243,6 +294,7 @@ header h1 {
     font-size: 20px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -254,39 +306,56 @@ header h1 {
 #profileButton:hover,
 #leaderboardButton:hover,
 #themeButton:hover {
-    background: var(--surface-secondary);
+
+    background:
+        var(--surface-secondary);
 }
 
 #profileButton:active,
 #leaderboardButton:active,
 #themeButton:active {
-    transform: scale(0.9);
+
+    transform:
+        scale(0.9);
 }
 
 
 /* =========================================================
-   HEADER BUTTONS
+   HEADER GAME BUTTONS
    ========================================================= */
 
+#dailyButton,
 #newGameButton,
 #hintButton {
+
     border: none;
 
-    background: var(--button);
-    color: var(--button-text);
+    background:
+        var(--button);
 
-    padding: 11px 16px;
+    color:
+        var(--button-text);
 
-    border-radius: 9px;
+    padding:
+        11px 16px;
 
-    font-size: 12px;
-    font-weight: 800;
+    border-radius:
+        9px;
 
-    letter-spacing: 0.5px;
+    font-size:
+        12px;
 
-    white-space: nowrap;
+    font-weight:
+        800;
 
-    cursor: pointer;
+    letter-spacing:
+        0.5px;
+
+    white-space:
+        nowrap;
+
+    cursor:
+        pointer;
 
     transition:
         transform 0.15s ease,
@@ -295,14 +364,20 @@ header h1 {
         color 0.25s ease;
 }
 
+#dailyButton:hover,
 #newGameButton:hover,
 #hintButton:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 }
 
+#dailyButton:active,
 #newGameButton:active,
 #hintButton:active {
-    transform: scale(0.95);
+
+    transform:
+        scale(0.95);
 }
 
 
@@ -311,14 +386,20 @@ header h1 {
    ========================================================= */
 
 #hintButton:disabled {
-    background: var(--surface-secondary);
-    color: var(--text-secondary);
+
+    background:
+        var(--surface-secondary);
+
+    color:
+        var(--text-secondary);
 
     opacity: 1;
 
-    cursor: not-allowed;
+    cursor:
+        not-allowed;
 
-    transform: none;
+    transform:
+        none;
 }
 
 
@@ -327,15 +408,20 @@ header h1 {
    ========================================================= */
 
 main {
+
     width: 100%;
 
-    min-height: calc(100vh - 73px);
+    min-height:
+        calc(100vh - 73px);
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 
-    padding: 25px 15px 40px;
+    padding:
+        25px 15px 40px;
 }
 
 
@@ -344,20 +430,29 @@ main {
    ========================================================= */
 
 #message {
+
     width: 100%;
 
-    min-height: 28px;
+    min-height:
+        28px;
 
-    margin-bottom: 12px;
+    margin-bottom:
+        12px;
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    font-size: 14px;
-    font-weight: 800;
+    font-size:
+        14px;
 
-    letter-spacing: 0.5px;
+    font-weight:
+        800;
 
-    text-align: center;
+    letter-spacing:
+        0.5px;
+
+    text-align:
+        center;
 }
 
 
@@ -366,19 +461,30 @@ main {
    ========================================================= */
 
 #mobileInput {
-    position: absolute;
 
-    width: 1px;
-    height: 1px;
+    position:
+        absolute;
 
-    padding: 0;
-    margin: 0;
+    width:
+        1px;
 
-    opacity: 0;
+    height:
+        1px;
 
-    border: none;
+    padding:
+        0;
 
-    pointer-events: none;
+    margin:
+        0;
+
+    opacity:
+        0;
+
+    border:
+        none;
+
+    pointer-events:
+        none;
 }
 
 
@@ -387,18 +493,27 @@ main {
    ========================================================= */
 
 #board {
-    display: grid;
 
-    grid-template-columns: repeat(5, 58px);
-    grid-template-rows: repeat(6, 58px);
+    display:
+        grid;
 
-    gap: 7px;
+    grid-template-columns:
+        repeat(5, 58px);
 
-    width: max-content;
+    grid-template-rows:
+        repeat(6, 58px);
 
-    margin: 5px auto 0;
+    gap:
+        7px;
 
-    user-select: none;
+    width:
+        max-content;
+
+    margin:
+        5px auto 0;
+
+    user-select:
+        none;
 }
 
 
@@ -407,25 +522,42 @@ main {
    ========================================================= */
 
 .tile {
-    width: 58px;
-    height: 58px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width:
+        58px;
 
-    background: var(--background);
+    height:
+        58px;
 
-    border: 2px solid var(--border);
+    display:
+        flex;
 
-    color: var(--text);
+    align-items:
+        center;
 
-    font-size: 25px;
-    font-weight: 900;
+    justify-content:
+        center;
 
-    text-transform: uppercase;
+    background:
+        var(--background);
 
-    user-select: none;
+    border:
+        2px solid var(--border);
+
+    color:
+        var(--text);
+
+    font-size:
+        25px;
+
+    font-weight:
+        900;
+
+    text-transform:
+        uppercase;
+
+    user-select:
+        none;
 
     transition:
         background-color 0.2s ease,
@@ -439,21 +571,39 @@ main {
    ========================================================= */
 
 .tile.correct {
-    background: var(--correct);
-    border-color: var(--correct);
-    color: #ffffff;
+
+    background:
+        var(--correct);
+
+    border-color:
+        var(--correct);
+
+    color:
+        #ffffff;
 }
 
 .tile.present {
-    background: var(--present);
-    border-color: var(--present);
-    color: #ffffff;
+
+    background:
+        var(--present);
+
+    border-color:
+        var(--present);
+
+    color:
+        #ffffff;
 }
 
 .tile.incorrect {
-    background: var(--incorrect);
-    border-color: var(--incorrect);
-    color: #ffffff;
+
+    background:
+        var(--incorrect);
+
+    border-color:
+        var(--incorrect);
+
+    color:
+        #ffffff;
 }
 
 
@@ -462,20 +612,26 @@ main {
    ========================================================= */
 
 .tile.pop {
-    animation: tilePop 0.1s ease;
+
+    animation:
+        tilePop 0.1s ease;
 }
 
 @keyframes tilePop {
+
     0% {
-        transform: scale(1);
+        transform:
+            scale(1);
     }
 
     50% {
-        transform: scale(1.08);
+        transform:
+            scale(1.08);
     }
 
     100% {
-        transform: scale(1);
+        transform:
+            scale(1);
     }
 }
 
@@ -485,20 +641,26 @@ main {
    ========================================================= */
 
 .tile.flip {
-    animation: tileFlip 0.6s ease;
+
+    animation:
+        tileFlip 0.6s ease;
 }
 
 @keyframes tileFlip {
+
     0% {
-        transform: rotateX(0);
+        transform:
+            rotateX(0);
     }
 
     50% {
-        transform: rotateX(90deg);
+        transform:
+            rotateX(90deg);
     }
 
     100% {
-        transform: rotateX(0);
+        transform:
+            rotateX(0);
     }
 }
 
@@ -508,29 +670,37 @@ main {
    ========================================================= */
 
 .tile.shake {
-    animation: shake 0.5s ease;
+
+    animation:
+        shake 0.5s ease;
 }
 
 @keyframes shake {
+
     0%,
     100% {
-        transform: translateX(0);
+        transform:
+            translateX(0);
     }
 
     20% {
-        transform: translateX(-5px);
+        transform:
+            translateX(-5px);
     }
 
     40% {
-        transform: translateX(5px);
+        transform:
+            translateX(5px);
     }
 
     60% {
-        transform: translateX(-5px);
+        transform:
+            translateX(-5px);
     }
 
     80% {
-        transform: translateX(5px);
+        transform:
+            translateX(5px);
     }
 }
 
@@ -540,12 +710,16 @@ main {
    ========================================================= */
 
 .tile.celebrate {
-    animation: celebrate 0.5s ease;
+
+    animation:
+        celebrate 0.5s ease;
 }
 
 @keyframes celebrate {
+
     0% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 
     50% {
@@ -555,7 +729,8 @@ main {
     }
 
     100% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 }
 
@@ -565,47 +740,69 @@ main {
    ========================================================= */
 
 .modal {
-    position: fixed;
 
-    inset: 0;
+    position:
+        fixed;
 
-    z-index: 1000;
+    inset:
+        0;
 
-    display: none;
+    z-index:
+        1000;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        none;
 
-    padding: 20px;
+    align-items:
+        center;
 
-    background: rgba(0, 0, 0, 0.65);
+    justify-content:
+        center;
 
-    backdrop-filter: blur(5px);
+    padding:
+        20px;
+
+    background:
+        rgba(0, 0, 0, 0.65);
+
+    backdrop-filter:
+        blur(5px);
 }
 
 .modal-content {
-    position: relative;
 
-    width: min(390px, 100%);
+    position:
+        relative;
 
-    max-height: 90vh;
+    width:
+        min(390px, 100%);
 
-    overflow-y: auto;
+    max-height:
+        90vh;
 
-    padding: 30px 25px;
+    overflow-y:
+        auto;
 
-    border-radius: 20px;
+    padding:
+        30px 25px;
 
-    background: var(--surface);
+    border-radius:
+        20px;
 
-    color: var(--text);
+    background:
+        var(--surface);
 
-    text-align: center;
+    color:
+        var(--text);
+
+    text-align:
+        center;
 
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.3);
 
-    animation: modalPop 0.25s ease;
+    animation:
+        modalPop 0.25s ease;
 }
 
 
@@ -614,58 +811,89 @@ main {
    ========================================================= */
 
 .profile-modal {
-    position: fixed;
 
-    inset: 0;
+    position:
+        fixed;
 
-    z-index: 1000;
+    inset:
+        0;
 
-    display: none;
+    z-index:
+        1000;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        none;
 
-    padding: 20px;
+    align-items:
+        center;
 
-    background: rgba(0, 0, 0, 0.65);
+    justify-content:
+        center;
 
-    backdrop-filter: blur(5px);
+    padding:
+        20px;
+
+    background:
+        rgba(0, 0, 0, 0.65);
+
+    backdrop-filter:
+        blur(5px);
 }
 
 .profile-content {
-    position: relative;
 
-    width: min(420px, 100%);
+    position:
+        relative;
 
-    max-height: 90vh;
+    width:
+        min(420px, 100%);
 
-    overflow-y: auto;
+    max-height:
+        90vh;
 
-    padding: 30px 25px;
+    overflow-y:
+        auto;
 
-    border-radius: 20px;
+    padding:
+        30px 25px;
 
-    background: var(--surface);
+    border-radius:
+        20px;
 
-    color: var(--text);
+    background:
+        var(--surface);
 
-    text-align: center;
+    color:
+        var(--text);
+
+    text-align:
+        center;
 
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.3);
 
-    animation: modalPop 0.25s ease;
+    animation:
+        modalPop 0.25s ease;
 }
 
 @keyframes modalPop {
+
     from {
-        opacity: 0;
-        transform: scale(0.9);
+
+        opacity:
+            0;
+
+        transform:
+            scale(0.9);
     }
 
     to {
-        opacity: 1;
-        transform: scale(1);
+
+        opacity:
+            1;
+
+        transform:
+            scale(1);
     }
 }
 
@@ -675,32 +903,44 @@ main {
    ========================================================= */
 
 .modal-icon {
-    margin-bottom: 5px;
 
-    font-size: 50px;
+    margin-bottom:
+        5px;
 
-    animation: iconBounce 0.5s ease;
+    font-size:
+        50px;
+
+    animation:
+        iconBounce 0.5s ease;
 }
 
 .profile-icon {
-    margin-bottom: 8px;
 
-    font-size: 45px;
+    margin-bottom:
+        8px;
 
-    animation: iconBounce 0.5s ease;
+    font-size:
+        45px;
+
+    animation:
+        iconBounce 0.5s ease;
 }
 
 @keyframes iconBounce {
+
     0% {
-        transform: scale(0.7);
+        transform:
+            scale(0.7);
     }
 
     60% {
-        transform: scale(1.1);
+        transform:
+            scale(1.1);
     }
 
     100% {
-        transform: scale(1);
+        transform:
+            scale(1);
     }
 }
 
@@ -710,61 +950,99 @@ main {
    ========================================================= */
 
 #modalTitle {
-    margin: 5px 0 10px;
 
-    color: var(--text);
+    margin:
+        5px 0 10px;
 
-    font-size: 25px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 1px;
+    font-size:
+        25px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1px;
 }
 
 .win-score {
-    color: var(--correct);
 
-    font-size: 35px;
-    font-weight: 900;
+    color:
+        var(--correct);
+
+    font-size:
+        35px;
+
+    font-weight:
+        900;
 }
 
 .win-score-label {
-    margin-top: -5px;
 
-    color: var(--text-secondary);
+    margin-top:
+        -5px;
 
-    font-size: 11px;
-    font-weight: 800;
+    color:
+        var(--text-secondary);
 
-    letter-spacing: 0.5px;
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.5px;
 }
 
 .attempt-result {
-    margin-top: 10px;
 
-    color: var(--text-secondary);
+    margin-top:
+        10px;
 
-    font-size: 12px;
-    font-weight: 800;
+    color:
+        var(--text-secondary);
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
 }
 
 .modal-content p {
-    margin: 18px 0 5px;
 
-    color: var(--text-secondary);
+    margin:
+        18px 0 5px;
 
-    font-size: 12px;
-    font-weight: 700;
+    color:
+        var(--text-secondary);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
 }
 
 #answerWord {
-    margin: 8px 0 18px;
 
-    color: var(--text);
+    margin:
+        8px 0 18px;
 
-    font-size: 30px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 4px;
+    font-size:
+        30px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        4px;
 }
 
 
@@ -773,33 +1051,49 @@ main {
    ========================================================= */
 
 .modal-buttons {
-    display: flex;
 
-    width: 100%;
+    display:
+        flex;
 
-    gap: 10px;
+    width:
+        100%;
 
-    margin-top: 10px;
+    gap:
+        10px;
+
+    margin-top:
+        10px;
 }
 
 #modalNewGame,
 #modalExit {
-    flex: 1;
 
-    padding: 13px;
+    flex:
+        1;
 
-    border: none;
+    padding:
+        13px;
 
-    border-radius: 10px;
+    border:
+        none;
 
-    background: var(--button);
+    border-radius:
+        10px;
 
-    color: var(--button-text);
+    background:
+        var(--button);
 
-    font-size: 13px;
-    font-weight: 800;
+    color:
+        var(--button-text);
 
-    cursor: pointer;
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
 
     transition:
         transform 0.15s ease,
@@ -808,12 +1102,16 @@ main {
 
 #modalNewGame:hover,
 #modalExit:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 }
 
 #modalNewGame:active,
 #modalExit:active {
-    transform: scale(0.97);
+
+    transform:
+        scale(0.97);
 }
 
 
@@ -822,25 +1120,39 @@ main {
    ========================================================= */
 
 .profile-content h2 {
-    margin: 5px 0 8px;
 
-    color: var(--text);
+    margin:
+        5px 0 8px;
 
-    font-size: 25px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 1px;
+    font-size:
+        25px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1px;
 }
 
 .profile-subtitle {
-    margin: 0 0 22px;
 
-    color: var(--text-secondary);
+    margin:
+        0 0 22px;
 
-    font-size: 12px;
-    font-weight: 700;
+    color:
+        var(--text-secondary);
 
-    letter-spacing: 0.5px;
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.5px;
 }
 
 
@@ -849,24 +1161,39 @@ main {
    ========================================================= */
 
 .close-profile {
-    position: absolute;
 
-    top: 12px;
-    right: 12px;
+    position:
+        absolute;
 
-    width: 34px;
-    height: 34px;
+    top:
+        12px;
 
-    border: none;
-    border-radius: 50%;
+    right:
+        12px;
 
-    background: var(--surface-secondary);
+    width:
+        34px;
 
-    color: var(--text);
+    height:
+        34px;
 
-    font-size: 16px;
+    border:
+        none;
 
-    cursor: pointer;
+    border-radius:
+        50%;
+
+    background:
+        var(--surface-secondary);
+
+    color:
+        var(--text);
+
+    font-size:
+        16px;
+
+    cursor:
+        pointer;
 
     transition:
         opacity 0.2s ease,
@@ -874,11 +1201,15 @@ main {
 }
 
 .close-profile:hover {
-    opacity: 0.75;
+
+    opacity:
+        0.75;
 }
 
 .close-profile:active {
-    transform: scale(0.9);
+
+    transform:
+        scale(0.9);
 }
 
 
@@ -887,43 +1218,66 @@ main {
    ========================================================= */
 
 .profile-stats {
-    display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    display:
+        grid;
 
-    gap: 10px;
+    grid-template-columns:
+        repeat(2, 1fr);
 
-    margin-top: 20px;
+    gap:
+        10px;
+
+    margin-top:
+        20px;
 }
 
 .stat-card {
-    padding: 15px 10px;
 
-    border-radius: 12px;
+    padding:
+        15px 10px;
 
-    background: var(--surface-secondary);
+    border-radius:
+        12px;
 
-    color: var(--text);
+    background:
+        var(--surface-secondary);
+
+    color:
+        var(--text);
 }
 
 .stat-value {
-    display: block;
 
-    color: var(--text);
+    display:
+        block;
 
-    font-size: 24px;
-    font-weight: 900;
+    color:
+        var(--text);
+
+    font-size:
+        24px;
+
+    font-weight:
+        900;
 }
 
 .stat-label {
-    display: block;
 
-    margin-top: 4px;
+    display:
+        block;
 
-    color: var(--text-secondary);
+    margin-top:
+        4px;
 
-    font-size: 10px;
-    font-weight: 800;
+    color:
+        var(--text-secondary);
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
 }
 
 
@@ -932,36 +1286,57 @@ main {
    ========================================================= */
 
 .profile-score {
-    display: flex;
 
-    align-items: center;
-    justify-content: space-between;
+    display:
+        flex;
 
-    margin-top: 15px;
+    align-items:
+        center;
 
-    padding: 15px;
+    justify-content:
+        space-between;
 
-    border-radius: 12px;
+    margin-top:
+        15px;
 
-    background: var(--surface-secondary);
+    padding:
+        15px;
 
-    color: var(--text);
+    border-radius:
+        12px;
+
+    background:
+        var(--surface-secondary);
+
+    color:
+        var(--text);
 }
 
 .profile-score span {
-    color: var(--text-secondary);
 
-    font-size: 11px;
-    font-weight: 800;
+    color:
+        var(--text-secondary);
 
-    letter-spacing: 0.5px;
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.5px;
 }
 
 .profile-score strong {
-    color: var(--text);
 
-    font-size: 22px;
-    font-weight: 900;
+    color:
+        var(--text);
+
+    font-size:
+        22px;
+
+    font-weight:
+        900;
 }
 
 
@@ -972,24 +1347,36 @@ main {
 #closeProfileBottom,
 #closeLeaderboardBottom,
 #closeThemeBottom {
-    width: 100%;
 
-    margin-top: 15px;
+    width:
+        100%;
 
-    padding: 13px;
+    margin-top:
+        15px;
 
-    border: none;
+    padding:
+        13px;
 
-    border-radius: 10px;
+    border:
+        none;
 
-    background: var(--button);
+    border-radius:
+        10px;
 
-    color: var(--button-text);
+    background:
+        var(--button);
 
-    font-size: 13px;
-    font-weight: 800;
+    color:
+        var(--button-text);
 
-    cursor: pointer;
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
 
     transition:
         transform 0.15s ease,
@@ -999,13 +1386,17 @@ main {
 #closeProfileBottom:hover,
 #closeLeaderboardBottom:hover,
 #closeThemeBottom:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 }
 
 #closeProfileBottom:active,
 #closeLeaderboardBottom:active,
 #closeThemeBottom:active {
-    transform: scale(0.97);
+
+    transform:
+        scale(0.97);
 }
 
 
@@ -1014,36 +1405,50 @@ main {
    ========================================================= */
 
 #leaderboardList {
-    width: 100%;
 
-    margin-top: 15px;
+    width:
+        100%;
+
+    margin-top:
+        15px;
 }
 
 .leaderboard-row {
-    display: grid;
+
+    display:
+        grid;
 
     grid-template-columns:
         40px
         minmax(0, 1fr)
         80px;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 10px;
+    gap:
+        10px;
 
-    margin-bottom: 7px;
+    margin-bottom:
+        7px;
 
-    padding: 12px 14px;
+    padding:
+        12px 14px;
 
-    border: 2px solid transparent;
+    border:
+        2px solid transparent;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 
-    background: var(--surface-secondary);
+    background:
+        var(--surface-secondary);
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    text-align: left;
+    text-align:
+        left;
 
     transition:
         transform 0.15s ease,
@@ -1052,7 +1457,9 @@ main {
 }
 
 .leaderboard-row:hover {
-    transform: translateY(-1px);
+
+    transform:
+        translateY(-1px);
 }
 
 
@@ -1061,11 +1468,15 @@ main {
    ========================================================= */
 
 .leaderboard-row.current-player {
-    border-color: var(--accent);
 
-    background: var(--surface);
+    border-color:
+        var(--accent);
 
-    color: var(--text);
+    background:
+        var(--surface);
+
+    color:
+        var(--text);
 
     box-shadow:
         0 0 0 1px var(--accent);
@@ -1077,12 +1488,18 @@ main {
    ========================================================= */
 
 .leaderboard-rank {
-    color: var(--text);
 
-    font-size: 13px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    text-align: center;
+    font-size:
+        13px;
+
+    font-weight:
+        900;
+
+    text-align:
+        center;
 }
 
 
@@ -1091,32 +1508,48 @@ main {
    ========================================================= */
 
 .leaderboard-name {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    min-width: 0;
+    align-items:
+        center;
 
-    gap: 8px;
+    min-width:
+        0;
 
-    color: var(--text);
+    gap:
+        8px;
 
-    font-size: 13px;
-    font-weight: 800;
+    color:
+        var(--text);
 
-    overflow: hidden;
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+    overflow:
+        hidden;
 }
 
 .leaderboard-name-text {
-    min-width: 0;
 
-    overflow: hidden;
+    min-width:
+        0;
 
-    color: var(--text);
+    overflow:
+        hidden;
 
-    text-overflow: ellipsis;
+    color:
+        var(--text);
 
-    white-space: nowrap;
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
 }
 
 
@@ -1125,20 +1558,30 @@ main {
    ========================================================= */
 
 .leaderboard-you {
-    flex-shrink: 0;
 
-    padding: 3px 7px;
+    flex-shrink:
+        0;
 
-    border-radius: 6px;
+    padding:
+        3px 7px;
 
-    background: var(--accent);
+    border-radius:
+        6px;
 
-    color: var(--button-text);
+    background:
+        var(--accent);
 
-    font-size: 9px;
-    font-weight: 900;
+    color:
+        var(--button-text);
 
-    letter-spacing: 0.5px;
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.5px;
 }
 
 
@@ -1147,29 +1590,45 @@ main {
    ========================================================= */
 
 .leaderboard-score {
-    color: var(--text);
 
-    font-size: 13px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    text-align: right;
+    font-size:
+        13px;
+
+    font-weight:
+        900;
+
+    text-align:
+        right;
 }
 
 #myLeaderboardRank {
-    margin-top: 15px;
 
-    padding: 10px;
+    margin-top:
+        15px;
 
-    border-radius: 10px;
+    padding:
+        10px;
 
-    background: var(--surface-secondary);
+    border-radius:
+        10px;
 
-    color: var(--text);
+    background:
+        var(--surface-secondary);
 
-    font-size: 12px;
-    font-weight: 800;
+    color:
+        var(--text);
 
-    text-align: center;
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    text-align:
+        center;
 }
 
 
@@ -1178,36 +1637,54 @@ main {
    ========================================================= */
 
 #themeList {
-    display: flex;
 
-    flex-direction: column;
+    display:
+        flex;
 
-    gap: 8px;
+    flex-direction:
+        column;
 
-    margin-top: 15px;
+    gap:
+        8px;
+
+    margin-top:
+        15px;
 }
 
 .theme-option {
-    width: 100%;
 
-    display: flex;
+    width:
+        100%;
 
-    align-items: center;
-    justify-content: space-between;
+    display:
+        flex;
 
-    padding: 14px 15px;
+    align-items:
+        center;
 
-    border: 2px solid var(--border);
+    justify-content:
+        space-between;
 
-    border-radius: 12px;
+    padding:
+        14px 15px;
 
-    background: var(--background);
+    border:
+        2px solid var(--border);
 
-    color: var(--text);
+    border-radius:
+        12px;
 
-    cursor: pointer;
+    background:
+        var(--background);
 
-    text-align: left;
+    color:
+        var(--text);
+
+    cursor:
+        pointer;
+
+    text-align:
+        left;
 
     transition:
         border-color 0.2s ease,
@@ -1217,33 +1694,51 @@ main {
 }
 
 .theme-option:hover {
-    transform: translateY(-1px);
+
+    transform:
+        translateY(-1px);
 }
 
 .theme-option.selected {
-    border-color: var(--accent);
 
-    background: var(--surface-secondary);
+    border-color:
+        var(--accent);
 
-    color: var(--text);
+    background:
+        var(--surface-secondary);
+
+    color:
+        var(--text);
 }
 
 .theme-name {
-    color: var(--text);
 
-    font-size: 14px;
-    font-weight: 800;
+    color:
+        var(--text);
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
 }
 
 .theme-check {
-    width: 22px;
 
-    color: var(--accent);
+    width:
+        22px;
 
-    font-size: 17px;
-    font-weight: 900;
+    color:
+        var(--accent);
 
-    text-align: center;
+    font-size:
+        17px;
+
+    font-weight:
+        900;
+
+    text-align:
+        center;
 }
 
 
@@ -1253,23 +1748,33 @@ main {
 
 #authModal input,
 #usernameModal input {
-    width: 100%;
 
-    margin-bottom: 10px;
+    width:
+        100%;
 
-    padding: 13px 14px;
+    margin-bottom:
+        10px;
 
-    border: 2px solid var(--border);
+    padding:
+        13px 14px;
 
-    border-radius: 10px;
+    border:
+        2px solid var(--border);
 
-    outline: none;
+    border-radius:
+        10px;
 
-    background: var(--background);
+    outline:
+        none;
 
-    color: var(--text);
+    background:
+        var(--background);
 
-    font-size: 14px;
+    color:
+        var(--text);
+
+    font-size:
+        14px;
 
     transition:
         border-color 0.2s ease,
@@ -1279,14 +1784,19 @@ main {
 
 #authModal input::placeholder,
 #usernameModal input::placeholder {
-    color: var(--text-secondary);
 
-    opacity: 1;
+    color:
+        var(--text-secondary);
+
+    opacity:
+        1;
 }
 
 #authModal input:focus,
 #usernameModal input:focus {
-    border-color: var(--accent);
+
+    border-color:
+        var(--accent);
 }
 
 
@@ -1296,22 +1806,33 @@ main {
 
 #authModal button,
 #saveUsername {
-    width: 100%;
 
-    padding: 13px;
+    width:
+        100%;
 
-    border: none;
+    padding:
+        13px;
 
-    border-radius: 10px;
+    border:
+        none;
 
-    background: var(--button);
+    border-radius:
+        10px;
 
-    color: var(--button-text);
+    background:
+        var(--button);
 
-    font-size: 13px;
-    font-weight: 800;
+    color:
+        var(--button-text);
 
-    cursor: pointer;
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
 
     transition:
         transform 0.15s ease,
@@ -1320,12 +1841,16 @@ main {
 
 #authModal button:hover,
 #saveUsername:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 }
 
 #authModal button:active,
 #saveUsername:active {
-    transform: scale(0.97);
+
+    transform:
+        scale(0.97);
 }
 
 
@@ -1334,24 +1859,36 @@ main {
    ========================================================= */
 
 .auth-switch {
-    margin-top: 12px;
 
-    padding: 8px !important;
+    margin-top:
+        12px;
 
-    background: transparent !important;
+    padding:
+        8px !important;
 
-    color: var(--accent) !important;
+    background:
+        transparent !important;
 
-    font-size: 11px;
-    font-weight: 800;
+    color:
+        var(--accent) !important;
 
-    opacity: 0.85;
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+    opacity:
+        0.85;
 }
 
 .auth-switch:hover {
-    opacity: 1;
 
-    transform: none !important;
+    opacity:
+        1;
+
+    transform:
+        none !important;
 }
 
 
@@ -1361,14 +1898,21 @@ main {
 
 #usernameError,
 #authMessage {
-    min-height: 18px;
 
-    margin: 4px 0 10px;
+    min-height:
+        18px;
 
-    color: #d32f2f;
+    margin:
+        4px 0 10px;
 
-    font-size: 12px;
-    font-weight: 700;
+    color:
+        #d32f2f;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
 }
 
 
@@ -1377,35 +1921,53 @@ main {
    ========================================================= */
 
 #confetti {
-    position: fixed;
 
-    inset: 0;
+    position:
+        fixed;
 
-    z-index: 2000;
+    inset:
+        0;
 
-    pointer-events: none;
+    z-index:
+        2000;
 
-    overflow: hidden;
+    pointer-events:
+        none;
+
+    overflow:
+        hidden;
 }
 
 .confetti-piece {
-    position: absolute;
 
-    top: 50%;
-    left: 50%;
+    position:
+        absolute;
 
-    width: 8px;
-    height: 14px;
+    top:
+        50%;
 
-    background: var(--accent);
+    left:
+        50%;
+
+    width:
+        8px;
+
+    height:
+        14px;
+
+    background:
+        var(--accent);
 
     animation:
         confettiFly 1.2s ease-out forwards;
 }
 
 @keyframes confettiFly {
+
     from {
-        opacity: 1;
+
+        opacity:
+            1;
 
         transform:
             translate(0, 0)
@@ -1413,7 +1975,9 @@ main {
     }
 
     to {
-        opacity: 0;
+
+        opacity:
+            0;
 
         transform:
             translate(var(--x), var(--y))
@@ -1427,22 +1991,30 @@ main {
    ========================================================= */
 
 #gameOverModal.game-lost .modal-content {
+
     animation:
         modalPop 0.25s ease,
         gameLostModal 0.4s ease;
 }
 
 @keyframes gameLostModal {
+
     0% {
-        transform: scale(0.95);
+
+        transform:
+            scale(0.95);
     }
 
     50% {
-        transform: scale(1.02);
+
+        transform:
+            scale(1.02);
     }
 
     100% {
-        transform: scale(1);
+
+        transform:
+            scale(1);
     }
 }
 
@@ -1454,55 +2026,73 @@ main {
 @media (max-width: 700px) {
 
     header {
-        grid-template-columns:
-            38px
-            1fr
-            38px
-            38px
-            auto
-            auto;
 
-        gap: 5px;
+        gap:
+            5px;
 
-        padding: 10px;
+        padding:
+            10px;
     }
 
-    header h1 {
-        font-size: 21px;
+    .logo h1 {
+
+        font-size:
+            21px;
     }
 
     #profileButton,
     #leaderboardButton,
     #themeButton {
-        width: 38px;
-        height: 38px;
 
-        font-size: 18px;
+        width:
+            38px;
+
+        height:
+            38px;
+
+        font-size:
+            18px;
     }
 
+    #dailyButton,
     #newGameButton,
     #hintButton {
-        padding: 10px 12px;
 
-        font-size: 11px;
+        padding:
+            10px 12px;
+
+        font-size:
+            11px;
     }
 
     main {
-        padding-top: 20px;
+
+        padding-top:
+            20px;
     }
 
     #board {
-        grid-template-columns: repeat(5, 56px);
-        grid-template-rows: repeat(6, 56px);
 
-        gap: 6px;
+        grid-template-columns:
+            repeat(5, 56px);
+
+        grid-template-rows:
+            repeat(6, 56px);
+
+        gap:
+            6px;
     }
 
     .tile {
-        width: 56px;
-        height: 56px;
 
-        font-size: 23px;
+        width:
+            56px;
+
+        height:
+            56px;
+
+        font-size:
+            23px;
     }
 }
 
@@ -1514,7 +2104,9 @@ main {
 @media (max-width: 520px) {
 
     header {
-        display: grid;
+
+        display:
+            grid;
 
         grid-template-columns:
             40px
@@ -1523,96 +2115,189 @@ main {
             40px;
 
         grid-template-rows:
-            40px
-            40px;
+            auto
+            38px
+            38px;
 
-        gap: 6px;
+        gap:
+            5px;
 
-        padding: 8px 10px;
+        padding:
+            8px 10px;
     }
 
 
-    /* Profile */
+    /* PROFILE */
 
     #profileButton {
-        grid-column: 1;
-        grid-row: 1;
 
-        width: 40px;
-        height: 40px;
+        grid-column:
+            1;
 
-        font-size: 18px;
+        grid-row:
+            1;
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        font-size:
+            18px;
     }
 
 
-    /* WordRush title */
+    /* LOGO */
 
-    header h1 {
-        grid-column: 2;
-        grid-row: 1;
+    .logo {
 
-        font-size: 19px;
+        grid-column:
+            2;
 
-        letter-spacing: 0.5px;
+        grid-row:
+            1;
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        margin:
+            0;
+    }
+
+    .logo h1 {
+
+        font-size:
+            19px;
+
+        letter-spacing:
+            0.5px;
+    }
+
+    .header-streak {
+
+        font-size:
+            9px;
+
+        letter-spacing:
+            0.5px;
     }
 
 
-    /* Leaderboard */
+    /* LEADERBOARD */
 
     #leaderboardButton {
-        grid-column: 3;
-        grid-row: 1;
 
-        width: 40px;
-        height: 40px;
+        grid-column:
+            3;
 
-        font-size: 18px;
+        grid-row:
+            1;
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        font-size:
+            18px;
     }
 
 
-    /* Themes */
+    /* THEME */
 
     #themeButton {
-        grid-column: 4;
-        grid-row: 1;
 
-        width: 40px;
-        height: 40px;
+        grid-column:
+            4;
 
-        font-size: 18px;
+        grid-row:
+            1;
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        font-size:
+            18px;
     }
 
 
-    /* New Game */
+    /* DAILY */
+
+    #dailyButton {
+
+        grid-column:
+            1 / 5;
+
+        grid-row:
+            2;
+
+        width:
+            100%;
+
+        padding:
+            9px;
+
+        font-size:
+            10px;
+    }
+
+
+    /* NEW GAME */
 
     #newGameButton {
-        grid-column: 1 / 3;
-        grid-row: 2;
 
-        width: 100%;
+        grid-column:
+            1 / 3;
 
-        padding: 9px;
+        grid-row:
+            3;
 
-        font-size: 10px;
+        width:
+            100%;
+
+        padding:
+            9px;
+
+        font-size:
+            10px;
     }
 
 
-    /* Hint */
+    /* HINT */
 
     #hintButton {
-        grid-column: 3 / 5;
-        grid-row: 2;
 
-        width: 100%;
+        grid-column:
+            3 / 5;
 
-        padding: 9px;
+        grid-row:
+            3;
 
-        font-size: 10px;
+        width:
+            100%;
+
+        padding:
+            9px;
+
+        font-size:
+            10px;
     }
 
     main {
-        padding-left: 10px;
-        padding-right: 10px;
+
+        padding-left:
+            10px;
+
+        padding-right:
+            10px;
     }
 }
 
@@ -1624,6 +2309,7 @@ main {
 @media (max-width: 380px) {
 
     header {
+
         grid-template-columns:
             34px
             1fr
@@ -1631,51 +2317,83 @@ main {
             34px;
 
         grid-template-rows:
-            34px
+            auto
+            36px
             36px;
 
-        gap: 5px;
+        gap:
+            4px;
 
-        padding: 7px 8px;
+        padding:
+            7px 8px;
     }
 
     #profileButton,
     #leaderboardButton,
     #themeButton {
-        width: 34px;
-        height: 34px;
 
-        font-size: 16px;
+        width:
+            34px;
+
+        height:
+            34px;
+
+        font-size:
+            16px;
     }
 
-    header h1 {
-        font-size: 17px;
+    .logo h1 {
+
+        font-size:
+            17px;
     }
 
+    .header-streak {
+
+        font-size:
+            8px;
+    }
+
+    #dailyButton,
     #newGameButton,
     #hintButton {
-        padding: 8px 7px;
 
-        font-size: 9px;
+        padding:
+            8px 7px;
+
+        font-size:
+            9px;
     }
 
     #board {
-        grid-template-columns: repeat(5, 50px);
-        grid-template-rows: repeat(6, 50px);
 
-        gap: 5px;
+        grid-template-columns:
+            repeat(5, 50px);
+
+        grid-template-rows:
+            repeat(6, 50px);
+
+        gap:
+            5px;
     }
 
     .tile {
-        width: 50px;
-        height: 50px;
 
-        font-size: 21px;
+        width:
+            50px;
+
+        height:
+            50px;
+
+        font-size:
+            21px;
     }
 
     .profile-content,
     .modal-content {
-        padding: 25px 18px;
+
+        padding:
+            25px 18px;
     }
 }
 
@@ -1687,6 +2405,7 @@ main {
 @media (max-width: 330px) {
 
     header {
+
         grid-template-columns:
             30px
             1fr
@@ -1694,46 +2413,76 @@ main {
             30px;
 
         grid-template-rows:
-            30px
+            auto
+            34px
             34px;
 
-        gap: 4px;
+        gap:
+            4px;
 
-        padding: 6px;
+        padding:
+            6px;
     }
 
     #profileButton,
     #leaderboardButton,
     #themeButton {
-        width: 30px;
-        height: 30px;
 
-        font-size: 14px;
+        width:
+            30px;
+
+        height:
+            30px;
+
+        font-size:
+            14px;
     }
 
-    header h1 {
-        font-size: 15px;
+    .logo h1 {
+
+        font-size:
+            15px;
     }
 
+    .header-streak {
+
+        font-size:
+            7px;
+    }
+
+    #dailyButton,
     #newGameButton,
     #hintButton {
-        padding: 7px 5px;
 
-        font-size: 8px;
+        padding:
+            7px 5px;
+
+        font-size:
+            8px;
     }
 
     #board {
-        grid-template-columns: repeat(5, 45px);
-        grid-template-rows: repeat(6, 45px);
 
-        gap: 4px;
+        grid-template-columns:
+            repeat(5, 45px);
+
+        grid-template-rows:
+            repeat(6, 45px);
+
+        gap:
+            4px;
     }
 
     .tile {
-        width: 45px;
-        height: 45px;
 
-        font-size: 19px;
+        width:
+            45px;
+
+        height:
+            45px;
+
+        font-size:
+            19px;
     }
 }
 
@@ -1743,11 +2492,15 @@ main {
    ========================================================= */
 
 .privacy-page {
-    min-height: 100vh;
 
-    background: var(--background);
+    min-height:
+        100vh;
 
-    color: var(--text);
+    background:
+        var(--background);
+
+    color:
+        var(--text);
 }
 
 
@@ -1756,54 +2509,84 @@ main {
    ========================================================= */
 
 .privacy-header {
-    width: 100%;
 
-    display: flex;
+    width:
+        100%;
 
-    align-items: center;
-    justify-content: space-between;
+    display:
+        flex;
 
-    padding: 16px 24px;
+    align-items:
+        center;
 
-    background: var(--surface);
+    justify-content:
+        space-between;
 
-    border-bottom: 1px solid var(--border);
+    padding:
+        16px 24px;
+
+    background:
+        var(--surface);
+
+    border-bottom:
+        1px solid var(--border);
 }
 
 .privacy-logo {
-    color: var(--text);
 
-    text-decoration: none;
+    color:
+        var(--text);
 
-    font-size: 22px;
-    font-weight: 900;
+    text-decoration:
+        none;
 
-    letter-spacing: 2px;
+    font-size:
+        22px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        2px;
 }
 
 .privacy-back {
-    color: var(--text);
 
-    text-decoration: none;
+    color:
+        var(--text);
 
-    font-size: 13px;
-    font-weight: 800;
+    text-decoration:
+        none;
 
-    letter-spacing: 0.5px;
+    font-size:
+        13px;
 
-    padding: 9px 14px;
+    font-weight:
+        800;
 
-    border: 1px solid var(--border);
+    letter-spacing:
+        0.5px;
 
-    border-radius: 8px;
+    padding:
+        9px 14px;
 
-    transition: 0.2s ease;
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    transition:
+        0.2s ease;
 }
 
 .privacy-back:hover {
-    background: var(--button);
 
-    color: var(--button-text);
+    background:
+        var(--button);
+
+    color:
+        var(--button-text);
 }
 
 
@@ -1812,13 +2595,18 @@ main {
    ========================================================= */
 
 .privacy-container {
-    width: 100%;
 
-    max-width: 900px;
+    width:
+        100%;
 
-    margin: 0 auto;
+    max-width:
+        900px;
 
-    padding: 50px 20px 70px;
+    margin:
+        0 auto;
+
+    padding:
+        50px 20px 70px;
 }
 
 
@@ -1827,13 +2615,18 @@ main {
    ========================================================= */
 
 .privacy-card {
-    background: var(--surface);
 
-    border: 1px solid var(--border);
+    background:
+        var(--surface);
 
-    border-radius: 16px;
+    border:
+        1px solid var(--border);
 
-    padding: 45px;
+    border-radius:
+        16px;
+
+    padding:
+        45px;
 
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.08);
@@ -1845,23 +2638,36 @@ main {
    ========================================================= */
 
 .privacy-icon {
-    width: 64px;
-    height: 64px;
 
-    display: flex;
+    width:
+        64px;
 
-    align-items: center;
-    justify-content: center;
+    height:
+        64px;
 
-    margin: 0 auto 20px;
+    display:
+        flex;
 
-    background: var(--surface-secondary);
+    align-items:
+        center;
 
-    border: 1px solid var(--border);
+    justify-content:
+        center;
 
-    border-radius: 50%;
+    margin:
+        0 auto 20px;
 
-    font-size: 30px;
+    background:
+        var(--surface-secondary);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        50%;
+
+    font-size:
+        30px;
 }
 
 
@@ -1870,26 +2676,39 @@ main {
    ========================================================= */
 
 .privacy-card h1 {
-    margin: 0;
 
-    text-align: center;
+    margin:
+        0;
 
-    color: var(--text);
+    text-align:
+        center;
 
-    font-size: 32px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 2px;
+    font-size:
+        32px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        2px;
 }
 
 .privacy-updated {
-    margin: 10px 0 40px;
 
-    text-align: center;
+    margin:
+        10px 0 40px;
 
-    color: var(--text-secondary);
+    text-align:
+        center;
 
-    font-size: 13px;
+    color:
+        var(--text-secondary);
+
+    font-size:
+        13px;
 }
 
 
@@ -1898,44 +2717,66 @@ main {
    ========================================================= */
 
 .privacy-card p {
-    margin: 0 0 18px;
 
-    color: var(--text-secondary);
+    margin:
+        0 0 18px;
 
-    font-size: 15px;
+    color:
+        var(--text-secondary);
 
-    line-height: 1.8;
+    font-size:
+        15px;
+
+    line-height:
+        1.8;
 }
 
 .privacy-card h2 {
-    margin: 38px 0 14px;
 
-    color: var(--text);
+    margin:
+        38px 0 14px;
 
-    font-size: 19px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 0.5px;
+    font-size:
+        19px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.5px;
 }
 
 .privacy-card ul {
-    margin: 0 0 20px;
 
-    padding-left: 25px;
+    margin:
+        0 0 20px;
 
-    color: var(--text-secondary);
+    padding-left:
+        25px;
+
+    color:
+        var(--text-secondary);
 }
 
 .privacy-card li {
-    margin-bottom: 10px;
 
-    font-size: 15px;
+    margin-bottom:
+        10px;
 
-    line-height: 1.7;
+    font-size:
+        15px;
+
+    line-height:
+        1.7;
 }
 
 .privacy-card strong {
-    color: var(--text);
+
+    color:
+        var(--text);
 }
 
 
@@ -1944,11 +2785,15 @@ main {
    ========================================================= */
 
 .privacy-contact {
-    margin-top: 25px !important;
 
-    color: var(--text) !important;
+    margin-top:
+        25px !important;
 
-    font-size: 17px !important;
+    color:
+        var(--text) !important;
+
+    font-size:
+        17px !important;
 }
 
 
@@ -1957,28 +2802,42 @@ main {
    ========================================================= */
 
 .privacy-footer {
-    margin-top: 45px;
 
-    padding-top: 25px;
+    margin-top:
+        45px;
 
-    border-top: 1px solid var(--border);
+    padding-top:
+        25px;
 
-    text-align: center;
+    border-top:
+        1px solid var(--border);
+
+    text-align:
+        center;
 }
 
 .privacy-footer a {
-    color: var(--accent);
 
-    text-decoration: none;
+    color:
+        var(--accent);
 
-    font-size: 13px;
-    font-weight: 900;
+    text-decoration:
+        none;
 
-    letter-spacing: 0.5px;
+    font-size:
+        13px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.5px;
 }
 
 .privacy-footer a:hover {
-    text-decoration: underline;
+
+    text-decoration:
+        underline;
 }
 
 
@@ -1987,28 +2846,42 @@ main {
    ========================================================= */
 
 .privacy-link {
-    display: block;
 
-    margin-top: 16px;
+    display:
+        block;
 
-    color: var(--text-secondary);
+    margin-top:
+        16px;
 
-    text-align: center;
+    color:
+        var(--text-secondary);
 
-    font-size: 11px;
-    font-weight: 800;
+    text-align:
+        center;
 
-    letter-spacing: 0.5px;
+    font-size:
+        11px;
 
-    text-decoration: none;
+    font-weight:
+        800;
 
-    transition: 0.2s ease;
+    letter-spacing:
+        0.5px;
+
+    text-decoration:
+        none;
+
+    transition:
+        0.2s ease;
 }
 
 .privacy-link:hover {
-    color: var(--accent);
 
-    text-decoration: underline;
+    color:
+        var(--accent);
+
+    text-decoration:
+        underline;
 }
 
 
@@ -2019,53 +2892,79 @@ main {
 @media (max-width: 600px) {
 
     .privacy-header {
-        padding: 12px 14px;
+
+        padding:
+            12px 14px;
     }
 
     .privacy-logo {
-        font-size: 18px;
 
-        letter-spacing: 1.5px;
+        font-size:
+            18px;
+
+        letter-spacing:
+            1.5px;
     }
 
     .privacy-back {
-        padding: 8px 10px;
 
-        font-size: 10px;
+        padding:
+            8px 10px;
+
+        font-size:
+            10px;
     }
 
     .privacy-container {
-        padding: 25px 12px 45px;
+
+        padding:
+            25px 12px 45px;
     }
 
     .privacy-card {
-        padding: 25px 20px;
 
-        border-radius: 12px;
+        padding:
+            25px 20px;
+
+        border-radius:
+            12px;
     }
 
     .privacy-icon {
-        width: 55px;
-        height: 55px;
 
-        font-size: 25px;
+        width:
+            55px;
+
+        height:
+            55px;
+
+        font-size:
+            25px;
     }
 
     .privacy-card h1 {
-        font-size: 25px;
+
+        font-size:
+            25px;
     }
 
     .privacy-card h2 {
-        margin-top: 32px;
 
-        font-size: 17px;
+        margin-top:
+            32px;
+
+        font-size:
+            17px;
     }
 
     .privacy-card p,
     .privacy-card li {
-        font-size: 14px;
 
-        line-height: 1.7;
+        font-size:
+            14px;
+
+        line-height:
+            1.7;
     }
 }
 
@@ -2075,58 +2974,90 @@ main {
    ========================================================= */
 
 .site-footer {
-    width: 100%;
 
-    margin-top: auto;
+    width:
+        100%;
 
-    padding: 25px 15px 30px;
+    margin-top:
+        auto;
 
-    border-top: 1px solid var(--border);
+    padding:
+        25px 15px 30px;
 
-    background: var(--surface);
+    border-top:
+        1px solid var(--border);
 
-    color: var(--text-secondary);
+    background:
+        var(--surface);
 
-    text-align: center;
+    color:
+        var(--text-secondary);
+
+    text-align:
+        center;
 }
 
 .site-footer p {
-    margin: 0 0 10px;
 
-    color: var(--text-secondary);
+    margin:
+        0 0 10px;
 
-    font-size: 10px;
-    font-weight: 700;
+    color:
+        var(--text-secondary);
 
-    letter-spacing: 0.3px;
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.3px;
 }
 
 .site-footer-links {
-    display: flex;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        flex;
 
-    gap: 8px;
+    align-items:
+        center;
 
-    flex-wrap: wrap;
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    flex-wrap:
+        wrap;
 }
 
 .site-footer a {
-    color: var(--accent);
 
-    font-size: 11px;
-    font-weight: 800;
+    color:
+        var(--accent);
 
-    text-decoration: none;
+    font-size:
+        11px;
 
-    transition: opacity 0.2s ease;
+    font-weight:
+        800;
+
+    text-decoration:
+        none;
+
+    transition:
+        opacity 0.2s ease;
 }
 
 .site-footer a:hover {
-    opacity: 0.7;
 
-    text-decoration: underline;
+    opacity:
+        0.7;
+
+    text-decoration:
+        underline;
 }
 
 
@@ -2135,15 +3066,21 @@ main {
    ========================================================= */
 
 .legal-page {
-    min-height: 100vh;
 
-    display: flex;
+    min-height:
+        100vh;
 
-    flex-direction: column;
+    display:
+        flex;
 
-    background: var(--background);
+    flex-direction:
+        column;
 
-    color: var(--text);
+    background:
+        var(--background);
+
+    color:
+        var(--text);
 }
 
 
@@ -2152,46 +3089,72 @@ main {
    ========================================================= */
 
 .legal-header {
-    width: 100%;
 
-    display: flex;
+    width:
+        100%;
 
-    align-items: center;
-    justify-content: space-between;
+    display:
+        flex;
 
-    gap: 20px;
+    align-items:
+        center;
 
-    padding: 15px 25px;
+    justify-content:
+        space-between;
 
-    background: var(--surface);
+    gap:
+        20px;
 
-    border-bottom: 1px solid var(--border);
+    padding:
+        15px 25px;
+
+    background:
+        var(--surface);
+
+    border-bottom:
+        1px solid var(--border);
 }
 
 .legal-header h1 {
-    margin: 0;
 
-    color: var(--text);
+    margin:
+        0;
 
-    font-size: 22px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 1px;
+    font-size:
+        22px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1px;
 }
 
 .legal-back {
-    color: var(--accent);
 
-    font-size: 11px;
-    font-weight: 800;
+    color:
+        var(--accent);
 
-    text-decoration: none;
+    font-size:
+        11px;
 
-    white-space: nowrap;
+    font-weight:
+        800;
+
+    text-decoration:
+        none;
+
+    white-space:
+        nowrap;
 }
 
 .legal-back:hover {
-    text-decoration: underline;
+
+    text-decoration:
+        underline;
 }
 
 
@@ -2200,29 +3163,42 @@ main {
    ========================================================= */
 
 .legal-main {
-    width: 100%;
 
-    flex: 1;
+    width:
+        100%;
 
-    display: flex;
+    flex:
+        1;
 
-    justify-content: center;
+    display:
+        flex;
 
-    padding: 45px 20px 60px;
+    justify-content:
+        center;
+
+    padding:
+        45px 20px 60px;
 }
 
 .legal-content {
-    width: min(760px, 100%);
 
-    padding: 35px;
+    width:
+        min(760px, 100%);
 
-    border: 1px solid var(--border);
+    padding:
+        35px;
 
-    border-radius: 18px;
+    border:
+        1px solid var(--border);
 
-    background: var(--surface);
+    border-radius:
+        18px;
 
-    color: var(--text);
+    background:
+        var(--surface);
+
+    color:
+        var(--text);
 
     box-shadow:
         0 10px 35px rgba(0, 0, 0, 0.08);
@@ -2234,24 +3210,39 @@ main {
    ========================================================= */
 
 .legal-icon {
-    width: 65px;
-    height: 65px;
 
-    display: flex;
+    width:
+        65px;
 
-    align-items: center;
-    justify-content: center;
+    height:
+        65px;
 
-    margin: 0 auto 15px;
+    display:
+        flex;
 
-    border-radius: 50%;
+    align-items:
+        center;
 
-    background: var(--surface-secondary);
+    justify-content:
+        center;
 
-    color: var(--accent);
+    margin:
+        0 auto 15px;
 
-    font-size: 30px;
-    font-weight: 900;
+    border-radius:
+        50%;
+
+    background:
+        var(--surface-secondary);
+
+    color:
+        var(--accent);
+
+    font-size:
+        30px;
+
+    font-weight:
+        900;
 }
 
 
@@ -2260,27 +3251,42 @@ main {
    ========================================================= */
 
 .legal-content h2 {
-    margin: 0;
 
-    color: var(--text);
+    margin:
+        0;
 
-    font-size: 28px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    text-align: center;
+    font-size:
+        28px;
 
-    letter-spacing: 1px;
+    font-weight:
+        900;
+
+    text-align:
+        center;
+
+    letter-spacing:
+        1px;
 }
 
 .legal-updated {
-    margin: 8px 0 35px;
 
-    color: var(--text-secondary);
+    margin:
+        8px 0 35px;
 
-    font-size: 11px;
-    font-weight: 700;
+    color:
+        var(--text-secondary);
 
-    text-align: center;
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    text-align:
+        center;
 }
 
 
@@ -2289,34 +3295,51 @@ main {
    ========================================================= */
 
 .legal-section {
-    margin-bottom: 30px;
+
+    margin-bottom:
+        30px;
 }
 
 .legal-section h3 {
-    margin: 0 0 12px;
 
-    color: var(--text);
+    margin:
+        0 0 12px;
 
-    font-size: 15px;
-    font-weight: 900;
+    color:
+        var(--text);
 
-    letter-spacing: 0.5px;
+    font-size:
+        15px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.5px;
 }
 
 .legal-section p {
-    margin: 0 0 12px;
 
-    color: var(--text-secondary);
+    margin:
+        0 0 12px;
 
-    font-size: 13px;
+    color:
+        var(--text-secondary);
 
-    line-height: 1.7;
+    font-size:
+        13px;
+
+    line-height:
+        1.7;
 }
 
 .legal-section strong {
-    color: var(--text);
 
-    font-weight: 900;
+    color:
+        var(--text);
+
+    font-weight:
+        900;
 }
 
 
@@ -2325,25 +3348,36 @@ main {
    ========================================================= */
 
 .legal-final {
-    margin-top: 35px;
 
-    margin-bottom: 25px;
+    margin-top:
+        35px;
 
-    padding: 18px;
+    margin-bottom:
+        25px;
 
-    border-radius: 12px;
+    padding:
+        18px;
 
-    background: var(--surface-secondary);
+    border-radius:
+        12px;
 
-    text-align: center;
+    background:
+        var(--surface-secondary);
+
+    text-align:
+        center;
 }
 
 .legal-final p {
-    margin: 3px 0;
 
-    color: var(--text);
+    margin:
+        3px 0;
 
-    font-weight: 800;
+    color:
+        var(--text);
+
+    font-weight:
+        800;
 }
 
 
@@ -2352,24 +3386,36 @@ main {
    ========================================================= */
 
 .legal-home-button {
-    display: block;
 
-    width: 100%;
+    display:
+        block;
 
-    padding: 13px;
+    width:
+        100%;
 
-    border-radius: 10px;
+    padding:
+        13px;
 
-    background: var(--button);
+    border-radius:
+        10px;
 
-    color: var(--button-text);
+    background:
+        var(--button);
 
-    font-size: 12px;
-    font-weight: 800;
+    color:
+        var(--button-text);
 
-    text-align: center;
+    font-size:
+        12px;
 
-    text-decoration: none;
+    font-weight:
+        800;
+
+    text-align:
+        center;
+
+    text-decoration:
+        none;
 
     transition:
         transform 0.15s ease,
@@ -2377,11 +3423,15 @@ main {
 }
 
 .legal-home-button:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 }
 
 .legal-home-button:active {
-    transform: scale(0.98);
+
+    transform:
+        scale(0.98);
 }
 
 
@@ -2392,43 +3442,63 @@ main {
 @media (max-width: 600px) {
 
     .legal-header {
-        padding: 12px 15px;
+
+        padding:
+            12px 15px;
     }
 
     .legal-header h1 {
-        font-size: 18px;
+
+        font-size:
+            18px;
     }
 
     .legal-back {
-        font-size: 9px;
+
+        font-size:
+            9px;
     }
 
     .legal-main {
-        padding: 25px 12px 40px;
+
+        padding:
+            25px 12px 40px;
     }
 
     .legal-content {
-        padding: 25px 18px;
 
-        border-radius: 15px;
+        padding:
+            25px 18px;
+
+        border-radius:
+            15px;
     }
 
     .legal-content h2 {
-        font-size: 23px;
+
+        font-size:
+            23px;
     }
 
     .legal-section h3 {
-        font-size: 14px;
+
+        font-size:
+            14px;
     }
 
     .legal-section p {
-        font-size: 12px;
 
-        line-height: 1.65;
+        font-size:
+            12px;
+
+        line-height:
+            1.65;
     }
 
     .site-footer {
-        padding: 20px 10px 25px;
+
+        padding:
+            20px 10px 25px;
     }
 }
 
@@ -2436,19 +3506,27 @@ main {
 @media (max-width: 380px) {
 
     .legal-header {
-        flex-direction: column;
 
-        align-items: flex-start;
+        flex-direction:
+            column;
 
-        gap: 8px;
+        align-items:
+            flex-start;
+
+        gap:
+            8px;
     }
 
     .legal-content {
-        padding: 22px 15px;
+
+        padding:
+            22px 15px;
     }
 
     .legal-content h2 {
-        font-size: 21px;
+
+        font-size:
+            21px;
     }
 }
 
@@ -2458,52 +3536,78 @@ main {
    ========================================================= */
 
 .profile-account-section {
-    width: 100%;
 
-    margin-top: 24px;
+    width:
+        100%;
+
+    margin-top:
+        24px;
 }
 
 .account-section-title {
-    font-size: 11px;
-    font-weight: 800;
 
-    letter-spacing: 1.5px;
+    font-size:
+        11px;
 
-    opacity: 0.55;
+    font-weight:
+        800;
 
-    margin-bottom: 10px;
+    letter-spacing:
+        1.5px;
 
-    text-align: left;
+    opacity:
+        0.55;
+
+    margin-bottom:
+        10px;
+
+    text-align:
+        left;
 }
 
 .profile-account-actions {
-    display: flex;
 
-    flex-direction: column;
+    display:
+        flex;
 
-    gap: 10px;
+    flex-direction:
+        column;
 
-    width: 100%;
+    gap:
+        10px;
+
+    width:
+        100%;
 }
 
 .account-button {
-    width: 100%;
 
-    min-height: 64px;
+    width:
+        100%;
 
-    border: 1px solid rgba(128, 128, 128, 0.25);
+    min-height:
+        64px;
 
-    border-radius: 14px;
+    border:
+        1px solid rgba(128, 128, 128, 0.25);
 
-    padding: 10px 14px;
+    border-radius:
+        14px;
 
-    display: flex;
+    padding:
+        10px 14px;
 
-    align-items: center;
+    display:
+        flex;
 
-    cursor: pointer;
+    align-items:
+        center;
 
-    text-align: left;
+    cursor:
+        pointer;
+
+    text-align:
+        left;
 
     transition:
         transform 0.15s ease,
@@ -2512,60 +3616,93 @@ main {
 }
 
 .account-button:hover {
-    transform: translateY(-1px);
+
+    transform:
+        translateY(-1px);
 }
 
 .account-button:active {
-    transform: scale(0.98);
+
+    transform:
+        scale(0.98);
 }
 
 .account-button-icon {
-    width: 38px;
-    height: 38px;
 
-    display: flex;
+    width:
+        38px;
 
-    align-items: center;
-    justify-content: center;
+    height:
+        38px;
 
-    border-radius: 10px;
+    display:
+        flex;
 
-    font-size: 18px;
+    align-items:
+        center;
 
-    margin-right: 12px;
+    justify-content:
+        center;
 
-    flex-shrink: 0;
+    border-radius:
+        10px;
+
+    font-size:
+        18px;
+
+    margin-right:
+        12px;
+
+    flex-shrink:
+        0;
 }
 
 .account-button-content {
-    display: flex;
 
-    flex-direction: column;
+    display:
+        flex;
 
-    gap: 3px;
+    flex-direction:
+        column;
 
-    flex: 1;
+    gap:
+        3px;
+
+    flex:
+        1;
 }
 
 .account-button-content strong {
-    font-size: 13px;
-    font-weight: 800;
 
-    letter-spacing: 0.4px;
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.4px;
 }
 
 .account-button-content small {
-    font-size: 11px;
 
-    opacity: 0.55;
+    font-size:
+        11px;
+
+    opacity:
+        0.55;
 }
 
 .account-button-arrow {
-    font-size: 25px;
 
-    opacity: 0.4;
+    font-size:
+        25px;
 
-    margin-left: 8px;
+    opacity:
+        0.4;
+
+    margin-left:
+        8px;
 }
 
 
@@ -2574,15 +3711,21 @@ main {
    ========================================================= */
 
 .logout-button {
-    background: rgba(128, 128, 128, 0.08);
+
+    background:
+        rgba(128, 128, 128, 0.08);
 }
 
 .logout-button .account-button-icon {
-    background: rgba(128, 128, 128, 0.12);
+
+    background:
+        rgba(128, 128, 128, 0.12);
 }
 
 .logout-button:hover {
-    border-color: rgba(128, 128, 128, 0.45);
+
+    border-color:
+        rgba(128, 128, 128, 0.45);
 }
 
 
@@ -2591,23 +3734,33 @@ main {
    ========================================================= */
 
 .delete-button {
-    background: rgba(220, 60, 60, 0.06);
 
-    border-color: rgba(220, 60, 60, 0.22);
+    background:
+        rgba(220, 60, 60, 0.06);
+
+    border-color:
+        rgba(220, 60, 60, 0.22);
 }
 
 .delete-button .account-button-icon {
-    background: rgba(220, 60, 60, 0.12);
+
+    background:
+        rgba(220, 60, 60, 0.12);
 }
 
 .delete-button .account-button-content strong {
-    color: #d94a4a;
+
+    color:
+        #d94a4a;
 }
 
 .delete-button:hover {
-    background: rgba(220, 60, 60, 0.10);
 
-    border-color: rgba(220, 60, 60, 0.40);
+    background:
+        rgba(220, 60, 60, 0.10);
+
+    border-color:
+        rgba(220, 60, 60, 0.40);
 }
 
 
@@ -2616,40 +3769,59 @@ main {
    ========================================================= */
 
 .delete-confirmation {
-    width: 100%;
 
-    margin-top: 16px;
+    width:
+        100%;
 
-    padding: 20px;
+    margin-top:
+        16px;
 
-    border-radius: 18px;
+    padding:
+        20px;
 
-    background: rgba(220, 60, 60, 0.07);
+    border-radius:
+        18px;
 
-    border: 1px solid rgba(220, 60, 60, 0.25);
+    background:
+        rgba(220, 60, 60, 0.07);
 
-    text-align: center;
+    border:
+        1px solid rgba(220, 60, 60, 0.25);
 
-    display: none;
+    text-align:
+        center;
 
-    animation: deleteConfirmationIn 0.2s ease;
+    display:
+        none;
+
+    animation:
+        deleteConfirmationIn 0.2s ease;
 }
 
 .delete-confirmation.show {
-    display: block;
+
+    display:
+        block;
 }
 
 @keyframes deleteConfirmationIn {
-    from {
-        opacity: 0;
 
-        transform: translateY(-6px);
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(-6px);
     }
 
     to {
-        opacity: 1;
 
-        transform: translateY(0);
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
     }
 }
 
@@ -2659,53 +3831,84 @@ main {
    ========================================================= */
 
 .delete-warning-icon {
-    width: 48px;
-    height: 48px;
 
-    margin: 0 auto 12px;
+    width:
+        48px;
 
-    display: flex;
+    height:
+        48px;
 
-    align-items: center;
-    justify-content: center;
+    margin:
+        0 auto 12px;
 
-    border-radius: 50%;
+    display:
+        flex;
 
-    background: rgba(220, 60, 60, 0.12);
+    align-items:
+        center;
 
-    font-size: 22px;
+    justify-content:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(220, 60, 60, 0.12);
+
+    font-size:
+        22px;
 }
 
 .delete-confirmation-title {
-    margin: 0;
 
-    font-size: 16px;
-    font-weight: 900;
+    margin:
+        0;
 
-    letter-spacing: 0.5px;
+    font-size:
+        16px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.5px;
 }
 
 .delete-confirmation-text {
-    margin: 10px auto 0;
 
-    max-width: 300px;
+    margin:
+        10px auto 0;
 
-    font-size: 12px;
+    max-width:
+        300px;
 
-    line-height: 1.5;
+    font-size:
+        12px;
 
-    opacity: 0.7;
+    line-height:
+        1.5;
+
+    opacity:
+        0.7;
 }
 
 .delete-confirmation-warning {
-    margin: 12px 0 18px;
 
-    font-size: 10px;
-    font-weight: 900;
+    margin:
+        12px 0 18px;
 
-    letter-spacing: 1px;
+    font-size:
+        10px;
 
-    color: #d94a4a;
+    font-weight:
+        900;
+
+    letter-spacing:
+        1px;
+
+    color:
+        #d94a4a;
 }
 
 
@@ -2714,26 +3917,39 @@ main {
    ========================================================= */
 
 .delete-confirmation-buttons {
-    display: flex;
 
-    gap: 10px;
+    display:
+        flex;
 
-    width: 100%;
+    gap:
+        10px;
+
+    width:
+        100%;
 }
 
 .delete-confirmation-buttons button {
-    flex: 1;
 
-    min-height: 46px;
+    flex:
+        1;
 
-    border-radius: 11px;
+    min-height:
+        46px;
 
-    font-size: 12px;
-    font-weight: 900;
+    border-radius:
+        11px;
 
-    letter-spacing: 0.5px;
+    font-size:
+        12px;
 
-    cursor: pointer;
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.5px;
+
+    cursor:
+        pointer;
 
     transition:
         transform 0.15s ease,
@@ -2741,37 +3957,54 @@ main {
 }
 
 .delete-confirmation-buttons button:active {
-    transform: scale(0.97);
+
+    transform:
+        scale(0.97);
 }
 
 .cancel-delete-button {
-    background: rgba(128, 128, 128, 0.12);
 
-    border: 1px solid rgba(128, 128, 128, 0.25);
+    background:
+        rgba(128, 128, 128, 0.12);
 
-    color: var(--text);
+    border:
+        1px solid rgba(128, 128, 128, 0.25);
+
+    color:
+        var(--text);
 }
 
 .cancel-delete-button:hover {
-    background: rgba(128, 128, 128, 0.18);
+
+    background:
+        rgba(128, 128, 128, 0.18);
 }
 
 .confirm-delete-button {
-    background: #d94a4a;
 
-    color: #ffffff;
+    background:
+        #d94a4a;
 
-    border: 1px solid #d94a4a;
+    color:
+        #ffffff;
+
+    border:
+        1px solid #d94a4a;
 }
 
 .confirm-delete-button:hover {
-    opacity: 0.88;
+
+    opacity:
+        0.88;
 }
 
 .confirm-delete-button:disabled {
-    opacity: 0.55;
 
-    cursor: not-allowed;
+    opacity:
+        0.55;
+
+    cursor:
+        not-allowed;
 }
 
 
@@ -2782,38 +4015,73 @@ main {
 @media (max-width: 480px) {
 
     .account-button {
-        min-height: 62px;
 
-        padding: 9px 12px;
+        min-height:
+            62px;
+
+        padding:
+            9px 12px;
     }
 
     .account-button-content strong {
-        font-size: 12px;
+
+        font-size:
+            12px;
     }
 
     .account-button-content small {
-        font-size: 10px;
+
+        font-size:
+            10px;
     }
 
     .delete-confirmation {
-        padding: 18px 15px;
+
+        padding:
+            18px 15px;
     }
 
     .delete-confirmation-buttons {
-        gap: 8px;
+
+        gap:
+            8px;
     }
 
     .delete-confirmation-buttons button {
-        min-height: 48px;
 
-        font-size: 11px;
+        min-height:
+            48px;
+
+        font-size:
+            11px;
     }
 }
 
-.header-streak {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    opacity: 0.65;
-    margin-top: 2px;
+/* =========================================================
+   HOW TO PLAY LINK
+   ========================================================= */
+
+.rules-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-decoration: none;
+    opacity: 0.75;
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.15s ease;
+}
+
+.rules-link:hover {
+    color: var(--accent);
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.rules-link:active {
+    transform: scale(0.97);
 }

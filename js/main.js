@@ -52,23 +52,6 @@ const gameOverModal =
 
 
 // ========================================
-// USERNAME MODAL
-// ========================================
-
-const usernameModal =
-    document.getElementById("usernameModal");
-
-const usernameInput =
-    document.getElementById("usernameInput");
-
-const usernameError =
-    document.getElementById("usernameError");
-
-const saveUsername =
-    document.getElementById("saveUsername");
-
-
-// ========================================
 // PROFILE MODAL
 // ========================================
 
@@ -249,9 +232,6 @@ const game =
 // AUTH MODE
 // ========================================
 
-// The opening screen is CREATE ACCOUNT.
-// Therefore login mode starts as false.
-
 let isLoginMode = false;
 
 
@@ -270,6 +250,197 @@ const themeClasses = [
 
 
 // ========================================
+// GET TODAY'S DATE
+// ========================================
+
+function getTodayDate() {
+
+    const today =
+        new Date();
+
+
+    const year =
+        today.getFullYear();
+
+
+    const month =
+        String(
+            today.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            today.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+// ========================================
+// DAILY STORAGE KEY
+// ========================================
+
+function getDailyStorageKey() {
+
+    return `wordrush-daily-${getTodayDate()}`;
+
+}
+
+
+// ========================================
+// CHECK DAILY PROGRESS
+// ========================================
+
+function hasDailyProgress() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                getDailyStorageKey()
+            );
+
+
+        if (!saved) {
+
+            return false;
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        if (
+            !parsed ||
+            !parsed.word
+        ) {
+
+            return false;
+
+        }
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "DAILY PROGRESS CHECK ERROR:",
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+// ========================================
+// UPDATE DAILY BUTTON
+// ========================================
+
+async function updateDailyButton() {
+
+    if (!dailyButton) {
+        return;
+    }
+
+
+    const todayDate =
+        getTodayDate();
+
+
+    try {
+
+        const completed =
+            await player.hasCompletedDailyWord(
+                todayDate
+            );
+
+
+        if (completed) {
+
+            dailyButton.textContent =
+                "✓ DAILY COMPLETE";
+
+
+            dailyButton.classList.add(
+                "daily-complete"
+            );
+
+
+            return;
+
+        }
+
+
+        dailyButton.classList.remove(
+            "daily-complete"
+        );
+
+
+        if (
+            hasDailyProgress()
+        ) {
+
+            dailyButton.textContent =
+                "📅 CONTINUE DAILY";
+
+        } else {
+
+            dailyButton.textContent =
+                "📅 DAILY";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "DAILY BUTTON ERROR:",
+            error
+        );
+
+
+        dailyButton.textContent =
+            "📅 DAILY";
+
+    }
+
+}
+
+
+// ========================================
+// UPDATE HEADER STREAK
+// ========================================
+
+function updateHeaderStreak() {
+
+    if (!headerStreak) {
+        return;
+    }
+
+
+    headerStreak.textContent =
+        `DAILY STREAK: ${player.dailyCurrentStreak || 0} 🔥`;
+
+}
+
+
+// ========================================
 // THEME LOADING
 // ========================================
 
@@ -280,11 +451,14 @@ function loadSavedTheme() {
             "wordrush-theme"
         );
 
+
     if (!savedTheme) {
         return;
     }
 
+
     applyTheme(savedTheme);
+
 }
 
 
@@ -294,6 +468,7 @@ function applyTheme(theme) {
         ...themeClasses
     );
 
+
     if (
         theme &&
         theme !== "classic"
@@ -302,7 +477,9 @@ function applyTheme(theme) {
         document.body.classList.add(
             `theme-${theme}`
         );
+
     }
+
 
     localStorage.setItem(
         "wordrush-theme",
@@ -317,6 +494,7 @@ function applyTheme(theme) {
                 "active"
             );
 
+
             if (
                 option.dataset.theme ===
                 theme
@@ -325,10 +503,12 @@ function applyTheme(theme) {
                 option.classList.add(
                     "active"
                 );
+
             }
 
         }
     );
+
 }
 
 
@@ -342,9 +522,17 @@ async function loadOnlinePlayer() {
 
         await player.loadOnline();
 
+        await player.loadDailyStats();
+
+        updateHeaderStreak();
+
+        await updateDailyButton();
+
+
         console.log(
             "ONLINE PLAYER LOADED"
         );
+
 
     } catch (error) {
 
@@ -352,7 +540,9 @@ async function loadOnlinePlayer() {
             "PLAYER LOAD ERROR:",
             error
         );
+
     }
+
 }
 
 
@@ -383,7 +573,9 @@ async function loadProfile() {
                 userError
             );
 
+
             return;
+
         }
 
 
@@ -408,7 +600,9 @@ async function loadProfile() {
                 error
             );
 
+
             return;
+
         }
 
 
@@ -417,24 +611,11 @@ async function loadProfile() {
         }
 
 
-        // ========================================
-        // REFRESH DAILY STATS
-        // ========================================
-
         await player.loadDailyStats();
 
 
-        // ========================================
-        // HEADER CURRENT STREAK
-        // ========================================
+        updateHeaderStreak();
 
-        headerStreak.textContent =
-            `CURRENT STREAK: ${player.currentStreak || 0} 🔥`;
-
-
-        // ========================================
-        // DAILY STREAK STATS
-        // ========================================
 
         dailyStreak.textContent =
             player.dailyCurrentStreak || 0;
@@ -443,10 +624,6 @@ async function loadProfile() {
         dailyBestStreak.textContent =
             player.dailyBestStreak || 0;
 
-
-        // ========================================
-        // PROFILE STATS
-        // ========================================
 
         profileUsername.textContent =
             data.username || "PLAYER";
@@ -497,6 +674,7 @@ async function loadProfile() {
                 Math.round(
                     (won / played) * 100
                 );
+
         }
 
 
@@ -510,7 +688,9 @@ async function loadProfile() {
             "PROFILE ERROR:",
             error
         );
+
     }
+
 }
 
 
@@ -524,8 +704,10 @@ profileButton.addEventListener(
 
         await loadProfile();
 
+
         profileModal.style.display =
             "flex";
+
     }
 );
 
@@ -583,10 +765,13 @@ logoutButton.addEventListener(
                     error
                 );
 
+
                 logoutButton.disabled =
                     false;
 
+
                 return;
+
             }
 
 
@@ -616,8 +801,6 @@ logoutButton.addEventListener(
                 "";
 
 
-            // Reset auth mode to LOGIN
-
             isLoginMode = true;
 
 
@@ -640,8 +823,10 @@ logoutButton.addEventListener(
                 error
             );
 
+
             logoutButton.disabled =
                 false;
+
         }
 
     }
@@ -760,6 +945,7 @@ confirmDeleteAccount.addEventListener(
 
 
                 return;
+
             }
 
 
@@ -787,12 +973,9 @@ confirmDeleteAccount.addEventListener(
 
 
                 return;
+
             }
 
-
-            // ========================================
-            // ACCOUNT DELETED
-            // ========================================
 
             resetDeleteConfirmation();
 
@@ -822,8 +1005,6 @@ confirmDeleteAccount.addEventListener(
             authUsernameInput.value =
                 "";
 
-
-            // Reset auth mode to LOGIN
 
             isLoginMode = true;
 
@@ -905,7 +1086,9 @@ async function loadLeaderboard() {
             leaderboardList.innerHTML =
                 "<p>COULD NOT LOAD LEADERBOARD.</p>";
 
+
             return;
+
         }
 
 
@@ -921,7 +1104,9 @@ async function loadLeaderboard() {
             leaderboardList.innerHTML =
                 "<p>NO PLAYERS YET.</p>";
 
+
             return;
+
         }
 
 
@@ -959,8 +1144,10 @@ async function loadLeaderboard() {
                         "current-player"
                     );
 
+
                     myRank =
                         index + 1;
+
                 }
 
 
@@ -968,6 +1155,7 @@ async function loadLeaderboard() {
                     document.createElement(
                         "span"
                     );
+
 
                 rank.className =
                     "leaderboard-rank";
@@ -981,6 +1169,7 @@ async function loadLeaderboard() {
                     document.createElement(
                         "span"
                     );
+
 
                 name.className =
                     "leaderboard-name";
@@ -996,6 +1185,7 @@ async function loadLeaderboard() {
                         "span"
                     );
 
+
                 score.className =
                     "leaderboard-score";
 
@@ -1009,9 +1199,11 @@ async function loadLeaderboard() {
                     rank
                 );
 
+
                 row.appendChild(
                     name
                 );
+
 
                 row.appendChild(
                     score
@@ -1035,6 +1227,7 @@ async function loadLeaderboard() {
 
             myLeaderboardRank.textContent =
                 "YOUR RANK: OUTSIDE TOP 10";
+
         }
 
 
@@ -1048,7 +1241,9 @@ async function loadLeaderboard() {
 
         leaderboardList.innerHTML =
             "<p>COULD NOT LOAD LEADERBOARD.</p>";
+
     }
+
 }
 
 
@@ -1169,31 +1364,8 @@ async function startDailyWord() {
 
     try {
 
-        const today =
-            new Date();
-
-        const year =
-            today.getFullYear();
-
-        const month =
-            String(
-                today.getMonth() + 1
-            ).padStart(
-                2,
-                "0"
-            );
-
-        const day =
-            String(
-                today.getDate()
-            ).padStart(
-                2,
-                "0"
-            );
-
-
         const todayDate =
-            `${year}-${month}-${day}`;
+            getTodayDate();
 
 
         // ========================================
@@ -1209,8 +1381,12 @@ async function startDailyWord() {
         if (alreadyCompleted) {
 
             game.showMessage(
-                "📅 YOU ALREADY COMPLETED TODAY'S DAILY WORD"
+                "✓ YOU ALREADY COMPLETED TODAY'S DAILY WORD"
             );
+
+
+            await updateDailyButton();
+
 
             return;
 
@@ -1249,6 +1425,7 @@ async function startDailyWord() {
                 "DAILY WORD IS NOT AVAILABLE YET."
             );
 
+
             return;
 
         }
@@ -1263,13 +1440,14 @@ async function startDailyWord() {
                 "DAILY WORD IS NOT AVAILABLE YET."
             );
 
+
             return;
 
         }
 
 
         // ========================================
-        // START DAILY GAME
+        // START / RESUME DAILY GAME
         // ========================================
 
         game.startDailyGame(
@@ -1279,6 +1457,9 @@ async function startDailyWord() {
             todayDate
 
         );
+
+
+        await updateDailyButton();
 
 
     } catch (error) {
@@ -1313,14 +1494,46 @@ dailyButton.addEventListener(
 
 
 // ========================================
-// NEW GAME
+// NEW GAME / EXIT DAILY
 // ========================================
 
 newGameButton.addEventListener(
     "click",
     function() {
 
+        // ========================================
+        // EXIT DAILY PUZZLE
+        // ========================================
+
+        if (
+            game.gameMode === "daily" &&
+            !game.gameOver
+        ) {
+
+            game.startGame();
+
+
+            game.showMessage(
+                "📅 DAILY PROGRESS SAVED"
+            );
+
+
+            updateDailyButton();
+
+
+            return;
+
+        }
+
+
+        // ========================================
+        // START NORMAL GAME
+        // ========================================
+
         game.startGame();
+
+
+        updateDailyButton();
 
     }
 );
@@ -1335,6 +1548,22 @@ hintButton.addEventListener(
     function() {
 
         game.useHint();
+
+    }
+);
+
+
+// ========================================
+// GAME STATE CHANGED
+// ========================================
+
+window.addEventListener(
+    "wordrush-game-state-changed",
+    async function() {
+
+        updateHeaderStreak();
+
+        await updateDailyButton();
 
     }
 );
@@ -1372,6 +1601,7 @@ mobileInput.addEventListener(
             game.handleKey(
                 lastCharacter
             );
+
         }
 
 
@@ -1390,21 +1620,15 @@ document.addEventListener(
     "click",
     function() {
 
-        // Do not focus the game input
-        // while the authentication modal
-        // is open.
-
         if (
             authModal.style.display ===
             "flex"
         ) {
 
             return;
+
         }
 
-
-        // Do not focus the game input
-        // while another modal is open.
 
         if (
             profileModal.style.display ===
@@ -1418,6 +1642,7 @@ document.addEventListener(
         ) {
 
             return;
+
         }
 
 
@@ -1445,10 +1670,6 @@ document.addEventListener(
             event.key.toUpperCase();
 
 
-        // ========================================
-        // ENTER
-        // ========================================
-
         if (
             key === "ENTER"
         ) {
@@ -1457,13 +1678,11 @@ document.addEventListener(
                 "ENTER"
             );
 
+
             return;
+
         }
 
-
-        // ========================================
-        // BACKSPACE
-        // ========================================
 
         if (
             key === "BACKSPACE"
@@ -1473,19 +1692,11 @@ document.addEventListener(
                 "BACKSPACE"
             );
 
+
             return;
+
         }
 
-
-        // ========================================
-        // MOBILE LETTER PROTECTION
-        // ========================================
-
-        // Mobile letters are already handled
-        // by mobileInput's "input" event.
-        //
-        // This prevents a mobile letter from
-        // being processed twice.
 
         if (
             document.activeElement ===
@@ -1493,12 +1704,9 @@ document.addEventListener(
         ) {
 
             return;
+
         }
 
-
-        // ========================================
-        // DESKTOP LETTERS
-        // ========================================
 
         if (
             /^[A-Z]$/.test(
@@ -1509,6 +1717,7 @@ document.addEventListener(
             game.handleKey(
                 key
             );
+
         }
 
     }
@@ -1561,6 +1770,7 @@ authSwitch.addEventListener(
 
             authUsernameInput.style.display =
                 "block";
+
         }
 
 
@@ -1600,7 +1810,9 @@ authSubmit.addEventListener(
             authMessage.textContent =
                 "ENTER YOUR EMAIL.";
 
+
             return;
+
         }
 
 
@@ -1609,7 +1821,9 @@ authSubmit.addEventListener(
             authMessage.textContent =
                 "ENTER YOUR PASSWORD.";
 
+
             return;
+
         }
 
 
@@ -1649,7 +1863,9 @@ authSubmit.addEventListener(
                 authSubmit.disabled =
                     false;
 
+
                 return;
+
             }
 
 
@@ -1658,10 +1874,13 @@ authSubmit.addEventListener(
                 authMessage.textContent =
                     "LOGIN FAILED.";
 
+
                 authSubmit.disabled =
                     false;
 
+
                 return;
+
             }
 
 
@@ -1683,7 +1902,11 @@ authSubmit.addEventListener(
             game.startGame();
 
 
+            await updateDailyButton();
+
+
             return;
+
         }
 
 
@@ -1696,10 +1919,13 @@ authSubmit.addEventListener(
             authMessage.textContent =
                 "ENTER A USERNAME.";
 
+
             authSubmit.disabled =
                 false;
 
+
             return;
+
         }
 
 
@@ -1729,7 +1955,9 @@ authSubmit.addEventListener(
             authSubmit.disabled =
                 false;
 
+
             return;
+
         }
 
 
@@ -1738,10 +1966,13 @@ authSubmit.addEventListener(
             authMessage.textContent =
                 "SIGN UP FAILED.";
 
+
             authSubmit.disabled =
                 false;
 
+
             return;
+
         }
 
 
@@ -1782,7 +2013,9 @@ authSubmit.addEventListener(
             authSubmit.disabled =
                 false;
 
+
             return;
+
         }
 
 
@@ -1832,6 +2065,7 @@ supabase.auth.onAuthStateChange(
             profileModal.style.display =
                 "none";
 
+
             leaderboardModal.style.display =
                 "none";
 
@@ -1871,6 +2105,7 @@ async function checkSession() {
 
 
             return;
+
         }
 
 
@@ -1878,6 +2113,9 @@ async function checkSession() {
 
 
         game.startGame();
+
+
+        await updateDailyButton();
 
 
     } catch (error) {
@@ -1890,7 +2128,9 @@ async function checkSession() {
 
         authModal.style.display =
             "flex";
+
     }
+
 }
 
 

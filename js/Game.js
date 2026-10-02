@@ -41,6 +41,10 @@ export class Game {
 
         this.dailyWordDate = null;
 
+        this.dailyGuesses = [];
+
+        this.dailyStorageKey = null;
+
 
         this.setupModalButtons();
 
@@ -56,6 +60,10 @@ export class Game {
         this.gameMode = "practice";
 
         this.dailyWordDate = null;
+
+        this.dailyStorageKey = null;
+
+        this.dailyGuesses = [];
 
 
         this.currentRow = 0;
@@ -94,6 +102,31 @@ export class Game {
             "game-lost"
         );
 
+
+        // ========================================
+        // BUTTON STATE
+        // ========================================
+
+        const newGameButton =
+            document.getElementById(
+                "newGameButton"
+            );
+
+
+        if (newGameButton) {
+
+            newGameButton.textContent =
+                "NEW GAME";
+
+        }
+
+
+        window.dispatchEvent(
+            new Event(
+                "wordrush-game-state-changed"
+            )
+        );
+
     }
 
 
@@ -110,6 +143,13 @@ export class Game {
 
         this.dailyWordDate =
             wordDate;
+
+
+        this.dailyStorageKey =
+            `wordrush-daily-${wordDate}`;
+
+
+        this.dailyGuesses = [];
 
 
         this.currentRow = 0;
@@ -130,8 +170,96 @@ export class Game {
         this.board.createBoard();
 
 
+        // ========================================
+        // LOAD SAVED DAILY PROGRESS
+        // ========================================
+
+        this.loadDailyProgress();
+
+
+        // ========================================
+        // RESTORE SAVED GUESSES
+        // ========================================
+
+        for (
+            let i = 0;
+            i < this.dailyGuesses.length;
+            i++
+        ) {
+
+            const guess =
+                this.dailyGuesses[i];
+
+
+            for (
+                let j = 0;
+                j < guess.length;
+                j++
+            ) {
+
+                this.board.displayLetter(
+                    i,
+                    j,
+                    guess[j]
+                );
+
+            }
+
+
+            const result =
+                this.wordManager.checkGuess(
+                    guess
+                );
+
+
+            this.board.showResult(
+                i,
+                result
+            );
+
+        }
+
+
+        this.currentRow =
+            this.dailyGuesses.length;
+
+
+        // ========================================
+        // RESTORE CURRENT GUESS
+        // ========================================
+
+        const savedState =
+            this.getSavedDailyProgress();
+
+
+        if (
+            savedState &&
+            savedState.currentGuess
+        ) {
+
+            this.currentGuess =
+                savedState.currentGuess;
+
+
+            for (
+                let i = 0;
+                i < this.currentGuess.length;
+                i++
+            ) {
+
+                this.board.displayLetter(
+                    this.currentRow,
+                    i,
+                    this.currentGuess[i]
+                );
+
+            }
+
+        }
+
+
         this.showMessage(
-            "📅 DAILY WORD"
+            "📅 DAILY PUZZLE"
         );
 
 
@@ -151,6 +279,236 @@ export class Game {
             "game-lost"
         );
 
+
+        // ========================================
+        // BUTTON STATE
+        // ========================================
+
+        const newGameButton =
+            document.getElementById(
+                "newGameButton"
+            );
+
+
+        if (newGameButton) {
+
+            newGameButton.textContent =
+                "EXIT DAILY";
+
+        }
+
+
+        window.dispatchEvent(
+            new Event(
+                "wordrush-game-state-changed"
+            )
+        );
+
+    }
+
+
+    // ========================================
+    // GET SAVED DAILY PROGRESS
+    // ========================================
+
+    getSavedDailyProgress() {
+
+        if (
+            !this.dailyStorageKey
+        ) {
+
+            return null;
+
+        }
+
+
+        try {
+
+            const saved =
+                localStorage.getItem(
+                    this.dailyStorageKey
+                );
+
+
+            if (!saved) {
+
+                return null;
+
+            }
+
+
+            const parsed =
+                JSON.parse(saved);
+
+
+            if (
+                !parsed ||
+                parsed.word !==
+                this.wordManager.secretWord
+            ) {
+
+                localStorage.removeItem(
+                    this.dailyStorageKey
+                );
+
+
+                return null;
+
+            }
+
+
+            return parsed;
+
+        } catch (error) {
+
+            console.error(
+                "DAILY PROGRESS LOAD ERROR:",
+                error
+            );
+
+
+            return null;
+
+        }
+
+    }
+
+
+    // ========================================
+    // LOAD DAILY PROGRESS
+    // ========================================
+
+    loadDailyProgress() {
+
+        const saved =
+            this.getSavedDailyProgress();
+
+
+        if (!saved) {
+
+            this.dailyGuesses = [];
+
+            this.currentGuess = "";
+
+            this.currentRow = 0;
+
+            return;
+
+        }
+
+
+        if (
+            Array.isArray(
+                saved.guesses
+            )
+        ) {
+
+            this.dailyGuesses =
+                saved.guesses;
+
+        }
+
+
+        this.currentGuess =
+            saved.currentGuess || "";
+
+
+        this.currentRow =
+            this.dailyGuesses.length;
+
+    }
+
+
+    // ========================================
+    // SAVE DAILY PROGRESS
+    // ========================================
+
+    saveDailyProgress() {
+
+        if (
+            this.gameMode !== "daily"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            !this.dailyStorageKey
+        ) {
+
+            return;
+
+        }
+
+
+        try {
+
+            localStorage.setItem(
+
+                this.dailyStorageKey,
+
+                JSON.stringify({
+
+                    word:
+                        this.wordManager.secretWord,
+
+                    wordDate:
+                        this.dailyWordDate,
+
+                    guesses:
+                        this.dailyGuesses,
+
+                    currentGuess:
+                        this.currentGuess
+
+                })
+
+            );
+
+        } catch (error) {
+
+            console.error(
+                "DAILY PROGRESS SAVE ERROR:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ========================================
+    // CLEAR DAILY PROGRESS
+    // ========================================
+
+    clearDailyProgress() {
+
+        if (
+            !this.dailyStorageKey
+        ) {
+
+            return;
+
+        }
+
+
+        try {
+
+            localStorage.removeItem(
+                this.dailyStorageKey
+            );
+
+        } catch (error) {
+
+            console.error(
+                "DAILY PROGRESS DELETE ERROR:",
+                error
+            );
+
+        }
+
     }
 
 
@@ -167,7 +525,8 @@ export class Game {
         }
 
 
-        key = key.toUpperCase();
+        key =
+            key.toUpperCase();
 
 
         if (key === "ENTER") {
@@ -238,6 +597,13 @@ export class Game {
 
         );
 
+
+        // ========================================
+        // SAVE DAILY PROGRESS
+        // ========================================
+
+        this.saveDailyProgress();
+
     }
 
 
@@ -277,6 +643,13 @@ export class Game {
             this.currentGuess.length
 
         );
+
+
+        // ========================================
+        // SAVE DAILY PROGRESS
+        // ========================================
+
+        this.saveDailyProgress();
 
     }
 
@@ -360,9 +733,26 @@ export class Game {
         );
 
 
+        // ========================================
+        // SAVE VALID GUESS
+        // ========================================
+
         if (
+            this.gameMode === "daily"
+        ) {
+
+            this.dailyGuesses.push(
+                this.currentGuess
+            );
+
+        }
+
+
+        if (
+
             this.currentGuess ===
             this.wordManager.secretWord
+
         ) {
 
             this.gameWon();
@@ -375,6 +765,13 @@ export class Game {
         this.currentRow++;
 
         this.currentGuess = "";
+
+
+        // ========================================
+        // SAVE DAILY PROGRESS
+        // ========================================
+
+        this.saveDailyProgress();
 
 
         if (
@@ -495,6 +892,11 @@ export class Game {
 
             await this.player.loadDailyStats();
 
+
+            // Daily is now permanently complete.
+
+            this.clearDailyProgress();
+
         }
 
 
@@ -513,6 +915,13 @@ export class Game {
 
         console.log(
             `WORDRUSH SCORE: +${score}`
+        );
+
+
+        window.dispatchEvent(
+            new Event(
+                "wordrush-game-state-changed"
+            )
         );
 
 
@@ -673,6 +1082,11 @@ export class Game {
 
             await this.player.loadDailyStats();
 
+
+            // Daily is now permanently complete.
+
+            this.clearDailyProgress();
+
         }
 
 
@@ -715,6 +1129,13 @@ export class Game {
 
         attemptResult.textContent =
             "";
+
+
+        window.dispatchEvent(
+            new Event(
+                "wordrush-game-state-changed"
+            )
+        );
 
 
         setTimeout(() => {
@@ -821,6 +1242,7 @@ export class Game {
                     ).style.display =
                         "none";
 
+
                     return;
 
                 }
@@ -903,8 +1325,10 @@ export class Game {
         ) {
 
             if (
+
                 vowels.includes(letter) &&
                 vowel === ""
+
             ) {
 
                 vowel = letter;
@@ -913,8 +1337,10 @@ export class Game {
 
 
             if (
+
                 !vowels.includes(letter) &&
                 consonant === ""
+
             ) {
 
                 consonant = letter;
@@ -923,8 +1349,10 @@ export class Game {
 
 
             if (
+
                 vowel !== "" &&
                 consonant !== ""
+
             ) {
 
                 break;
