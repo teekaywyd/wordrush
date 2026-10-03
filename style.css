@@ -4582,20 +4582,6 @@ main {
     .board-layout #leaderboardButton { right: -32px; width: 26px; }
 }
 
-@media (max-height: 700px) and (max-width: 520px) {
-    .game-screen { justify-content: space-around; }
-    .game-heading h1 { font-size: 20px; }
-    .game-heading { gap: 1px; }
-    #board { grid-template-columns: repeat(5, clamp(34px, 11.5vw, 42px)); grid-template-rows: repeat(6, clamp(34px, 11.5vw, 42px)); gap: 3px; }
-    .tile { width: clamp(34px, 11.5vw, 42px); height: clamp(34px, 11.5vw, 42px); font-size: 19px; }
-}
-
-@media (max-height: 560px) and (max-width: 520px) {
-    .game-heading .header-streak, .game-screen .mode-indicator { display: none; }
-    .game-heading .profile-entry, .game-heading .hint-button { min-height: 24px; }
-    .game-screen #message { min-height: 16px; }
-}
-
 @media (max-width: 520px) {
     .game-heading { gap: 7px; }
     .game-heading h1 { margin-bottom: 2px; }
@@ -4608,39 +4594,35 @@ main {
     .mode-picker h2 { margin-bottom: 5px; text-align: center; }
 }
 
-@media (max-height: 560px) and (max-width: 520px) {
-    .game-heading { gap: 4px; }
-    .game-heading .header-streak, .game-screen .mode-indicator { display: block; }
-}
-
-@media (max-width: 600px) {
-    body.keyboard-open #gameScreen {
-        position: fixed;
-        top: var(--visual-top, 0px);
-        left: 0;
-        right: 0;
-        height: var(--visual-height, 100dvh);
+@media (max-width: 520px) {
+    .game-screen {
+        height: 100vh;
         min-height: 0;
         justify-content: flex-start;
-        gap: 2px;
-        padding: 3px 8px 4px;
-        overflow: hidden;
+        gap: 5px;
+        padding-top: max(8px, env(safe-area-inset-top));
     }
-    body.keyboard-open .game-heading { gap: 0; margin: 0; }
-    body.keyboard-open .game-heading h1 { font-size: 18px; padding-bottom: 4px; }
-    body.keyboard-open .game-heading .mode-indicator { margin: 0; font-size: 8px; }
-    body.keyboard-open .game-heading .header-streak { margin: 0 0 2px; font-size: 9px; }
-    body.keyboard-open .game-heading .profile-entry { display: none; }
-    body.keyboard-open .game-heading .hint-button { min-height: 23px; margin: 0; padding: 2px 8px; font-size: 10px; }
-    body.keyboard-open .game-screen #message { min-height: 14px; margin: 0; font-size: 10px; }
-    body.keyboard-open #board {
-        grid-template-columns: repeat(5, clamp(29px, 8.5vw, 34px));
-        grid-template-rows: repeat(6, clamp(29px, 8.5vw, 34px));
-        gap: 2px;
+    .game-heading {
+        width: min(100%, 280px);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px 10px;
+        margin: 0 auto;
     }
-    body.keyboard-open .tile {
-        width: clamp(29px, 8.5vw, 34px);
-        height: clamp(29px, 8.5vw, 34px);
-        font-size: 16px;
+    .game-heading h1,
+    .game-heading .mode-indicator,
+    .game-heading .header-streak { grid-column: 1 / -1; }
+    .game-heading h1 { margin: 0; font-size: 23px; }
+    .game-heading .mode-indicator { margin: 0; }
+    .game-heading .header-streak { margin: 0 0 2px; }
+    #profileButton.profile-entry,
+    #hintButton.hint-button {
+        width: 100%;
+        min-height: 28px;
+        margin: 0;
     }
+    .game-screen #message { margin: 0; }
+    .board-layout { margin-top: 1px; }
+    #board { grid-template-columns: repeat(5, clamp(34px, 11.2vw, 39px)); grid-template-rows: repeat(6, clamp(34px, 11.2vw, 39px)); gap: 3px; }
+    .tile { width: clamp(34px, 11.2vw, 39px); height: clamp(34px, 11.2vw, 39px); font-size: 18px; }
 }

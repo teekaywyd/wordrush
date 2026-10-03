@@ -1518,39 +1518,6 @@ document.getElementById("board").addEventListener("click", () => {
     }
 });
 
-if (window.visualViewport) {
-    const root = document.documentElement;
-    let closedViewportHeight = window.visualViewport.height;
-
-    const syncMobileViewport = () => {
-        const viewport = window.visualViewport;
-        root.style.setProperty("--visual-height", `${viewport.height}px`);
-        root.style.setProperty("--visual-top", `${viewport.offsetTop}px`);
-
-        const focusedForTyping = document.activeElement === mobileInput;
-        const keyboardOpen = window.innerWidth <= 600 && focusedForTyping &&
-            closedViewportHeight - viewport.height > 110;
-
-        document.body.classList.toggle("keyboard-open", keyboardOpen);
-        if (!focusedForTyping && viewport.height > closedViewportHeight) {
-            closedViewportHeight = viewport.height;
-        }
-    };
-
-    window.visualViewport.addEventListener("resize", syncMobileViewport);
-    window.visualViewport.addEventListener("scroll", syncMobileViewport);
-    window.addEventListener("resize", () => {
-        if (document.activeElement !== mobileInput) {
-            closedViewportHeight = window.visualViewport.height;
-        }
-        syncMobileViewport();
-    });
-    mobileInput.addEventListener("focus", syncMobileViewport);
-    mobileInput.addEventListener("blur", () => setTimeout(syncMobileViewport, 250));
-    syncMobileViewport();
-}
-
-
 // ========================================
 // MOBILE KEYBOARD FOCUS
 // ========================================
