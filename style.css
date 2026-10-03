@@ -4612,3 +4612,35 @@ main {
     .game-heading { gap: 4px; }
     .game-heading .header-streak, .game-screen .mode-indicator { display: block; }
 }
+
+@media (max-width: 600px) {
+    body.keyboard-open #gameScreen {
+        position: fixed;
+        top: var(--visual-top, 0px);
+        left: 0;
+        right: 0;
+        height: var(--visual-height, 100dvh);
+        min-height: 0;
+        justify-content: flex-start;
+        gap: 2px;
+        padding: 3px 8px 4px;
+        overflow: hidden;
+    }
+    body.keyboard-open .game-heading { gap: 0; margin: 0; }
+    body.keyboard-open .game-heading h1 { font-size: 18px; padding-bottom: 4px; }
+    body.keyboard-open .game-heading .mode-indicator { margin: 0; font-size: 8px; }
+    body.keyboard-open .game-heading .header-streak { margin: 0 0 2px; font-size: 9px; }
+    body.keyboard-open .game-heading .profile-entry { display: none; }
+    body.keyboard-open .game-heading .hint-button { min-height: 23px; margin: 0; padding: 2px 8px; font-size: 10px; }
+    body.keyboard-open .game-screen #message { min-height: 14px; margin: 0; font-size: 10px; }
+    body.keyboard-open #board {
+        grid-template-columns: repeat(5, clamp(29px, 8.5vw, 34px));
+        grid-template-rows: repeat(6, clamp(29px, 8.5vw, 34px));
+        gap: 2px;
+    }
+    body.keyboard-open .tile {
+        width: clamp(29px, 8.5vw, 34px);
+        height: clamp(29px, 8.5vw, 34px);
+        font-size: 16px;
+    }
+}
