@@ -1512,9 +1512,10 @@ mobileInput.addEventListener(
     }
 );
 
-document.getElementById("keyboard").addEventListener("click", event => {
-    const key = event.target.closest("[data-key]")?.dataset.key;
-    if (key) game.handleKey(key);
+document.getElementById("board").addEventListener("click", () => {
+    if (window.innerWidth <= 600 && !gameScreen.hidden) {
+        mobileInput.focus({ preventScroll: true });
+    }
 });
 
 

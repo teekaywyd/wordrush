@@ -4526,7 +4526,6 @@ main {
 }
 
 /* Compact, centered mobile game layout. */
-.game-keyboard { display: none; }
 @media (max-width: 520px) {
     html, body { width: 100%; height: 100%; overflow: hidden; }
     body { overscroll-behavior: none; }
@@ -4569,45 +4568,11 @@ main {
     }
     .board-layout .back-button { left: -36px; margin: 0; font-size: 27px; }
     .board-layout #leaderboardButton { right: -36px; }
-    .game-keyboard {
-        width: min(100%, 390px);
-        flex: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        margin: 0 auto;
-        touch-action: manipulation;
-    }
-    .keyboard-row { display: flex; justify-content: center; gap: 4px; width: 100%; }
-    .keyboard-row-middle { width: 91%; }
-    .game-key {
-        min-width: 0;
-        flex: 1;
-        width: auto;
-        height: clamp(36px, 6.1vh, 44px);
-        padding: 0;
-        border: 0;
-        border-radius: 6px;
-        background: var(--surface-secondary);
-        color: var(--text);
-        font: inherit;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        touch-action: manipulation;
-    }
-    .game-key-wide { flex: 1.5; font-size: 10px; }
-    .game-key:active { background: var(--border); }
     .game-screen .rules-link { display: none; }
 }
 
 @media (max-width: 380px) {
     .game-screen { padding-left: 5px; padding-right: 5px; }
-    .game-keyboard { gap: 5px; }
-    .keyboard-row { gap: 3px; }
-    .game-key { height: clamp(34px, 5.7vh, 40px); font-size: 12px; }
-    .game-key-wide { font-size: 9px; }
 }
 
 @media (max-width: 330px) {
@@ -4623,14 +4588,27 @@ main {
     .game-heading { gap: 1px; }
     #board { grid-template-columns: repeat(5, clamp(34px, 11.5vw, 42px)); grid-template-rows: repeat(6, clamp(34px, 11.5vw, 42px)); gap: 3px; }
     .tile { width: clamp(34px, 11.5vw, 42px); height: clamp(34px, 11.5vw, 42px); font-size: 19px; }
-    .game-keyboard { gap: 4px; }
-    .game-key { height: 34px; }
 }
 
 @media (max-height: 560px) and (max-width: 520px) {
     .game-heading .header-streak, .game-screen .mode-indicator { display: none; }
     .game-heading .profile-entry, .game-heading .hint-button { min-height: 24px; }
     .game-screen #message { min-height: 16px; }
-    .game-key { height: 30px; }
-    .game-keyboard { gap: 3px; }
+}
+
+@media (max-width: 520px) {
+    .game-heading { gap: 7px; }
+    .game-heading h1 { margin-bottom: 2px; }
+    .game-heading .mode-indicator { margin: 2px 0; }
+    .game-heading .header-streak { margin: 2px 0 4px; }
+    .game-heading .profile-entry { margin-top: 2px; }
+    .game-heading .hint-button { margin-top: 1px; }
+    .mode-picker { grid-template-columns: minmax(0, 1fr); }
+    .mode-picker h2, .mode-picker > button { grid-column: 1; width: 100%; }
+    .mode-picker h2 { margin-bottom: 5px; text-align: center; }
+}
+
+@media (max-height: 560px) and (max-width: 520px) {
+    .game-heading { gap: 4px; }
+    .game-heading .header-streak, .game-screen .mode-indicator { display: block; }
 }
