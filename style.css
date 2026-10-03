@@ -4568,7 +4568,12 @@ main {
     }
     .board-layout .back-button { left: -36px; margin: 0; font-size: 27px; }
     .board-layout #leaderboardButton { right: -36px; }
-    .game-screen .rules-link { display: none; }
+    .game-screen .rules-link {
+        display: block;
+        flex: none;
+        margin-top: 4px;
+        font-size: 11px;
+    }
 }
 
 @media (max-width: 380px) {
