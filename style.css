@@ -4633,8 +4633,8 @@ main {
     .game-heading #profileButton { justify-self: center; width: auto; min-height: 30px; margin: 0; }
     .game-screen #message { margin: 0; }
     .board-layout { margin-top: 2px; }
-    #board { grid-template-columns: repeat(5, clamp(36px, 11.4vw, 42px)); grid-template-rows: repeat(6, clamp(36px, 11.4vw, 42px)); gap: 3px; }
-    .tile { width: clamp(36px, 11.4vw, 42px); height: clamp(36px, 11.4vw, 42px); font-size: 19px; }
+    #board { grid-template-columns: repeat(5, clamp(38px, 12vw, 44px)); grid-template-rows: repeat(6, clamp(38px, 12vw, 44px)); gap: 3px; }
+    .tile { width: clamp(38px, 12vw, 44px); height: clamp(38px, 12vw, 44px); font-size: 20px; }
     .game-screen .rules-link { margin-top: 2px; }
     .game-footer-tools {
         display: flex;
