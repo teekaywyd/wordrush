@@ -4400,6 +4400,17 @@ main {
     text-transform: none;
 }
 
+.game-footer-tools {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.game-footer-tools .header-streak {
+    margin: 0;
+}
+
 @media (max-width: 520px) {
     .home-screen {
         min-height: 100svh;
@@ -4616,18 +4627,22 @@ main {
     }
     .game-heading h1,
     .game-heading .mode-indicator,
-    .game-heading .header-streak { grid-column: 1 / -1; }
+    .game-heading #profileButton { grid-column: 1 / -1; }
     .game-heading h1 { margin: 0; padding-bottom: 8px; font-size: 22px; }
     .game-heading .mode-indicator { margin: 1px 0 2px; }
-    .game-heading .header-streak { margin: 1px 0 5px; }
-    #profileButton.profile-entry,
-    #hintButton.hint-button {
-        width: 100%;
-        min-height: 30px;
-        margin: 0;
-    }
+    .game-heading #profileButton { justify-self: center; width: auto; min-height: 30px; margin: 0; }
     .game-screen #message { margin: 0; }
     .board-layout { margin-top: 2px; }
     #board { grid-template-columns: repeat(5, clamp(36px, 11.4vw, 42px)); grid-template-rows: repeat(6, clamp(36px, 11.4vw, 42px)); gap: 3px; }
     .tile { width: clamp(36px, 11.4vw, 42px); height: clamp(36px, 11.4vw, 42px); font-size: 19px; }
+    .game-screen .rules-link { margin-top: 2px; }
+    .game-footer-tools {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        width: min(100%, 280px);
+        gap: 10px;
+    }
+    .game-footer-tools .header-streak { text-align: center; }
+    .game-footer-tools #hintButton.hint-button { width: 100%; min-height: 30px; margin: 0; }
 }
