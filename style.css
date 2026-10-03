@@ -4402,21 +4402,44 @@ main {
 
 @media (max-width: 520px) {
     .home-screen {
-        padding: 36px 22px;
+        min-height: 100svh;
+        padding: 28px 18px max(24px, env(safe-area-inset-bottom));
     }
+
+    .home-content { width: min(100%, 390px); }
+    .home-title { font-size: clamp(38px, 12vw, 48px); }
+    .home-subtitle { max-width: 30ch; font-size: 14px; }
+    .mode-picker { gap: 10px; }
+    .mode-card, #dailyButton.mode-card { min-height: 86px; padding: 15px 46px 14px 16px; }
+    .settings-button { margin-top: 14px; }
 
     .home-subtitle {
         margin-bottom: 32px;
     }
 
     .game-screen {
-        padding: 20px 8px 28px;
+        min-height: 100svh;
+        padding: max(12px, env(safe-area-inset-top)) 8px max(18px, env(safe-area-inset-bottom));
+        overflow-x: hidden;
     }
+
+    .game-heading { gap: 3px; margin-bottom: 2px; }
+    .game-heading h1 { font-size: 24px; }
+    .game-title { padding-bottom: 8px; }
+    .mode-indicator { font-size: 9px; }
+    .header-streak { font-size: 11px; }
+    .profile-entry { min-height: 30px; }
+    #hintButton.hint-button { padding: 5px 10px; }
+    .game-screen #message { min-height: 22px; margin: 2px 0; font-size: 12px; }
+    .game-screen .rules-link { margin-top: 12px; }
 
     .board-layout {
         grid-template-columns: 32px max-content 32px;
         gap: 6px;
     }
+
+    #board { grid-template-columns: repeat(5, 48px); grid-template-rows: repeat(6, 48px); gap: 4px; }
+    .tile { width: 48px; height: 48px; font-size: 21px; }
 
     .board-side-button {
         width: 32px;
@@ -4430,10 +4453,16 @@ main {
 }
 
 @media (max-width: 380px) {
+    .game-screen { padding-left: 5px; padding-right: 5px; }
+    .game-heading h1 { font-size: 22px; }
+    .header-streak { font-size: 10px; }
     .board-layout {
         grid-template-columns: 28px max-content 28px;
         gap: 4px;
     }
+
+    #board { grid-template-columns: repeat(5, 43px); grid-template-rows: repeat(6, 43px); gap: 4px; }
+    .tile { width: 43px; height: 43px; font-size: 19px; }
 
     .board-side-button {
         width: 28px;
@@ -4447,8 +4476,12 @@ main {
 
 @media (max-width: 330px) {
     #board {
+        grid-template-columns: repeat(5, 38px);
+        grid-template-rows: repeat(6, 38px);
         gap: 3px;
     }
+
+    .tile { width: 38px; height: 38px; font-size: 17px; }
 
     .board-layout {
         grid-template-columns: 24px max-content 24px;

@@ -1334,141 +1334,33 @@ themeOptions.forEach(
 // ========================================
 
 async function startDailyWord() {
-
     try {
-
-        const todayDate =
-            getTodayDate();
-
-
-        // ========================================
-        // CHECK IF ALREADY COMPLETED
-        // ========================================
-
-        const alreadyCompleted =
-            await player.hasCompletedDailyWord(
-                todayDate
-            );
-
-
-        if (alreadyCompleted) {
-
-            game.showMessage(
-                "✓ YOU ALREADY COMPLETED TODAY'S DAILY WORD"
-            );
-
-
-            await updateDailyButton();
-
-
-            return;
-
-        }
-
-
-        // The database picks and stores one random word per UTC date.
-        const {
-            data: dailyWord,
-            error
-        } = await supabase.rpc("get_daily_word");
-
-
-        if (error) {
-
-            console.error(
-                "DAILY WORD DATABASE ERROR:",
-                {
-                    date: todayDate,
-                    code: error.code,
-                    message: error.message,
-                    details: error.details,
-                    hint: error.hint
+        let state = await player.getDailyGameState();
+        const legacyKey = `wordrush-daily-${state.wordDate || getTodayDate()}`;
+        try {
+            const legacy = JSON.parse(localStorage.getItem(legacyKey) || "null");
+            if (legacy?.wordDate === (state.wordDate || getTodayDate()) &&
+                Array.isArray(legacy.guesses) && legacy.guesses.length &&
+                state.status === "active") {
+                for (const guess of legacy.guesses.slice((state.guesses || []).length, 6)) {
+                    const migrated = await player.submitDailyGuess(guess);
+                    if (!migrated.accepted && migrated.reason !== "completed") {
+                        throw new Error("A saved daily guess could not be synced.");
+                    }
+                    if (migrated.status !== "active") break;
                 }
-            );
-
-
-            game.showMessage(
-                error.code === "PGRST205"
-                    ? "DAILY PUZZLE DATABASE TABLE IS MISSING."
-                    : error.code === "PGRST202"
-                        ? "DAILY WORD SETUP IS MISSING. APPLY THE SUPABASE MIGRATION."
-                        : "COULD NOT READ TODAY'S DAILY PUZZLE. CHECK DATABASE ACCESS."
-            );
-
-
-            return;
-
+                state = await player.getDailyGameState();
+            }
+        } catch (migrationError) {
+            console.error("Could not sync saved daily progress:", migrationError);
+            throw migrationError;
         }
-
-
-        if (
-            !dailyWord
-        ) {
-
-            console.warn(
-                "NO DAILY WORD ROW FOUND FOR:",
-                todayDate
-            );
-
-            game.showMessage(
-                `NO DAILY PUZZLE IS SET FOR ${todayDate}.`
-            );
-
-
-            return;
-
-        }
-
-
-        if (!game.wordManager.isValidWord(dailyWord)) {
-
-            console.error(
-                "INVALID DAILY WORD IN DATABASE:",
-                {
-                    date: todayDate,
-                    word: dailyWord
-                }
-            );
-
-            game.showMessage(
-                "TODAY'S DATABASE WORD IS NOT IN THE GAME WORD LIST."
-            );
-
-            return;
-
-        }
-
-
-        // ========================================
-        // START / RESUME DAILY GAME
-        // ========================================
-
-        game.startDailyGame(
-
-            dailyWord,
-
-            todayDate
-
-        );
-
-
+        game.startDailyGame(state.wordDate || getTodayDate(), state);
         await updateDailyButton();
-
-
     } catch (error) {
-
-        console.error(
-            "DAILY WORD ERROR:",
-            error
-        );
-
-
-        game.showMessage(
-            "COULD NOT LOAD DAILY WORD."
-        );
-
+        console.error("DAILY GAME LOAD ERROR:", error);
+        game.showMessage("COULD NOT LOAD DAILY PUZZLE. CHECK DATABASE SETUP.");
     }
-
 }
 
 

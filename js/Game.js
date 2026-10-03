@@ -242,10 +242,7 @@ export class Game {
     // START DAILY GAME
     // ========================================
 
-    startDailyGame(
-        dailyWord,
-        wordDate
-    ) {
+    startDailyGame(wordDate, state) {
 
         this.gameMode = "daily";
 
@@ -273,8 +270,9 @@ export class Game {
         this.statsSaved = false;
 
 
-        this.wordManager.secretWord =
-            dailyWord.toUpperCase();
+        this.wordManager.secretWord = null;
+        this.dailyAnswer = state.answer || null;
+        this.dailyBusy = false;
 
 
         this.board.createBoard();
@@ -284,7 +282,11 @@ export class Game {
         // LOAD SAVED DAILY PROGRESS
         // ========================================
 
-        this.loadDailyProgress();
+        try {
+            const legacy = JSON.parse(localStorage.getItem(this.dailyStorageKey) || "null");
+            this.currentGuess = legacy?.currentGuess || "";
+            localStorage.setItem(this.dailyStorageKey, JSON.stringify({ wordDate, currentGuess: this.currentGuess }));
+        } catch { localStorage.removeItem(this.dailyStorageKey); }
 
 
         // ========================================
@@ -293,12 +295,14 @@ export class Game {
 
         for (
             let i = 0;
-            i < this.dailyGuesses.length;
+            i < (state.guesses || []).length;
             i++
         ) {
 
-            const guess =
-                this.dailyGuesses[i];
+            const entry = state.guesses[i];
+            const guess = typeof entry === "string" ? entry : entry.guess;
+            const result = typeof entry === "string" ? [] : entry.result;
+            this.dailyGuesses.push(guess);
 
 
             for (
@@ -316,12 +320,6 @@ export class Game {
             }
 
 
-            const result =
-                this.wordManager.checkGuess(
-                    guess
-                );
-
-
             this.board.showResult(
                 i,
                 result
@@ -330,25 +328,17 @@ export class Game {
         }
 
 
-        this.currentRow =
-            this.dailyGuesses.length;
+        this.currentRow = this.dailyGuesses.length;
+        this.hintUsed = Boolean(state.hintUsed);
+        this.gameOver = state.status !== "active";
+        this.statsSaved = this.gameOver;
 
 
         // ========================================
         // RESTORE CURRENT GUESS
         // ========================================
 
-        const savedState =
-            this.getSavedDailyProgress();
-
-
-        if (
-            savedState &&
-            savedState.currentGuess
-        ) {
-
-            this.currentGuess =
-                savedState.currentGuess;
+        if (!this.gameOver && this.currentGuess) {
 
 
             for (
@@ -375,7 +365,7 @@ export class Game {
 
         document.getElementById(
             "hintButton"
-        ).disabled = false;
+        ).disabled = this.hintUsed || this.gameOver;
 
 
         document.getElementById(
@@ -561,9 +551,6 @@ export class Game {
 
                 JSON.stringify({
 
-                    word:
-                        this.wordManager.secretWord,
-
                     wordDate:
                         this.dailyWordDate,
 
@@ -628,7 +615,7 @@ export class Game {
 
     handleKey(key) {
 
-        if (this.gameOver) {
+        if (this.gameOver || this.dailyBusy) {
 
             return;
 
@@ -676,7 +663,7 @@ export class Game {
 
     addLetter(letter) {
 
-        if (this.gameOver) {
+        if (this.gameOver || this.dailyBusy) {
 
             return;
 
@@ -723,7 +710,7 @@ export class Game {
 
     removeLetter() {
 
-        if (this.gameOver) {
+        if (this.gameOver || this.dailyBusy) {
 
             return;
 
@@ -828,6 +815,11 @@ export class Game {
         }
 
 
+        if (this.gameMode === "daily") {
+            this.submitDailyGuess();
+            return;
+        }
+
         const result =
             this.wordManager.checkGuess(
                 this.currentGuess
@@ -847,15 +839,7 @@ export class Game {
         // SAVE VALID GUESS
         // ========================================
 
-        if (this.gameMode === "daily") {
-            this.dailyGuesses.push(
-                this.currentGuess
-            );
-        } else {
-            this.practiceGuesses.push(
-                this.currentGuess
-            );
-        }
+        this.practiceGuesses.push(this.currentGuess);
 
 
         if (
@@ -893,6 +877,45 @@ export class Game {
 
         }
 
+    }
+
+
+    async submitDailyGuess() {
+        if (this.dailyBusy) return;
+        const guess = this.currentGuess;
+        this.dailyBusy = true;
+        try {
+            const response = await this.player.submitDailyGuess(guess);
+            if (!response.accepted) {
+                this.showMessage(response.reason === "completed" ? "TODAY'S PUZZLE IS COMPLETE" : "WORD NOT FOUND");
+                if (response.reason !== "completed") this.board.shakeRow(this.currentRow);
+                return;
+            }
+            this.board.showResult(this.currentRow, response.result);
+            this.dailyGuesses.push(guess);
+            this.currentGuess = "";
+            this.currentRow = this.dailyGuesses.length;
+            this.dailyAnswer = response.answer || null;
+            this.gameOver = response.status !== "active";
+            this.statsSaved = this.gameOver;
+            this.saveDailyProgress();
+            window.dispatchEvent(new Event("wordrush-game-state-changed"));
+            if (this.gameOver) {
+                this.clearDailyProgress();
+                await this.player.loadDailyStats();
+                if (response.won) {
+                    setTimeout(() => {
+                        this.board.celebrateRow(this.currentRow - 1);
+                        setTimeout(() => this.showWinModal(response.score, response.attempts), 700);
+                    }, 450);
+                } else setTimeout(() => this.showGameOverModal(), 450);
+            }
+        } catch (error) {
+            console.error("DAILY GUESS ERROR:", error);
+            this.showMessage("COULD NOT SUBMIT GUESS. TRY AGAIN.");
+        } finally {
+            this.dailyBusy = false;
+        }
     }
 
 
@@ -1139,7 +1162,7 @@ export class Game {
 
 
         answer.textContent =
-            this.wordManager.secretWord;
+            this.gameMode === "daily" ? this.dailyAnswer : this.wordManager.secretWord;
 
 
         modal.style.display =
@@ -1317,7 +1340,7 @@ export class Game {
 
 
         answer.textContent =
-            this.wordManager.secretWord;
+            this.gameMode === "daily" ? this.dailyAnswer : this.wordManager.secretWord;
 
 
         modal.style.display =
@@ -1407,6 +1430,22 @@ export class Game {
 
             return;
 
+        }
+
+        if (this.gameMode === "daily") {
+            this.player.useDailyHint().then(result => {
+                if (!result.vowel || !result.consonant) {
+                    this.showMessage("HINT UNAVAILABLE");
+                    return;
+                }
+                this.hintUsed = true;
+                document.getElementById("hintButton").disabled = true;
+                this.showMessage(`HINT • VOWEL: ${result.vowel} • CONSONANT: ${result.consonant}`);
+            }).catch(error => {
+                console.error("DAILY HINT ERROR:", error);
+                this.showMessage("COULD NOT LOAD HINT");
+            });
+            return;
         }
 
 

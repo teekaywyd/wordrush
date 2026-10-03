@@ -722,6 +722,24 @@ export class Player {
 
     }
 
+    async getDailyGameState() {
+        const { data, error } = await supabase.rpc("get_daily_game_state");
+        if (error) throw error;
+        return data;
+    }
+
+    async submitDailyGuess(guess) {
+        const { data, error } = await supabase.rpc("submit_daily_guess", { p_guess: guess });
+        if (error) throw error;
+        return data;
+    }
+
+    async useDailyHint() {
+        const { data, error } = await supabase.rpc("use_daily_hint");
+        if (error) throw error;
+        return data;
+    }
+
 
     // ========================================
     // WIN PERCENTAGE
