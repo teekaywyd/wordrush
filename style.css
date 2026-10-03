@@ -4637,12 +4637,20 @@ main {
     .tile { width: clamp(36px, 11.4vw, 42px); height: clamp(36px, 11.4vw, 42px); font-size: 19px; }
     .game-screen .rules-link { margin-top: 2px; }
     .game-footer-tools {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-flow: row nowrap;
         align-items: center;
+        justify-content: center;
         width: min(100%, 280px);
         gap: 10px;
     }
-    .game-footer-tools .header-streak { text-align: center; }
-    .game-footer-tools #hintButton.hint-button { width: 100%; min-height: 30px; margin: 0; }
+    .game-footer-tools .header-streak { flex: 0 0 auto; white-space: nowrap; text-align: center; }
+    .game-footer-tools #hintButton.hint-button {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: max-content;
+        min-height: 30px;
+        margin: 0;
+        white-space: nowrap;
+    }
 }
