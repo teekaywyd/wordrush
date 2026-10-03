@@ -1800,7 +1800,10 @@ authSubmit.addEventListener(
         } =
             await supabase.auth.signUp({
                 email,
-                password
+                password,
+                options: {
+                    data: { username }
+                }
             });
 
 
@@ -1830,49 +1833,6 @@ authSubmit.addEventListener(
 
             authMessage.textContent =
                 "SIGN UP FAILED.";
-
-
-            authSubmit.disabled =
-                false;
-
-
-            return;
-
-        }
-
-
-        // ========================================
-        // CREATE PROFILE
-        // ========================================
-
-        const {
-            error: profileError
-        } =
-            await supabase
-                .from("profiles")
-                .insert({
-                    id: data.user.id,
-                    username: username,
-                    games_played: 0,
-                    wins: 0,
-                    losses: 0,
-                    current_streak: 0,
-                    best_streak: 0,
-                    total_score: 0
-                });
-
-
-        if (profileError) {
-
-            console.error(
-                "PROFILE CREATION ERROR:",
-                profileError
-            );
-
-
-            authMessage.textContent =
-                profileError.message
-                    .toUpperCase();
 
 
             authSubmit.disabled =
