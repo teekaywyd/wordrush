@@ -153,6 +153,9 @@ const leaderboardList =
         "leaderboardList"
     );
 
+const leaderboardTabs = document.querySelectorAll("[data-leaderboard-mode]");
+let leaderboardMode = "casual";
+
 const myLeaderboardRank =
     document.getElementById(
         "myLeaderboardRank"
@@ -1039,13 +1042,13 @@ async function loadLeaderboard() {
 
     try {
 
+        const dailyLeaderboard = leaderboardMode === "daily";
         const {
             data,
             error
-        } =
-            await supabase.rpc(
-                "get_leaderboard"
-            );
+        } = await supabase.rpc(
+            dailyLeaderboard ? "get_daily_streak_leaderboard" : "get_leaderboard"
+        );
 
 
         if (error) {
@@ -1075,7 +1078,10 @@ async function loadLeaderboard() {
         ) {
 
             leaderboardList.innerHTML =
-                "<p>NO PLAYERS YET.</p>";
+                dailyLeaderboard
+                    ? "<p>NO ACTIVE DAILY STREAKS YET.</p>"
+                    : "<p>NO PLAYERS YET.</p>";
+            myLeaderboardRank.textContent = "NO RANK YET";
 
 
             return;
@@ -1163,9 +1169,9 @@ async function loadLeaderboard() {
                     "leaderboard-score";
 
 
-                score.textContent =
-                    playerData.total_score ||
-                    0;
+                score.textContent = dailyLeaderboard
+                    ? `${playerData.current_streak || 0} ${Number(playerData.current_streak) === 1 ? "DAY" : "DAYS"}`
+                    : playerData.total_score || 0;
 
 
                 row.appendChild(
@@ -1362,6 +1368,19 @@ async function startDailyWord() {
         game.showMessage("COULD NOT LOAD DAILY PUZZLE. CHECK DATABASE SETUP.");
     }
 }
+
+
+leaderboardTabs.forEach(tab => {
+    tab.addEventListener("click", async () => {
+        leaderboardMode = tab.dataset.leaderboardMode;
+        leaderboardTabs.forEach(option => {
+            const selected = option === tab;
+            option.classList.toggle("active", selected);
+            option.setAttribute("aria-selected", String(selected));
+        });
+        await loadLeaderboard();
+    });
+});
 
 
 // ========================================
@@ -1844,12 +1863,18 @@ authSubmit.addEventListener(
         }
 
 
-        authMessage.textContent =
-            "ACCOUNT CREATED. CHECK YOUR EMAIL.";
+        if (data.session) {
+            authMessage.textContent = "ACCOUNT CREATED.";
+            authModal.style.display = "none";
+            authSubmit.disabled = false;
+            showHomeScreen();
+            await loadOnlinePlayer();
+            await updateDailyButton();
+            return;
+        }
 
-
-        authSubmit.disabled =
-            false;
+        authMessage.textContent = "ACCOUNT CREATED. CHECK YOUR EMAIL TO SIGN IN.";
+        authSubmit.disabled = false;
 
     }
 );
