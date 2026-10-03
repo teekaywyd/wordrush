@@ -191,11 +191,11 @@ header {
     display: flex;
 
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     gap: 8px;
 
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 
     padding: 12px 20px;
 
@@ -214,6 +214,13 @@ header {
    WORDRUSH LOGO
    ========================================================= */
 
+.icon-library {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
 .logo {
 
     display: flex;
@@ -223,9 +230,10 @@ header {
     align-items: center;
     justify-content: center;
 
-    min-width: 150px;
+    min-width: 0;
+    flex: 1 1 0;
 
-    margin: 0 4px;
+    margin: 0;
 }
 
 .logo h1 {
@@ -276,7 +284,8 @@ header {
 #leaderboardButton,
 #themeButton {
 
-    width: 42px;
+    width: auto;
+    flex: 1 1 0;
     height: 42px;
 
     padding: 0;
@@ -303,6 +312,19 @@ header {
         transform 0.15s ease;
 }
 
+#profileButton svg,
+#leaderboardButton svg,
+#themeButton svg,
+#dailyButton svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 #profileButton:hover,
 #leaderboardButton:hover,
 #themeButton:hover {
@@ -327,6 +349,13 @@ header {
 #dailyButton,
 #newGameButton,
 #hintButton {
+
+    flex: 1 1 0;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
 
     border: none;
 
@@ -924,6 +953,16 @@ main {
 
     animation:
         iconBounce 0.5s ease;
+}
+
+.profile-icon svg {
+    width: 46px;
+    height: 46px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 @keyframes iconBounce {
@@ -2108,15 +2147,10 @@ main {
         display:
             grid;
 
-        grid-template-columns:
-            40px
-            1fr
-            40px
-            40px;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
 
         grid-template-rows:
             auto
-            38px
             38px;
 
         gap:
@@ -2131,14 +2165,13 @@ main {
 
     #profileButton {
 
-        grid-column:
-            1;
+        grid-column: 1 / 3;
 
         grid-row:
             1;
 
         width:
-            40px;
+            100%;
 
         height:
             40px;
@@ -2152,8 +2185,7 @@ main {
 
     .logo {
 
-        grid-column:
-            2;
+        grid-column: 3 / 9;
 
         grid-row:
             1;
@@ -2191,14 +2223,13 @@ main {
 
     #leaderboardButton {
 
-        grid-column:
-            3;
+        grid-column: 9 / 11;
 
         grid-row:
             1;
 
         width:
-            40px;
+            100%;
 
         height:
             40px;
@@ -2212,14 +2243,13 @@ main {
 
     #themeButton {
 
-        grid-column:
-            4;
+        grid-column: 11 / 13;
 
         grid-row:
             1;
 
         width:
-            40px;
+            100%;
 
         height:
             40px;
@@ -2233,8 +2263,7 @@ main {
 
     #dailyButton {
 
-        grid-column:
-            1 / 5;
+        grid-column: 1 / 5;
 
         grid-row:
             2;
@@ -2254,11 +2283,10 @@ main {
 
     #newGameButton {
 
-        grid-column:
-            1 / 3;
+        grid-column: 5 / 9;
 
         grid-row:
-            3;
+            2;
 
         width:
             100%;
@@ -2275,11 +2303,10 @@ main {
 
     #hintButton {
 
-        grid-column:
-            3 / 5;
+        grid-column: 9 / 13;
 
         grid-row:
-            3;
+            2;
 
         width:
             100%;
@@ -2310,15 +2337,10 @@ main {
 
     header {
 
-        grid-template-columns:
-            34px
-            1fr
-            34px
-            34px;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
 
         grid-template-rows:
             auto
-            36px
             36px;
 
         gap:
@@ -2333,7 +2355,7 @@ main {
     #themeButton {
 
         width:
-            34px;
+            100%;
 
         height:
             34px;
@@ -2406,15 +2428,10 @@ main {
 
     header {
 
-        grid-template-columns:
-            30px
-            1fr
-            30px
-            30px;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
 
         grid-template-rows:
             auto
-            34px
             34px;
 
         gap:
@@ -2429,7 +2446,7 @@ main {
     #themeButton {
 
         width:
-            30px;
+            100%;
 
         height:
             30px;
@@ -4084,4 +4101,393 @@ main {
 
 .rules-link:active {
     transform: scale(0.97);
+}
+
+/* Main menu and board screens */
+#homeScreen,
+#gameScreen {
+    width: 100%;
+    min-height: 100vh;
+}
+
+#homeScreen[hidden],
+#gameScreen[hidden] {
+    display: none !important;
+}
+
+.home-screen {
+    justify-content: center;
+    padding: 48px 24px;
+}
+
+.home-content {
+    width: min(100%, 440px);
+    text-align: center;
+}
+
+.home-eyebrow {
+    margin: 0 0 10px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+}
+
+.home-title,
+.game-heading h1 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(36px, 8vw, 52px);
+    font-weight: 500;
+    letter-spacing: -1.5px;
+}
+
+.home-subtitle {
+    margin: 12px auto 40px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.mode-picker {
+    display: grid;
+    gap: 12px;
+    text-align: left;
+}
+
+.mode-picker h2 {
+    margin: 0 0 3px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.mode-card {
+    position: relative;
+    display: grid;
+    gap: 6px;
+    width: 100%;
+    min-height: 100px;
+    padding: 19px 52px 17px 20px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+#dailyButton.mode-card {
+    display: grid;
+    flex: none;
+    min-width: 0;
+    min-height: 100px;
+    width: 100%;
+    padding: 19px 52px 17px 20px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--text);
+    text-align: left;
+}
+
+.mode-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.mode-card-title {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.mode-card-description {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+.daily-mode-status {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.mode-card-arrow {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    color: var(--text-secondary);
+    font-size: 22px;
+    font-weight: 400;
+    transform: translateY(-50%);
+}
+
+.settings-button,
+.profile-entry,
+.hint-button,
+.board-side-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    background: transparent;
+    color: var(--text-secondary);
+    font: inherit;
+    font-weight: 400;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.settings-button {
+    margin-top: 24px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+.settings-button:hover,
+.profile-entry:hover,
+.hint-button:hover,
+.board-side-button:hover {
+    color: var(--text);
+    background: var(--surface-secondary);
+}
+
+.settings-button svg,
+.profile-entry svg,
+.board-side-button svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.game-screen {
+    justify-content: flex-start;
+    padding: 28px 18px 36px;
+}
+
+.game-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.game-heading h1 {
+    font-size: 27px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+.header-streak {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    opacity: 1;
+}
+
+.mode-indicator {
+    margin: 0 0 2px;
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    opacity: 0.72;
+}
+
+.profile-entry {
+    min-height: 34px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+#profileButton.profile-entry {
+    width: auto;
+    height: auto;
+    flex: none;
+    padding: 5px 10px;
+    background: transparent;
+    font-size: 12px;
+}
+
+.hint-button {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+#hintButton.hint-button {
+    flex: none;
+    min-width: 0;
+    padding: 6px 12px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+.game-screen #message {
+    min-height: 26px;
+    margin: 6px 0 4px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.board-layout {
+    display: grid;
+    grid-template-columns: 40px max-content 40px;
+    align-items: start;
+    justify-content: center;
+    gap: clamp(6px, 2vw, 14px);
+    width: 100%;
+}
+
+.board-layout #board {
+    margin: 0;
+}
+
+.board-side-button {
+    width: 40px;
+    height: 40px;
+    margin-top: 0;
+    border-radius: 10px;
+}
+
+.board-layout #leaderboardButton {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.home-content button:focus-visible,
+.game-screen button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.back-button {
+    margin-top: -8px;
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.game-screen .rules-link {
+    margin-top: 22px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+@media (max-width: 520px) {
+    .home-screen {
+        padding: 36px 22px;
+    }
+
+    .home-subtitle {
+        margin-bottom: 32px;
+    }
+
+    .game-screen {
+        padding: 20px 8px 28px;
+    }
+
+    .board-layout {
+        grid-template-columns: 32px max-content 32px;
+        gap: 6px;
+    }
+
+    .board-side-button {
+        width: 32px;
+        height: 36px;
+    }
+
+    .board-layout #leaderboardButton {
+        width: 32px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 380px) {
+    .board-layout {
+        grid-template-columns: 28px max-content 28px;
+        gap: 4px;
+    }
+
+    .board-side-button {
+        width: 28px;
+    }
+
+    .board-layout #leaderboardButton {
+        width: 28px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 330px) {
+    #board {
+        gap: 3px;
+    }
+
+    .board-layout {
+        grid-template-columns: 24px max-content 24px;
+        gap: 3px;
+    }
+
+    .board-side-button {
+        width: 24px;
+    }
+
+    .board-layout #leaderboardButton {
+        width: 24px;
+        height: 30px;
+    }
+}
+
+.home-title,
+.game-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    line-height: 1.15;
+    padding-bottom: 12px;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 38px 2px;
+}
+
+.home-title .title-word,
+.game-title .title-word {
+    color: var(--text);
+}
+
+.home-title .title-rush,
+.game-title .title-rush {
+    color: var(--accent);
+    font-style: italic;
+}
+
+.game-title {
+    background-size: 28px 2px;
 }

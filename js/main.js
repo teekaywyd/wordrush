@@ -12,6 +12,18 @@ import { supabase } from "./supabase.js";
 const message =
     document.getElementById("message");
 
+const homeScreen =
+    document.getElementById("homeScreen");
+
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const casualModeButton =
+    document.getElementById("casualModeButton");
+
+const backToMenuButton =
+    document.getElementById("backToMenu");
+
 const dailyButton =
     document.getElementById("dailyButton");
 
@@ -27,9 +39,6 @@ const leaderboardButton =
 const themeButton =
     document.getElementById("themeButton");
 
-const newGameButton =
-    document.getElementById("newGameButton");
-
 const hintButton =
     document.getElementById("hintButton");
 
@@ -41,6 +50,9 @@ const dailyBestStreak =
 
 const headerStreak =
     document.getElementById("headerStreak");
+
+const modeIndicator =
+    document.getElementById("modeIndicator");
 
 
 // ========================================
@@ -254,34 +266,7 @@ const themeClasses = [
 // ========================================
 
 function getTodayDate() {
-
-    const today =
-        new Date();
-
-
-    const year =
-        today.getFullYear();
-
-
-    const month =
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    return `${year}-${month}-${day}`;
+    return new Date().toISOString().slice(0, 10);
 
 }
 
@@ -363,6 +348,8 @@ async function updateDailyButton() {
     const todayDate =
         getTodayDate();
 
+    const dailyStatus = dailyButton.querySelector(".daily-mode-status");
+
 
     try {
 
@@ -374,13 +361,7 @@ async function updateDailyButton() {
 
         if (completed) {
 
-            dailyButton.textContent =
-                "✓ DAILY COMPLETE";
-
-
-            dailyButton.classList.add(
-                "daily-complete"
-            );
+            dailyStatus.textContent = "Completed today";
 
 
             return;
@@ -388,22 +369,15 @@ async function updateDailyButton() {
         }
 
 
-        dailyButton.classList.remove(
-            "daily-complete"
-        );
-
-
         if (
             hasDailyProgress()
         ) {
 
-            dailyButton.textContent =
-                "📅 CONTINUE DAILY";
+            dailyStatus.textContent = "Continue today's puzzle";
 
         } else {
 
-            dailyButton.textContent =
-                "📅 DAILY";
+            dailyStatus.textContent = "Play today's puzzle";
 
         }
 
@@ -415,8 +389,7 @@ async function updateDailyButton() {
         );
 
 
-        dailyButton.textContent =
-            "📅 DAILY";
+        dailyStatus.textContent = "Play today's puzzle";
 
     }
 
@@ -435,7 +408,7 @@ function updateHeaderStreak() {
 
 
     headerStreak.textContent =
-        `DAILY STREAK: ${player.dailyCurrentStreak || 0} 🔥`;
+        `Daily streak: ${player.dailyCurrentStreak || 0}`;
 
 }
 
@@ -1393,36 +1366,33 @@ async function startDailyWord() {
         }
 
 
-        // ========================================
-        // GET TODAY'S DAILY WORD
-        // ========================================
-
+        // The database picks and stores one random word per UTC date.
         const {
-            data,
+            data: dailyWord,
             error
-        } =
-            await supabase
-                .from("daily_words")
-                .select(
-                    "word"
-                )
-                .eq(
-                    "word_date",
-                    todayDate
-                )
-                .single();
+        } = await supabase.rpc("get_daily_word");
 
 
         if (error) {
 
             console.error(
-                "DAILY WORD ERROR:",
-                error
+                "DAILY WORD DATABASE ERROR:",
+                {
+                    date: todayDate,
+                    code: error.code,
+                    message: error.message,
+                    details: error.details,
+                    hint: error.hint
+                }
             );
 
 
             game.showMessage(
-                "DAILY WORD IS NOT AVAILABLE YET."
+                error.code === "PGRST205"
+                    ? "DAILY PUZZLE DATABASE TABLE IS MISSING."
+                    : error.code === "PGRST202"
+                        ? "DAILY WORD SETUP IS MISSING. APPLY THE SUPABASE MIGRATION."
+                        : "COULD NOT READ TODAY'S DAILY PUZZLE. CHECK DATABASE ACCESS."
             );
 
 
@@ -1432,14 +1402,37 @@ async function startDailyWord() {
 
 
         if (
-            !data ||
-            !data.word
+            !dailyWord
         ) {
 
-            game.showMessage(
-                "DAILY WORD IS NOT AVAILABLE YET."
+            console.warn(
+                "NO DAILY WORD ROW FOUND FOR:",
+                todayDate
             );
 
+            game.showMessage(
+                `NO DAILY PUZZLE IS SET FOR ${todayDate}.`
+            );
+
+
+            return;
+
+        }
+
+
+        if (!game.wordManager.isValidWord(dailyWord)) {
+
+            console.error(
+                "INVALID DAILY WORD IN DATABASE:",
+                {
+                    date: todayDate,
+                    word: dailyWord
+                }
+            );
+
+            game.showMessage(
+                "TODAY'S DATABASE WORD IS NOT IN THE GAME WORD LIST."
+            );
 
             return;
 
@@ -1452,7 +1445,7 @@ async function startDailyWord() {
 
         game.startDailyGame(
 
-            data.word,
+            dailyWord,
 
             todayDate
 
@@ -1483,10 +1476,22 @@ async function startDailyWord() {
 // DAILY BUTTON
 // ========================================
 
+let casualGameStarted = false;
+let casualProgress = null;
+
 dailyButton.addEventListener(
     "click",
     async function() {
+        modeIndicator.textContent = "Daily mode";
 
+        if (
+            game.gameMode === "practice" &&
+            casualGameStarted
+        ) {
+            casualProgress = game.getPracticeProgress();
+        }
+
+        showGameScreen();
         await startDailyWord();
 
     }
@@ -1494,54 +1499,50 @@ dailyButton.addEventListener(
 
 
 // ========================================
-// NEW GAME / EXIT DAILY
+// MODE NAVIGATION
 // ========================================
 
-newGameButton.addEventListener(
+function showGameScreen() {
+    homeScreen.hidden = true;
+    gameScreen.hidden = false;
+}
+
+function showHomeScreen() {
+    gameScreen.hidden = true;
+    homeScreen.hidden = false;
+    mobileInput.blur();
+}
+
+casualModeButton.addEventListener(
     "click",
     function() {
-
-        // ========================================
-        // EXIT DAILY PUZZLE
-        // ========================================
+        modeIndicator.textContent = "Casual mode";
 
         if (
             game.gameMode === "daily" &&
-            !game.gameOver
+            casualProgress &&
+            game.restorePracticeProgress(casualProgress)
         ) {
-
+            casualProgress = null;
+            casualGameStarted = true;
+        } else if (
+            !casualGameStarted ||
+            game.gameMode !== "practice" ||
+            game.gameOver
+        ) {
             game.startGame();
-
-
-            game.showMessage(
-                "📅 DAILY PROGRESS SAVED"
-            );
-
-
-            updateDailyButton();
-
-
-            return;
-
+            casualGameStarted = true;
         }
 
-
-        // ========================================
-        // START NORMAL GAME
-        // ========================================
-
-        game.startGame();
-
-
-        updateDailyButton();
-
+        showGameScreen();
     }
 );
 
+backToMenuButton.addEventListener(
+    "click",
+    showHomeScreen
+);
 
-// ========================================
-// HINT
-// ========================================
 
 hintButton.addEventListener(
     "click",
@@ -1561,6 +1562,9 @@ window.addEventListener(
     "wordrush-game-state-changed",
     async function() {
 
+        modeIndicator.textContent =
+            game.gameMode === "daily" ? "Daily mode" : "Casual mode";
+
         updateHeaderStreak();
 
         await updateDailyButton();
@@ -1576,6 +1580,11 @@ window.addEventListener(
 mobileInput.addEventListener(
     "input",
     function() {
+
+        if (gameScreen.hidden) {
+            mobileInput.value = "";
+            return;
+        }
 
         const value =
             mobileInput.value;
@@ -1619,6 +1628,10 @@ mobileInput.addEventListener(
 document.addEventListener(
     "click",
     function() {
+
+        if (gameScreen.hidden) {
+            return;
+        }
 
         if (
             authModal.style.display ===
@@ -1665,6 +1678,10 @@ document.addEventListener(
 document.addEventListener(
     "keydown",
     function(event) {
+
+        if (gameScreen.hidden) {
+            return;
+        }
 
         const key =
             event.key.toUpperCase();
@@ -1899,9 +1916,6 @@ authSubmit.addEventListener(
             await loadOnlinePlayer();
 
 
-            game.startGame();
-
-
             await updateDailyButton();
 
 
@@ -2110,9 +2124,6 @@ async function checkSession() {
 
 
         await loadOnlinePlayer();
-
-
-        game.startGame();
 
 
         await updateDailyButton();

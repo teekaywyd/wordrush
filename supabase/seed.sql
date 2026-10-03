@@ -1,0 +1,1 @@
+-- The daily word pool is installed by the random daily words migration.

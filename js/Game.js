@@ -43,6 +43,8 @@ export class Game {
 
         this.dailyGuesses = [];
 
+        this.practiceGuesses = [];
+
         this.dailyStorageKey = null;
 
 
@@ -64,6 +66,8 @@ export class Game {
         this.dailyStorageKey = null;
 
         this.dailyGuesses = [];
+
+        this.practiceGuesses = [];
 
 
         this.currentRow = 0;
@@ -130,6 +134,110 @@ export class Game {
     }
 
 
+    getPracticeProgress() {
+
+        if (
+            this.gameMode !== "practice" ||
+            this.gameOver
+        ) {
+            return null;
+        }
+
+
+        return {
+            secretWord: this.wordManager.secretWord,
+            guesses: [...this.practiceGuesses],
+            currentGuess: this.currentGuess,
+            hintUsed: this.hintUsed
+        };
+
+    }
+
+
+    restorePracticeProgress(progress) {
+
+        if (
+            !progress ||
+            !this.wordManager.words.includes(progress.secretWord) ||
+            !Array.isArray(progress.guesses) ||
+            progress.guesses.length >= this.maxAttempts ||
+            progress.guesses.some(
+                guess => !this.wordManager.isValidWord(guess)
+            )
+        ) {
+            return false;
+        }
+
+
+        this.gameMode = "practice";
+        this.dailyWordDate = null;
+        this.dailyStorageKey = null;
+        this.dailyGuesses = [];
+        this.practiceGuesses = [...progress.guesses];
+        this.wordManager.secretWord = progress.secretWord;
+        this.currentRow = this.practiceGuesses.length;
+        this.currentGuess = progress.currentGuess || "";
+        this.gameOver = false;
+        this.statsSaved = false;
+        this.hintUsed = Boolean(progress.hintUsed);
+
+
+        this.board.createBoard();
+
+
+        for (
+            let row = 0;
+            row < this.practiceGuesses.length;
+            row++
+        ) {
+            const guess = this.practiceGuesses[row];
+
+            for (
+                let column = 0;
+                column < guess.length;
+                column++
+            ) {
+                this.board.displayLetter(row, column, guess[column]);
+            }
+
+            this.board.showResult(
+                row,
+                this.wordManager.checkGuess(guess)
+            );
+        }
+
+
+        if (this.currentGuess.length <= this.wordLength) {
+            for (
+                let column = 0;
+                column < this.currentGuess.length;
+                column++
+            ) {
+                this.board.displayLetter(
+                    this.currentRow,
+                    column,
+                    this.currentGuess[column]
+                );
+            }
+        } else {
+            this.currentGuess = "";
+        }
+
+
+        document.getElementById("hintButton").disabled =
+            this.hintUsed;
+        document.getElementById("gameOverModal").style.display = "none";
+        this.showMessage("");
+
+        window.dispatchEvent(
+            new Event("wordrush-game-state-changed")
+        );
+
+        return true;
+
+    }
+
+
     // ========================================
     // START DAILY GAME
     // ========================================
@@ -150,6 +258,8 @@ export class Game {
 
 
         this.dailyGuesses = [];
+
+        this.practiceGuesses = [];
 
 
         this.currentRow = 0;
@@ -737,14 +847,14 @@ export class Game {
         // SAVE VALID GUESS
         // ========================================
 
-        if (
-            this.gameMode === "daily"
-        ) {
-
+        if (this.gameMode === "daily") {
             this.dailyGuesses.push(
                 this.currentGuess
             );
-
+        } else {
+            this.practiceGuesses.push(
+                this.currentGuess
+            );
         }
 
 

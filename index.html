@@ -42,63 +42,40 @@
      HEADER
 ========================================= -->
 
-<header>
+<svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="icon-trophy" viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4M7 4h10v5a5 5 0 0 1-10 0V4Zm0 2H3v2a5 5 0 0 0 5 5m9-7h4v2a5 5 0 0 1-5 5"/></symbol>
+    <symbol id="icon-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1.5-3.3 1.8 1.8 0 0 1 1.3-3h1.7A4.5 4.5 0 0 0 22 10.2C22 6.2 17.5 3 12 3Z"/><circle cx="7.5" cy="10" r="1"/><circle cx="11" cy="7" r="1"/><circle cx="16" cy="8" r="1"/></symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+</svg>
 
-    <button id="profileButton">
-        👤
-    </button>
+    <main id="homeScreen" class="home-screen">
+        <div class="home-content">
+            <p class="home-eyebrow">A WORD GAME</p>
+            <h1 class="home-title"><span class="title-word">Word</span><span class="title-rush">Rush</span></h1>
+            <p class="home-subtitle">Find the five-letter word. Make every guess count.</p>
 
+            <section class="mode-picker" aria-labelledby="modePickerTitle">
+                <h2 id="modePickerTitle">Choose your mode</h2>
+                <button id="casualModeButton" class="mode-card" type="button">
+                    <span class="mode-card-title">Casual</span>
+                    <span class="mode-card-description">An unhurried round with a fresh word each time.</span>
+                    <span class="mode-card-arrow" aria-hidden="true">→</span>
+                </button>
+                <button id="dailyButton" class="mode-card" type="button">
+                    <span class="mode-card-title">Daily puzzle</span>
+                    <span class="mode-card-description">One shared word each day. Your progress is saved.</span>
+                    <span class="daily-mode-status" aria-live="polite">Play today's puzzle</span>
+                    <span class="mode-card-arrow" aria-hidden="true">→</span>
+                </button>
+            </section>
 
-    <div class="logo">
-
-        <h1>
-            WORDRUSH
-        </h1>
-
-        <div
-            id="headerStreak"
-            class="header-streak"
-        >
-            DAILY STREAK: 0 🔥
+            <button id="themeButton" class="settings-button" type="button">
+                <svg aria-hidden="true"><use href="#icon-palette"/></svg>
+                <span>Settings &amp; themes</span>
+            </button>
         </div>
-
-    </div>
-
-
-    <button id="leaderboardButton">
-        🏆
-    </button>
-
-
-    <button id="themeButton">
-        🎨
-    </button>
-
-
-    <button
-        id="dailyButton"
-        class="header-button"
-    >
-        📅 DAILY
-    </button>
-
-
-    <button
-        id="newGameButton"
-        class="header-button"
-    >
-        NEW GAME
-    </button>
-
-
-    <button
-        id="hintButton"
-        class="header-button"
-    >
-        HINT
-    </button>
-
-</header>
+    </main>
 
 
 
@@ -106,7 +83,18 @@
          MAIN GAME
     ========================================= -->
 
-    <main>
+    <main id="gameScreen" class="game-screen" hidden>
+
+        <div class="game-heading">
+            <h1 class="game-title"><span class="title-word">Word</span><span class="title-rush">Rush</span></h1>
+            <p id="modeIndicator" class="mode-indicator">Casual mode</p>
+            <p id="headerStreak" class="header-streak">Daily streak: 0</p>
+            <button id="profileButton" class="profile-entry" type="button">
+                <svg aria-hidden="true"><use href="#icon-user"/></svg>
+                <span>Profile</span>
+            </button>
+            <button id="hintButton" class="hint-button" type="button">Use a hint</button>
+        </div>
 
         <div id="message"></div>
 
@@ -122,12 +110,15 @@
         >
 
 
-        <!-- GAME BOARD -->
+        <div class="board-layout">
+            <button id="backToMenu" class="board-side-button back-button" type="button" aria-label="Back to main menu" title="Main menu">‹</button>
+            <div id="board" aria-label="Guess board"></div>
+            <button id="leaderboardButton" class="board-side-button leaderboard-entry" type="button" aria-label="Leaderboard" title="Leaderboard">
+                <svg aria-hidden="true"><use href="#icon-trophy"/></svg>
+            </button>
+        </div>
 
-        <div id="board"></div>
-            <a href="rules.html" class="rules-link">
-                HOW TO PLAY & STRATEGY
-            </a>
+        <a href="rules.html" class="rules-link">How to play &amp; strategy</a>
 
     </main>
 
@@ -223,7 +214,7 @@
         <div class="profile-content">
 
             <div class="profile-icon">
-                👤
+                <svg aria-hidden="true"><use href="#icon-user"/></svg>
             </div>
 
 
@@ -284,7 +275,7 @@
             <!-- PROFILE ICON -->
 
             <div class="profile-icon">
-                👤
+                <svg aria-hidden="true"><use href="#icon-user"/></svg>
             </div>
 
 
@@ -638,7 +629,7 @@
 
 
             <div class="profile-icon">
-                🏆
+                <svg aria-hidden="true"><use href="#icon-trophy"/></svg>
             </div>
 
 
@@ -695,7 +686,7 @@
 
 
             <div class="profile-icon">
-                🎨
+                <svg aria-hidden="true"><use href="#icon-palette"/></svg>
             </div>
 
 
@@ -855,7 +846,7 @@
 
 
             <div class="profile-icon">
-                👤
+                <svg aria-hidden="true"><use href="#icon-user"/></svg>
             </div>
 
 
