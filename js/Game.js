@@ -1160,6 +1160,9 @@ export class Game {
         attemptResult.textContent =
             `SOLVED IN ${attempt}/6 ATTEMPTS`;
 
+        document.getElementById("shareWinButton").hidden = false;
+        document.getElementById("shareWinMessage").textContent = "";
+
 
         answer.textContent =
             this.gameMode === "daily" ? this.dailyAnswer : this.wordManager.secretWord;
@@ -1314,6 +1317,9 @@ export class Game {
             "game-lost"
         );
 
+        document.getElementById("shareWinButton").hidden = true;
+        document.getElementById("shareWinMessage").textContent = "";
+
 
         modal.classList.add(
             "game-lost"
@@ -1415,7 +1421,7 @@ export class Game {
 
     useHint() {
 
-        if (this.gameOver) {
+        if (this.gameOver || this.gameMode === "daily") {
 
             return;
 
@@ -1431,23 +1437,6 @@ export class Game {
             return;
 
         }
-
-        if (this.gameMode === "daily") {
-            this.player.useDailyHint().then(result => {
-                if (!result.vowel || !result.consonant) {
-                    this.showMessage("HINT UNAVAILABLE");
-                    return;
-                }
-                this.hintUsed = true;
-                document.getElementById("hintButton").disabled = true;
-                this.showMessage(`HINT • VOWEL: ${result.vowel} • CONSONANT: ${result.consonant}`);
-            }).catch(error => {
-                console.error("DAILY HINT ERROR:", error);
-                this.showMessage("COULD NOT LOAD HINT");
-            });
-            return;
-        }
-
 
         const word =
             this.wordManager.secretWord;

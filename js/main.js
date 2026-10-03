@@ -62,6 +62,9 @@ const modeIndicator =
 const gameOverModal =
     document.getElementById("gameOverModal");
 
+const shareWinButton = document.getElementById("shareWinButton");
+const shareWinMessage = document.getElementById("shareWinMessage");
+
 
 // ========================================
 // PROFILE MODAL
@@ -154,6 +157,7 @@ const leaderboardList =
     );
 
 const leaderboardTabs = document.querySelectorAll("[data-leaderboard-mode]");
+const leaderboardSubtitle = document.getElementById("leaderboardSubtitle");
 let leaderboardMode = "casual";
 
 const myLeaderboardRank =
@@ -241,6 +245,8 @@ const game =
         board,
         player
     );
+
+shareWinButton.addEventListener("click", shareWinResult);
 
 
 // ========================================
@@ -1034,6 +1040,126 @@ confirmDeleteAccount.addEventListener(
 // LEADERBOARD
 // ========================================
 
+async function shareWinResult() {
+    shareWinButton.disabled = true;
+    shareWinButton.textContent = "PREPARING IMAGE...";
+    shareWinMessage.textContent = "";
+
+    try {
+        const isDaily = game.gameMode === "daily";
+        const modeLabel = isDaily ? "DAILY MODE" : "CASUAL MODE";
+        const guesses = isDaily ? game.dailyGuesses : game.practiceGuesses;
+        const url = new URL(window.location.href);
+        url.search = "";
+        url.hash = "";
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        const tileSize = 84;
+        const tileGap = 12;
+        const rowHeight = tileSize + tileGap;
+        canvas.width = 900;
+        canvas.height = 480 + guesses.length * rowHeight + 150;
+
+        const styles = getComputedStyle(document.body);
+        const background = styles.getPropertyValue("--background").trim() || "#ffffff";
+        const foreground = styles.getPropertyValue("--text").trim() || "#111111";
+        const secondary = styles.getPropertyValue("--text-secondary").trim() || "#666666";
+        const accent = styles.getPropertyValue("--accent").trim() || "#111111";
+        const buttonText = styles.getPropertyValue("--button-text").trim() || "#ffffff";
+        const pathRoundedRect = (x, y, width, height, radius) => {
+            context.beginPath();
+            if (context.roundRect) context.roundRect(x, y, width, height, radius);
+            else context.rect(x, y, width, height);
+        };
+
+        context.fillStyle = background;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.textAlign = "center";
+        context.fillStyle = foreground;
+        context.font = "500 54px Georgia, serif";
+        context.fillText("WordRush", canvas.width / 2, 112);
+
+        const badgeWidth = 390;
+        context.fillStyle = accent;
+        pathRoundedRect((canvas.width - badgeWidth) / 2, 150, badgeWidth, 72, 18);
+        context.fill();
+        context.fillStyle = buttonText;
+        context.font = "700 32px Arial, sans-serif";
+        context.fillText(modeLabel, canvas.width / 2, 197);
+
+        context.fillStyle = foreground;
+        context.font = "500 27px Arial, sans-serif";
+        context.fillText(`SOLVED IN ${guesses.length}/6 GUESSES`, canvas.width / 2, 284);
+
+        const gridWidth = tileSize * 5 + tileGap * 4;
+        const gridLeft = (canvas.width - gridWidth) / 2;
+        const gridTop = 330;
+        guesses.forEach((guess, row) => {
+            for (let column = 0; column < 5; column++) {
+                const tile = document.getElementById(`tile-${row}-${column}`);
+                const x = gridLeft + column * (tileSize + tileGap);
+                const y = gridTop + row * rowHeight;
+                const tileStyles = tile ? getComputedStyle(tile) : null;
+                context.fillStyle = tileStyles?.backgroundColor || secondary;
+                pathRoundedRect(x, y, tileSize, tileSize, 10);
+                context.fill();
+                context.fillStyle = tileStyles?.color || "#ffffff";
+                context.font = "700 44px Arial, sans-serif";
+                context.fillText(guess[column] || "", x + tileSize / 2, y + 57);
+            }
+        });
+
+        context.fillStyle = secondary;
+        context.font = "500 20px Arial, sans-serif";
+        context.fillText(`Play WordRush: ${url.host}`, canvas.width / 2, canvas.height - 56);
+
+        const blob = await new Promise((resolve, reject) => {
+            canvas.toBlob(image => image ? resolve(image) : reject(new Error("Could not create share image.")), "image/png");
+        });
+        const imageFile = new File([blob], "wordrush-win.png", { type: "image/png" });
+        const shareText = `I solved WordRush in ${guesses.length}/6 guesses in ${modeLabel}. Play here: ${url.href}`;
+        const shareData = {
+            title: `WordRush ${modeLabel} win`,
+            text: shareText,
+            url: url.href,
+            files: [imageFile]
+        };
+
+        if (navigator.share && navigator.canShare?.({ files: [imageFile] })) {
+            await navigator.share(shareData);
+            shareWinMessage.textContent = "READY TO SHARE.";
+        } else {
+            const downloadLink = document.createElement("a");
+            const imageUrl = URL.createObjectURL(blob);
+            downloadLink.href = imageUrl;
+            downloadLink.download = imageFile.name;
+            downloadLink.click();
+            setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+
+            if (navigator.share) {
+                await navigator.share({ title: shareData.title, text: shareText, url: url.href });
+                shareWinMessage.textContent = "IMAGE SAVED. SHARE THE GAME LINK.";
+            } else {
+                if (navigator.clipboard?.writeText) {
+                    await navigator.clipboard.writeText(url.href);
+                    shareWinMessage.textContent = "IMAGE SAVED. GAME LINK COPIED.";
+                } else {
+                    shareWinMessage.textContent = `IMAGE SAVED. PLAY AT ${url.host}.`;
+                }
+            }
+        }
+    } catch (error) {
+        if (error.name !== "AbortError") {
+            console.error("WIN SHARE ERROR:", error);
+            shareWinMessage.textContent = "COULD NOT SHARE WIN. TRY AGAIN.";
+        }
+    } finally {
+        shareWinButton.disabled = false;
+        shareWinButton.textContent = "SHARE WIN";
+    }
+}
+
 async function loadLeaderboard() {
 
     leaderboardList.innerHTML =
@@ -1047,7 +1173,7 @@ async function loadLeaderboard() {
             data,
             error
         } = await supabase.rpc(
-            dailyLeaderboard ? "get_daily_streak_leaderboard" : "get_leaderboard"
+            dailyLeaderboard ? "get_daily_points_leaderboard" : "get_leaderboard"
         );
 
 
@@ -1079,7 +1205,7 @@ async function loadLeaderboard() {
 
             leaderboardList.innerHTML =
                 dailyLeaderboard
-                    ? "<p>NO ACTIVE DAILY STREAKS YET.</p>"
+                    ? "<p>NO DAILY SCORES YET.</p>"
                     : "<p>NO PLAYERS YET.</p>";
             myLeaderboardRank.textContent = "NO RANK YET";
 
@@ -1170,7 +1296,7 @@ async function loadLeaderboard() {
 
 
                 score.textContent = dailyLeaderboard
-                    ? `${playerData.current_streak || 0} ${Number(playerData.current_streak) === 1 ? "DAY" : "DAYS"}`
+                    ? playerData.daily_points || 0
                     : playerData.total_score || 0;
 
 
@@ -1373,6 +1499,9 @@ async function startDailyWord() {
 leaderboardTabs.forEach(tab => {
     tab.addEventListener("click", async () => {
         leaderboardMode = tab.dataset.leaderboardMode;
+        leaderboardSubtitle.textContent = leaderboardMode === "daily"
+            ? "TOP DAILY SCORES"
+            : "TOP CASUAL SCORES";
         leaderboardTabs.forEach(option => {
             const selected = option === tab;
             option.classList.toggle("active", selected);
@@ -1394,6 +1523,7 @@ dailyButton.addEventListener(
     "click",
     async function() {
         modeIndicator.textContent = "Daily mode";
+        hintButton.hidden = true;
 
         if (
             game.gameMode === "practice" &&
@@ -1475,6 +1605,7 @@ window.addEventListener(
 
         modeIndicator.textContent =
             game.gameMode === "daily" ? "Daily mode" : "Casual mode";
+        hintButton.hidden = game.gameMode === "daily";
 
         updateHeaderStreak();
 

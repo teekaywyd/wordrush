@@ -734,13 +734,6 @@ export class Player {
         return data;
     }
 
-    async useDailyHint() {
-        const { data, error } = await supabase.rpc("use_daily_hint");
-        if (error) throw error;
-        return data;
-    }
-
-
     // ========================================
     // WIN PERCENTAGE
     // ========================================

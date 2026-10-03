@@ -185,6 +185,9 @@
 
             <h3 id="answerWord"></h3>
 
+            <button id="shareWinButton" class="share-win-button" type="button" hidden>Share win</button>
+            <p id="shareWinMessage" class="share-win-message" aria-live="polite"></p>
+
 
             <div class="modal-buttons">
 
@@ -641,13 +644,13 @@
             </h2>
 
 
-            <p class="profile-subtitle">
-                TOP WORDRUSH PLAYERS
+            <p id="leaderboardSubtitle" class="profile-subtitle">
+                TOP CASUAL SCORES
             </p>
 
             <div class="leaderboard-tabs" role="tablist" aria-label="Leaderboard type">
                 <button class="leaderboard-tab active" type="button" role="tab" aria-selected="true" data-leaderboard-mode="casual">Casual score</button>
-                <button class="leaderboard-tab" type="button" role="tab" aria-selected="false" data-leaderboard-mode="daily">Daily streak</button>
+                <button class="leaderboard-tab" type="button" role="tab" aria-selected="false" data-leaderboard-mode="daily">Daily points</button>
             </div>
 
 
