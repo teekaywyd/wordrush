@@ -1512,56 +1512,15 @@ mobileInput.addEventListener(
     }
 );
 
+document.getElementById("keyboard").addEventListener("click", event => {
+    const key = event.target.closest("[data-key]")?.dataset.key;
+    if (key) game.handleKey(key);
+});
+
 
 // ========================================
 // MOBILE KEYBOARD FOCUS
 // ========================================
-
-document.addEventListener(
-    "click",
-    function() {
-
-        if (gameScreen.hidden) {
-            return;
-        }
-
-        if (
-            authModal.style.display ===
-            "flex"
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            profileModal.style.display ===
-            "flex" ||
-            leaderboardModal.style.display ===
-            "flex" ||
-            themeModal.style.display ===
-            "flex" ||
-            gameOverModal.style.display ===
-            "flex"
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            window.innerWidth <= 600
-        ) {
-
-            mobileInput.focus();
-
-        }
-
-    }
-);
-
 
 // ========================================
 // PHYSICAL KEYBOARD
