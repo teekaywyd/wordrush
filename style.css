@@ -1786,7 +1786,8 @@ main {
    ========================================================= */
 
 #authModal input,
-#usernameModal input {
+#usernameModal input,
+.profile-username-editor input {
 
     width:
         100%;
@@ -1822,7 +1823,8 @@ main {
 }
 
 #authModal input::placeholder,
-#usernameModal input::placeholder {
+#usernameModal input::placeholder,
+.profile-username-editor input::placeholder {
 
     color:
         var(--text-secondary);
@@ -1832,7 +1834,8 @@ main {
 }
 
 #authModal input:focus,
-#usernameModal input:focus {
+#usernameModal input:focus,
+.profile-username-editor input:focus {
 
     border-color:
         var(--accent);
@@ -4101,6 +4104,30 @@ main {
 
 .rules-link:active {
     transform: scale(0.97);
+}
+
+.profile-username-editor {
+    width: 100%;
+    margin: 0 0 18px;
+}
+
+.profile-username-editor p {
+    min-height: 1.2em;
+    margin: 6px 0 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+#saveUsernameButton {
+    width: 100%;
+    padding: 11px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--button);
+    color: var(--button-text);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
 }
 
 /* Main menu and board screens */

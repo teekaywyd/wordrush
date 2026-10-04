@@ -81,6 +81,9 @@ const closeProfileBottom =
 
 const profileUsername =
     document.getElementById("profileUsername");
+const profileUsernameInput = document.getElementById("profileUsernameInput");
+const saveUsernameButton = document.getElementById("saveUsernameButton");
+const usernameEditMessage = document.getElementById("usernameEditMessage");
 
 const gamesPlayed =
     document.getElementById("gamesPlayed");
@@ -609,6 +612,8 @@ async function loadProfile() {
 
         profileUsername.textContent =
             data.username || "PLAYER";
+        profileUsernameInput.value = data.username || "";
+        usernameEditMessage.textContent = "";
 
 
         gamesPlayed.textContent =
@@ -796,6 +801,9 @@ logoutButton.addEventListener(
 
             authUsernameInput.style.display =
                 "none";
+            emailInput.type = "text";
+            emailInput.placeholder = "Username";
+            emailInput.autocomplete = "username";
 
 
         } catch (error) {
@@ -1579,6 +1587,27 @@ casualModeButton.addEventListener(
     }
 );
 
+saveUsernameButton.addEventListener("click", async function() {
+    const username = profileUsernameInput.value.trim();
+    usernameEditMessage.textContent = "";
+    if (!/^[A-Za-z0-9_]{3,15}$/.test(username)) {
+        usernameEditMessage.textContent = "USE 3 TO 15 LETTERS, NUMBERS, OR UNDERSCORES.";
+        return;
+    }
+    saveUsernameButton.disabled = true;
+    try {
+        const { data, error } = await supabase.rpc("change_my_username", { new_username: username });
+        if (error) throw error;
+        profileUsername.textContent = data || username;
+        player.username = data || username;
+        usernameEditMessage.textContent = "USERNAME UPDATED.";
+    } catch (error) {
+        usernameEditMessage.textContent = (error.message || "UNABLE TO UPDATE USERNAME.").toUpperCase();
+    } finally {
+        saveUsernameButton.disabled = false;
+    }
+});
+
 backToMenuButton.addEventListener(
     "click",
     showHomeScreen
@@ -1770,6 +1799,9 @@ authSwitch.addEventListener(
 
             authUsernameInput.style.display =
                 "none";
+            emailInput.type = "text";
+            emailInput.placeholder = "Username";
+            emailInput.autocomplete = "username";
 
 
         } else {
@@ -1788,6 +1820,9 @@ authSwitch.addEventListener(
 
             authUsernameInput.style.display =
                 "block";
+            emailInput.type = "email";
+            emailInput.placeholder = "Email";
+            emailInput.autocomplete = "email";
 
         }
 
@@ -1807,7 +1842,7 @@ authSubmit.addEventListener(
     "click",
     async function() {
 
-        const email =
+        const emailOrUsername =
             emailInput.value.trim();
 
 
@@ -1823,10 +1858,10 @@ authSubmit.addEventListener(
             "";
 
 
-        if (!email) {
+        if (!emailOrUsername) {
 
             authMessage.textContent =
-                "ENTER YOUR EMAIL.";
+                isLoginMode ? "ENTER YOUR USERNAME." : "ENTER YOUR EMAIL.";
 
 
             return;
@@ -1855,27 +1890,21 @@ authSubmit.addEventListener(
 
         if (isLoginMode) {
 
-            const {
-                data,
-                error
-            } =
-                await supabase.auth.signInWithPassword({
-                    email,
-                    password
-                });
+            const { data: loginData, error: loginError } = await supabase.functions.invoke("username-login", {
+                body: { username: emailOrUsername, password }
+            });
 
 
-            if (error) {
+            if (loginError || !loginData?.session) {
 
                 console.error(
                     "LOGIN ERROR:",
-                    error
+                    loginError || loginData?.error
                 );
 
 
                 authMessage.textContent =
-                    error.message
-                        .toUpperCase();
+                    (loginData?.error || loginError?.message || "INVALID USERNAME OR PASSWORD.").toUpperCase();
 
 
                 authSubmit.disabled =
@@ -1887,7 +1916,8 @@ authSubmit.addEventListener(
             }
 
 
-            if (!data.user) {
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession(loginData.session);
+            if (sessionError || !sessionData.user) {
 
                 authMessage.textContent =
                     "LOGIN FAILED.";
@@ -1943,13 +1973,25 @@ authSubmit.addEventListener(
 
         }
 
+        if (!/^[A-Za-z0-9_]{3,15}$/.test(username)) {
+            authMessage.textContent = "USERNAME MUST BE 3 TO 15 LETTERS, NUMBERS, OR UNDERSCORES.";
+            authSubmit.disabled = false;
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUsername)) {
+            authMessage.textContent = "ENTER A VALID EMAIL ADDRESS.";
+            authSubmit.disabled = false;
+            return;
+        }
+
 
         const {
             data,
             error
         } =
             await supabase.auth.signUp({
-                email,
+                email: emailOrUsername,
                 password,
                 options: {
                     data: { username }
