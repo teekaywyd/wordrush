@@ -46,6 +46,7 @@ export class Game {
         this.practiceGuesses = [];
 
         this.dailyStorageKey = null;
+        this.practiceStorageKey = "wordrush-practice-progress";
 
 
         this.setupModalButtons();
@@ -58,6 +59,8 @@ export class Game {
     // ========================================
 
     startGame() {
+
+        this.clearPracticeProgress();
 
         this.gameMode = "practice";
 
@@ -88,6 +91,7 @@ export class Game {
 
 
         this.showMessage("");
+        this.savePracticeProgress();
 
 
         document.getElementById(
@@ -151,6 +155,39 @@ export class Game {
             hintUsed: this.hintUsed
         };
 
+    }
+
+
+    savePracticeProgress() {
+        if (this.gameMode !== "practice" || this.gameOver) return;
+        try {
+            localStorage.setItem(this.practiceStorageKey, JSON.stringify(this.getPracticeProgress()));
+        } catch (error) {
+            console.error("CASUAL PROGRESS SAVE ERROR:", error);
+        }
+    }
+
+    getSavedPracticeProgress() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(this.practiceStorageKey) || "null");
+            if (!saved || typeof saved.secretWord !== "string" || !Array.isArray(saved.guesses) ||
+                typeof saved.currentGuess !== "string") {
+                this.clearPracticeProgress();
+                return null;
+            }
+            return saved;
+        } catch (error) {
+            this.clearPracticeProgress();
+            return null;
+        }
+    }
+
+    clearPracticeProgress() {
+        try {
+            localStorage.removeItem(this.practiceStorageKey);
+        } catch (error) {
+            console.error("CASUAL PROGRESS DELETE ERROR:", error);
+        }
     }
 
 
@@ -700,6 +737,7 @@ export class Game {
         // ========================================
 
         this.saveDailyProgress();
+        this.savePracticeProgress();
 
     }
 
@@ -747,6 +785,7 @@ export class Game {
         // ========================================
 
         this.saveDailyProgress();
+        this.savePracticeProgress();
 
     }
 
@@ -840,6 +879,7 @@ export class Game {
         // ========================================
 
         this.practiceGuesses.push(this.currentGuess);
+        this.savePracticeProgress();
 
 
         if (
@@ -859,6 +899,7 @@ export class Game {
         this.currentRow++;
 
         this.currentGuess = "";
+        this.savePracticeProgress();
 
 
         // ========================================
@@ -981,6 +1022,8 @@ export class Game {
     // ========================================
 
     async gameWon() {
+
+        this.clearPracticeProgress();
 
         if (this.statsSaved) {
 
@@ -1182,6 +1225,8 @@ export class Game {
     // ========================================
 
     async gameLost() {
+
+        this.clearPracticeProgress();
 
         if (this.statsSaved) {
 
@@ -1508,6 +1553,7 @@ export class Game {
 
 
         this.hintUsed = true;
+        this.savePracticeProgress();
 
 
         document.getElementById(

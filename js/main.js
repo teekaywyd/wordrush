@@ -257,6 +257,12 @@ shareWinButton.addEventListener("click", shareWinResult);
 // ========================================
 
 let isLoginMode = false;
+let passwordResetAction = "none";
+
+function isStrongPassword(password) {
+    return password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) &&
+        /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
+}
 
 
 // ========================================
@@ -801,6 +807,9 @@ logoutButton.addEventListener(
 
             authUsernameInput.style.display =
                 "none";
+            emailInput.hidden = false;
+            passwordInput.hidden = false;
+            authUsernameInput.hidden = false;
             emailInput.type = "text";
             emailInput.placeholder = "Username";
             emailInput.autocomplete = "username";
@@ -1205,6 +1214,23 @@ async function loadLeaderboard() {
         leaderboardList.innerHTML =
             "";
 
+        if (data?.length) {
+            const profileIds = data.map(row => row.id).filter(Boolean);
+            if (profileIds.length) {
+                const { data: currentProfiles, error: profilesError } = await supabase.rpc(
+                    "get_profile_usernames",
+                    { profile_ids: profileIds }
+                );
+                if (profilesError) {
+                    console.warn("Could not refresh leaderboard usernames:", profilesError.message);
+                } else {
+                    const usernames = new Map((currentProfiles || []).map(profile => [profile.id, profile.username]));
+                    data.forEach(row => {
+                        if (usernames.has(row.id)) row.username = usernames.get(row.id);
+                    });
+                }
+            }
+        }
 
         if (
             !data ||
@@ -1567,10 +1593,10 @@ casualModeButton.addEventListener(
     function() {
         modeIndicator.textContent = "Casual mode";
 
+        const savedPracticeProgress = casualProgress || game.getSavedPracticeProgress();
         if (
-            game.gameMode === "daily" &&
-            casualProgress &&
-            game.restorePracticeProgress(casualProgress)
+            savedPracticeProgress &&
+            game.restorePracticeProgress(savedPracticeProgress)
         ) {
             casualProgress = null;
             casualGameStarted = true;
@@ -1599,8 +1625,10 @@ saveUsernameButton.addEventListener("click", async function() {
         const { data, error } = await supabase.rpc("change_my_username", { new_username: username });
         if (error) throw error;
         profileUsername.textContent = data || username;
+        profileUsernameInput.value = data || username;
         player.username = data || username;
         usernameEditMessage.textContent = "USERNAME UPDATED.";
+        if (leaderboardModal.style.display === "flex") await loadLeaderboard();
     } catch (error) {
         usernameEditMessage.textContent = (error.message || "UNABLE TO UPDATE USERNAME.").toUpperCase();
     } finally {
@@ -1779,9 +1807,26 @@ authSwitch.addEventListener(
     "click",
     function() {
 
+        if (passwordResetAction === "request") {
+            passwordResetAction = "none";
+            passwordInput.hidden = false;
+            authUsernameInput.hidden = false;
+            authUsernameInput.style.display = "none";
+            emailInput.hidden = false;
+            emailInput.type = "text";
+            emailInput.placeholder = "Username";
+            emailInput.autocomplete = "username";
+            authTitle.textContent = "LOGIN";
+            authSubmit.textContent = "LOGIN";
+            authSwitch.textContent = "CREATE ACCOUNT";
+            forgotPasswordButton.hidden = false;
+            authMessage.textContent = "";
+            return;
+        }
+
         isLoginMode =
             !isLoginMode;
-
+        passwordResetAction = "none";
 
         if (isLoginMode) {
 
@@ -1802,7 +1847,9 @@ authSwitch.addEventListener(
             emailInput.type = "text";
             emailInput.placeholder = "Username";
             emailInput.autocomplete = "username";
-
+            forgotPasswordButton.hidden = false;
+            passwordRequirements.hidden = true;
+            passwordInput.autocomplete = "current-password";
 
         } else {
 
@@ -1820,19 +1867,41 @@ authSwitch.addEventListener(
 
             authUsernameInput.style.display =
                 "block";
+            emailInput.hidden = false;
+            passwordInput.hidden = false;
+            authUsernameInput.hidden = false;
             emailInput.type = "email";
             emailInput.placeholder = "Email";
             emailInput.autocomplete = "email";
+            forgotPasswordButton.hidden = true;
+            passwordRequirements.hidden = false;
+            passwordInput.autocomplete = "new-password";
 
         }
 
-
+        authSubmit.disabled = false;
         authMessage.textContent =
             "";
 
     }
 );
 
+
+forgotPasswordButton.addEventListener("click", function() {
+    passwordResetAction = "request";
+    emailInput.type = "email";
+    emailInput.placeholder = "Email address";
+    emailInput.autocomplete = "email";
+    passwordInput.value = "";
+    passwordInput.hidden = true;
+    authUsernameInput.hidden = true;
+    authTitle.textContent = "RESET PASSWORD";
+    authSubmit.textContent = "SEND RESET LINK";
+    forgotPasswordButton.hidden = true;
+    authSwitch.hidden = false;
+    authSwitch.textContent = "BACK TO LOGIN";
+    authMessage.textContent = "ENTER THE EMAIL ADDRESS FOR YOUR ACCOUNT.";
+});
 
 // ========================================
 // AUTH SUBMIT
@@ -1858,27 +1927,69 @@ authSubmit.addEventListener(
             "";
 
 
-        if (!emailOrUsername) {
+        if (!emailOrUsername && passwordResetAction !== "update") {
 
-            authMessage.textContent =
-                isLoginMode ? "ENTER YOUR USERNAME." : "ENTER YOUR EMAIL.";
+            authMessage.textContent = passwordResetAction === "request"
+                ? "ENTER YOUR EMAIL ADDRESS."
+                : (isLoginMode ? "ENTER YOUR USERNAME." : "ENTER YOUR EMAIL.");
 
 
             return;
 
         }
 
+
+        if (passwordResetAction === "request") {
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUsername)) {
+                authMessage.textContent = "ENTER A VALID EMAIL ADDRESS.";
+                return;
+            }
+            authSubmit.disabled = true;
+            try {
+                const { error } = await supabase.auth.resetPasswordForEmail(emailOrUsername, {
+                    redirectTo: window.location.origin + window.location.pathname
+                });
+                if (error) throw error;
+                authMessage.textContent = "IF AN ACCOUNT USES THAT EMAIL, A RESET LINK HAS BEEN SENT.";
+            } catch (error) {
+                authMessage.textContent = (error.message || "COULD NOT SEND RESET LINK.").toUpperCase();
+            } finally {
+                authSubmit.disabled = false;
+            }
+            return;
+        }
 
         if (!password) {
-
-            authMessage.textContent =
-                "ENTER YOUR PASSWORD.";
-
-
+            authMessage.textContent = "ENTER YOUR PASSWORD.";
             return;
-
         }
 
+        if ((passwordResetAction === "update" || !isLoginMode) && !isStrongPassword(password)) {
+            authMessage.textContent = "USE 8+ CHARACTERS WITH UPPERCASE, LOWERCASE, A NUMBER, AND A SYMBOL.";
+            return;
+        }
+
+        if (passwordResetAction === "update") {
+            authSubmit.disabled = true;
+            try {
+                const { error } = await supabase.auth.updateUser({ password });
+                if (error) throw error;
+                passwordResetAction = "none";
+                passwordInput.value = "";
+                passwordInput.hidden = false;
+                emailInput.hidden = false;
+                authUsernameInput.hidden = false;
+                authSwitch.hidden = false;
+                authTitle.textContent = "PASSWORD UPDATED";
+                authModal.style.display = "none";
+                await loadOnlinePlayer();
+            } catch (error) {
+                authMessage.textContent = (error.message || "COULD NOT UPDATE PASSWORD.").toUpperCase();
+            } finally {
+                authSubmit.disabled = false;
+            }
+            return;
+        }
 
         authSubmit.disabled =
             true;
@@ -2068,6 +2179,25 @@ supabase.auth.onAuthStateChange(
             event
         );
 
+
+        if (event === "PASSWORD_RECOVERY" && session) {
+            passwordResetAction = "update";
+            isLoginMode = false;
+            authModal.style.display = "flex";
+            authTitle.textContent = "CHOOSE A NEW PASSWORD";
+            authMessage.textContent = "USE 8+ CHARACTERS WITH UPPERCASE, LOWERCASE, A NUMBER, AND A SYMBOL.";
+            emailInput.hidden = true;
+            passwordInput.hidden = false;
+            passwordInput.value = "";
+            passwordInput.placeholder = "New password";
+            passwordInput.autocomplete = "new-password";
+            authUsernameInput.hidden = true;
+            passwordRequirements.hidden = false;
+            authSubmit.textContent = "UPDATE PASSWORD";
+            authSwitch.hidden = true;
+            forgotPasswordButton.hidden = true;
+            return;
+        }
 
         if (
             event ===

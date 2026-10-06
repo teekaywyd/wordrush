@@ -1785,6 +1785,8 @@ main {
    AUTH / USERNAME INPUTS
    ========================================================= */
 
+#authModal [hidden] { display: none !important; }
+
 #authModal input,
 #usernameModal input,
 .profile-username-editor input {
