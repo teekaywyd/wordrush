@@ -1862,7 +1862,7 @@ authSwitch.addEventListener(
 
 
             authSwitch.textContent =
-                "ALREADY HAVE AN ACCOUNT? LOGIN";
+                "HAVE AN ACCOUNT - LOG IN";
 
 
             authUsernameInput.style.display =
@@ -2288,8 +2288,40 @@ checkSession();
 
 
 // ========================================
-// SERVICE WORKER
+// PWA INSTALL AND SERVICE WORKER
 // ========================================
+
+const installAppButton = document.getElementById("installAppButton");
+const installAppMessage = document.getElementById("installAppMessage");
+let pendingInstallPrompt = null;
+
+if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
+    installAppButton.hidden = true;
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    pendingInstallPrompt = event;
+    installAppButton.hidden = false;
+});
+
+installAppButton.addEventListener("click", async () => {
+    installAppMessage.textContent = "";
+    if (!pendingInstallPrompt) {
+        installAppMessage.textContent = "USE YOUR BROWSER MENU AND CHOOSE INSTALL APP OR ADD TO HOME SCREEN.";
+        return;
+    }
+
+    pendingInstallPrompt.prompt();
+    await pendingInstallPrompt.userChoice;
+    pendingInstallPrompt = null;
+});
+
+window.addEventListener("appinstalled", () => {
+    pendingInstallPrompt = null;
+    installAppButton.hidden = true;
+    installAppMessage.textContent = "WORDRUSH IS INSTALLED.";
+});
 
 if ("serviceWorker" in navigator) {
 

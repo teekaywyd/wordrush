@@ -1787,6 +1787,32 @@ main {
 
 #authModal [hidden] { display: none !important; }
 
+.auth-password-requirements {
+    margin: -4px 0 7px;
+    padding-bottom: 16px;
+    color: var(--text-secondary);
+    text-align: left;
+}
+
+.auth-password-title {
+    margin: 0 0 8px;
+    padding-bottom: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.auth-password-requirements ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px 12px;
+    margin: 0;
+    padding-left: 17px;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
 #authModal input,
 #usernameModal input,
 .profile-username-editor input {
@@ -4279,6 +4305,18 @@ main {
     font-size: 13px;
 }
 
+.install-app-message {
+    min-height: 1.2em;
+    margin: 3px 0 0;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+#installAppButton[hidden] {
+    display: none !important;
+}
+
 .settings-button:hover,
 .profile-entry:hover,
 .hint-button:hover,
@@ -4465,7 +4503,7 @@ main {
 
     .game-heading { gap: 3px; margin-bottom: 2px; }
     .game-heading h1 { font-size: 24px; }
-    .game-title { padding-bottom: 8px; }
+    .game-title { padding-bottom: 16px; }
     .mode-indicator { font-size: 9px; }
     .header-streak { font-size: 11px; }
     .profile-entry { min-height: 30px; }
@@ -4706,7 +4744,7 @@ main {
     .game-heading h1,
     .game-heading .mode-indicator,
     .game-heading #profileButton { grid-column: 1 / -1; }
-    .game-heading h1 { margin: 0; padding-bottom: 8px; font-size: 22px; }
+    .game-heading h1 { margin: 0; padding-bottom: 16px; font-size: 22px; }
     .game-heading .mode-indicator { margin: 1px 0 2px; }
     .game-heading #profileButton { justify-self: center; width: auto; min-height: 30px; margin: 0; }
     .game-screen #message { margin: 0; }

@@ -15,6 +15,11 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="WordRush">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="%BASE_URL%assets/app-icon-180.png">
 
     <title>WordRush</title>
 
@@ -23,10 +28,7 @@
         href="style.css"
     >
 
-    <link
-        rel="manifest"
-        href="./manifest.json"
-    >
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest">
 
 </head>
 
@@ -69,6 +71,11 @@
                     <span class="mode-card-arrow" aria-hidden="true">→</span>
                 </button>
             </section>
+
+            <button id="installAppButton" class="settings-button install-app-button" type="button">
+                <span>Install WordRush</span>
+            </button>
+            <p id="installAppMessage" class="install-app-message" aria-live="polite"></p>
 
             <button id="themeButton" class="settings-button" type="button">
                 <svg aria-hidden="true"><use href="#icon-palette"/></svg>
@@ -905,23 +912,29 @@
             <p id="authMessage"></p>
 
 
-            <p id="passwordRequirements" class="auth-password-requirements">
-                PASSWORDS NEED 8+ CHARACTERS, UPPERCASE, LOWERCASE, A NUMBER, AND A SYMBOL.
-            </p>
+            <div id="passwordRequirements" class="auth-password-requirements">
+                <p class="auth-password-title">Password requirements</p>
+                <ul>
+                    <li>8+ characters</li>
+                    <li>Uppercase &amp; lowercase</li>
+                    <li>Number</li>
+                    <li>Symbol</li>
+                </ul>
+            </div>
 
             <button id="authSubmit">
                 CREATE ACCOUNT
             </button>
 
             <button id="forgotPasswordButton" class="auth-switch" type="button" hidden>
-                FORGOT PASSWORD?
+                FORGOT PASSWORD
             </button>
 
             <button
                 id="authSwitch"
                 class="auth-switch"
             >
-                ALREADY HAVE AN ACCOUNT? LOG IN
+                HAVE AN ACCOUNT &middot; LOG IN
             </button>
 
 
