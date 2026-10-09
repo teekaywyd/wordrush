@@ -84,6 +84,54 @@ const profileUsername =
 const profileUsernameInput = document.getElementById("profileUsernameInput");
 const saveUsernameButton = document.getElementById("saveUsernameButton");
 const usernameEditMessage = document.getElementById("usernameEditMessage");
+const avatarChoices = document.getElementById("avatarChoices");
+const avatarPreview = document.getElementById("profileAvatarPreview");
+const profileButtonAvatar = document.getElementById("profileButtonAvatar");
+const avatarOptions = {
+    male: ["👨🏻‍🦱", "👨🏽‍🦰", "👨🏿‍🦲"],
+    female: ["👩🏻‍🦱", "👩🏽‍🦰", "👩🏿‍🦲"]
+};
+let currentAvatar = "male-0";
+let currentProfileId = null;
+
+function getAvatarKey() {
+    return currentProfileId ? `wordrush-avatar-${currentProfileId}` : null;
+}
+
+function renderAvatar() {
+    const [gender, indexText] = currentAvatar.split("-");
+    const index = Number(indexText) || 0;
+    const face = (avatarOptions[gender] || avatarOptions.male)[index] || avatarOptions.male[0];
+    avatarPreview.textContent = face;
+    profileButtonAvatar.textContent = face;
+    document.querySelectorAll('input[name="avatarGender"]').forEach(input => {
+        input.checked = input.value === gender;
+    });
+    avatarChoices.replaceChildren();
+    (avatarOptions[gender] || avatarOptions.male).forEach((choice, styleIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "avatar-choice";
+        button.textContent = choice;
+        button.setAttribute("aria-label", `${gender} avatar style ${styleIndex + 1}`);
+        button.setAttribute("aria-pressed", String(currentAvatar === `${gender}-${styleIndex}`));
+        button.addEventListener("click", () => {
+            currentAvatar = `${gender}-${styleIndex}`;
+            if (getAvatarKey()) localStorage.setItem(getAvatarKey(), currentAvatar);
+            renderAvatar();
+        });
+        avatarChoices.appendChild(button);
+    });
+}
+
+document.querySelectorAll('input[name="avatarGender"]').forEach(input => {
+    input.addEventListener("change", () => {
+        currentAvatar = `${input.value}-0`;
+        if (getAvatarKey()) localStorage.setItem(getAvatarKey(), currentAvatar);
+        renderAvatar();
+    });
+});
+renderAvatar();
 
 const gamesPlayed =
     document.getElementById("gamesPlayed");
@@ -188,6 +236,41 @@ const themeOptions =
     document.querySelectorAll(
         ".theme-option"
     );
+const soundEffectsToggle = document.getElementById("soundEffectsToggle");
+const SOUND_KEY = "wordrush-sound-effects";
+soundEffectsToggle.checked = localStorage.getItem(SOUND_KEY) !== "off";
+
+function playSound(kind) {
+    if (!soundEffectsToggle.checked) return;
+    try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        const context = new AudioContextClass();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        const sounds = { key: [520, 0.045], submit: [360, 0.09], win: [760, 0.24], loss: [190, 0.2] };
+        const [frequency, duration] = sounds[kind] || sounds.key;
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(frequency, context.currentTime);
+        if (kind === "win") oscillator.frequency.linearRampToValueAtTime(1040, context.currentTime + duration);
+        if (kind === "loss") oscillator.frequency.linearRampToValueAtTime(110, context.currentTime + duration);
+        gain.gain.setValueAtTime(0.0001, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.12, context.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + duration);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start();
+        oscillator.stop(context.currentTime + duration);
+        oscillator.onended = () => context.close();
+    } catch (error) {
+        console.debug("Sound effects unavailable:", error);
+    }
+}
+
+soundEffectsToggle.addEventListener("change", () => {
+    localStorage.setItem(SOUND_KEY, soundEffectsToggle.checked ? "on" : "off");
+    if (soundEffectsToggle.checked) playSound("key");
+});
 
 
 // ========================================
@@ -600,6 +683,11 @@ async function loadProfile() {
         if (!data) {
             return;
         }
+
+        currentProfileId = user.id;
+        currentAvatar = localStorage.getItem(getAvatarKey()) || "male-0";
+        if (!/^(male|female)-[0-2]$/.test(currentAvatar)) currentAvatar = "male-0";
+        renderAvatar();
 
 
         await player.loadDailyStats();
@@ -1671,6 +1759,8 @@ window.addEventListener(
     }
 );
 
+window.addEventListener("wordrush-game-result", event => playSound(event.detail));
+
 
 // ========================================
 // MOBILE INPUT
@@ -1705,6 +1795,8 @@ mobileInput.addEventListener(
                 lastCharacter
             )
         ) {
+
+            playSound("key");
 
             game.handleKey(
                 lastCharacter
@@ -1749,6 +1841,8 @@ document.addEventListener(
             key === "ENTER"
         ) {
 
+            playSound("submit");
+
             game.handleKey(
                 "ENTER"
             );
@@ -1788,6 +1882,8 @@ document.addEventListener(
                 key
             )
         ) {
+
+            playSound("key");
 
             game.handleKey(
                 key

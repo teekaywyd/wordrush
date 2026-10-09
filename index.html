@@ -96,7 +96,7 @@
             <h1 class="game-title"><span class="title-word">Word</span><span class="title-rush">Rush</span></h1>
             <p id="modeIndicator" class="mode-indicator">Casual mode</p>
             <button id="profileButton" class="profile-entry" type="button">
-                <svg aria-hidden="true"><use href="#icon-user"/></svg>
+                <span id="profileButtonAvatar" class="profile-avatar profile-avatar-small" aria-hidden="true">👨🏻‍🦱</span>
                 <span>Profile</span>
             </button>
         </div>
@@ -226,9 +226,15 @@
 
         <div class="profile-content">
 
-            <div class="profile-icon">
-                <svg aria-hidden="true"><use href="#icon-user"/></svg>
-            </div>
+            <div id="profileAvatarPreview" class="profile-icon profile-avatar-preview" aria-hidden="true">👨🏻‍🦱</div>
+            <fieldset class="avatar-picker">
+                <legend>CHOOSE YOUR AVATAR</legend>
+                <div class="avatar-gender-options">
+                    <label><input type="radio" name="avatarGender" value="male" checked><span>Male</span></label>
+                    <label><input type="radio" name="avatarGender" value="female"><span>Female</span></label>
+                </div>
+                <div id="avatarChoices" class="avatar-choices" aria-label="Avatar styles"></div>
+            </fieldset>
 
 
             <h2>
@@ -722,6 +728,11 @@
             <p class="profile-subtitle">
                 CHOOSE YOUR WORDRUSH STYLE
             </p>
+
+            <label class="sound-setting">
+                <span>Sound effects</span>
+                <input id="soundEffectsToggle" type="checkbox" checked>
+            </label>
 
 
             <div id="themeList">
