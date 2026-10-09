@@ -1036,7 +1036,6 @@ export class Game {
 
         this.statsSaved = true;
 
-        window.dispatchEvent(new CustomEvent("wordrush-game-result", { detail: "win" }));
 
 
         const score =
@@ -1241,7 +1240,6 @@ export class Game {
 
         this.statsSaved = true;
 
-        window.dispatchEvent(new CustomEvent("wordrush-game-result", { detail: "loss" }));
 
 
         // ========================================

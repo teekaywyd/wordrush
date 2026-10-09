@@ -87,10 +87,16 @@ const usernameEditMessage = document.getElementById("usernameEditMessage");
 const avatarChoices = document.getElementById("avatarChoices");
 const avatarPreview = document.getElementById("profileAvatarPreview");
 const profileButtonAvatar = document.getElementById("profileButtonAvatar");
-const avatarOptions = {
-    male: ["👨🏻‍🦱", "👨🏽‍🦰", "👨🏿‍🦲"],
-    female: ["👩🏻‍🦱", "👩🏽‍🦰", "👩🏿‍🦲"]
-};
+const avatarStyles = [
+    { name: "Curly", hair: "M28 38 Q30 13 50 15 Q70 13 72 38 L67 34 Q63 27 58 31 Q50 24 42 31 Q35 27 32 37Z", hairExtra: "M31 26 Q35 18 39 27 M42 20 Q47 14 50 24 M54 20 Q60 15 62 27 M63 25 Q69 21 69 32", shirt: "#4f7cac" },
+    { name: "Swept", hair: "M29 39 Q26 17 47 15 Q66 11 72 27 Q63 24 55 25 Q44 25 35 34 L34 42Z", hairExtra: "", shirt: "#a35d7a" },
+    { name: "Cropped", hair: "M30 39 Q27 17 49 16 Q70 16 70 38 L65 32 Q60 27 54 30 Q44 24 35 33Z", hairExtra: "", shirt: "#53856a" }
+];
+const avatarPalettes = [
+    { skin: "#f0c6a4", hair: "#3d2c28", backdrop: "#dce9f4" },
+    { skin: "#bd805b", hair: "#33251f", backdrop: "#f3dfd5" },
+    { skin: "#704b3a", hair: "#211d1c", backdrop: "#dcebe3" }
+];
 let currentAvatar = "male-0";
 let currentProfileId = null;
 
@@ -98,22 +104,50 @@ function getAvatarKey() {
     return currentProfileId ? `wordrush-avatar-${currentProfileId}` : null;
 }
 
+function createAvatarSvg(gender, styleIndex) {
+    const style = avatarStyles[styleIndex];
+    const palette = avatarPalettes[styleIndex];
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 100 100");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", `${gender} ${style.name.toLowerCase()} hair character`);
+    const add = (tag, attributes) => {
+        const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
+        Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+        svg.appendChild(element);
+    };
+    add("circle", { cx: 50, cy: 50, r: 49, fill: palette.backdrop });
+    add("path", { d: "M13 100 Q17 72 39 69 L61 69 Q83 72 87 100Z", fill: style.shirt });
+    add("path", { d: "M42 64 L58 64 L61 76 Q50 84 39 76Z", fill: palette.skin });
+    if (gender === "female") {
+        const hairLength = styleIndex === 2 ? "M29 42 Q25 18 50 16 Q76 18 71 46 L69 69 Q62 78 59 64 L61 42Z" : "M28 41 Q25 16 50 15 Q75 16 72 42 L72 68 Q66 76 62 64 L62 42Z";
+        add("path", { d: hairLength, fill: palette.hair });
+    }
+    add("ellipse", { cx: 50, cy: 45, rx: 20, ry: 25, fill: palette.skin });
+    add("path", { d: style.hair, fill: palette.hair });
+    if (style.hairExtra) add("path", { d: style.hairExtra, fill: "none", stroke: palette.hair, "stroke-width": 5, "stroke-linecap": "round" });
+    add("circle", { cx: 43, cy: 47, r: 1.8, fill: "#292321" });
+    add("circle", { cx: 57, cy: 47, r: 1.8, fill: "#292321" });
+    add("path", { d: "M45 57 Q50 61 55 57", fill: "none", stroke: "#8b4d45", "stroke-width": 2, "stroke-linecap": "round" });
+    return svg;
+}
+
 function renderAvatar() {
     const [gender, indexText] = currentAvatar.split("-");
     const index = Number(indexText) || 0;
-    const face = (avatarOptions[gender] || avatarOptions.male)[index] || avatarOptions.male[0];
-    avatarPreview.textContent = face;
-    profileButtonAvatar.textContent = face;
+    const safeGender = gender === "female" ? "female" : "male";
+    avatarPreview.replaceChildren(createAvatarSvg(safeGender, index));
+    profileButtonAvatar.replaceChildren(createAvatarSvg(safeGender, index));
     document.querySelectorAll('input[name="avatarGender"]').forEach(input => {
         input.checked = input.value === gender;
     });
     avatarChoices.replaceChildren();
-    (avatarOptions[gender] || avatarOptions.male).forEach((choice, styleIndex) => {
+    avatarStyles.forEach((style, styleIndex) => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "avatar-choice";
-        button.textContent = choice;
-        button.setAttribute("aria-label", `${gender} avatar style ${styleIndex + 1}`);
+        button.appendChild(createAvatarSvg(safeGender, styleIndex));
+        button.setAttribute("aria-label", `${safeGender} ${style.name} style`);
         button.setAttribute("aria-pressed", String(currentAvatar === `${gender}-${styleIndex}`));
         button.addEventListener("click", () => {
             currentAvatar = `${gender}-${styleIndex}`;
@@ -236,41 +270,6 @@ const themeOptions =
     document.querySelectorAll(
         ".theme-option"
     );
-const soundEffectsToggle = document.getElementById("soundEffectsToggle");
-const SOUND_KEY = "wordrush-sound-effects";
-soundEffectsToggle.checked = localStorage.getItem(SOUND_KEY) !== "off";
-
-function playSound(kind) {
-    if (!soundEffectsToggle.checked) return;
-    try {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContextClass) return;
-        const context = new AudioContextClass();
-        const oscillator = context.createOscillator();
-        const gain = context.createGain();
-        const sounds = { key: [520, 0.045], submit: [360, 0.09], win: [760, 0.24], loss: [190, 0.2] };
-        const [frequency, duration] = sounds[kind] || sounds.key;
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(frequency, context.currentTime);
-        if (kind === "win") oscillator.frequency.linearRampToValueAtTime(1040, context.currentTime + duration);
-        if (kind === "loss") oscillator.frequency.linearRampToValueAtTime(110, context.currentTime + duration);
-        gain.gain.setValueAtTime(0.0001, context.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.12, context.currentTime + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + duration);
-        oscillator.connect(gain);
-        gain.connect(context.destination);
-        oscillator.start();
-        oscillator.stop(context.currentTime + duration);
-        oscillator.onended = () => context.close();
-    } catch (error) {
-        console.debug("Sound effects unavailable:", error);
-    }
-}
-
-soundEffectsToggle.addEventListener("change", () => {
-    localStorage.setItem(SOUND_KEY, soundEffectsToggle.checked ? "on" : "off");
-    if (soundEffectsToggle.checked) playSound("key");
-});
 
 
 // ========================================
@@ -1759,7 +1758,6 @@ window.addEventListener(
     }
 );
 
-window.addEventListener("wordrush-game-result", event => playSound(event.detail));
 
 
 // ========================================
@@ -1795,8 +1793,6 @@ mobileInput.addEventListener(
                 lastCharacter
             )
         ) {
-
-            playSound("key");
 
             game.handleKey(
                 lastCharacter
@@ -1841,8 +1837,6 @@ document.addEventListener(
             key === "ENTER"
         ) {
 
-            playSound("submit");
-
             game.handleKey(
                 "ENTER"
             );
@@ -1882,8 +1876,6 @@ document.addEventListener(
                 key
             )
         ) {
-
-            playSound("key");
 
             game.handleKey(
                 key
