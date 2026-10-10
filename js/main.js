@@ -87,6 +87,9 @@ const usernameEditMessage = document.getElementById("usernameEditMessage");
 const avatarChoices = document.getElementById("avatarChoices");
 const avatarPreview = document.getElementById("profileAvatarPreview");
 const profileButtonAvatar = document.getElementById("profileButtonAvatar");
+const avatarUpload = document.getElementById("avatarUpload");
+const avatarUploadMessage = document.getElementById("avatarUploadMessage");
+const useCharacterAvatar = document.getElementById("useCharacterAvatar");
 const avatarStyles = [
     { name: "Curly", hair: "M28 38 Q30 13 50 15 Q70 13 72 38 L67 34 Q63 27 58 31 Q50 24 42 31 Q35 27 32 37Z", hairExtra: "M31 26 Q35 18 39 27 M42 20 Q47 14 50 24 M54 20 Q60 15 62 27 M63 25 Q69 21 69 32", shirt: "#4f7cac" },
     { name: "Swept", hair: "M29 39 Q26 17 47 15 Q66 11 72 27 Q63 24 55 25 Q44 25 35 34 L34 42Z", hairExtra: "", shirt: "#a35d7a" },
@@ -98,10 +101,15 @@ const avatarPalettes = [
     { skin: "#704b3a", hair: "#211d1c", backdrop: "#dcebe3" }
 ];
 let currentAvatar = "male-0";
+let currentAvatarImage = null;
 let currentProfileId = null;
 
 function getAvatarKey() {
     return currentProfileId ? `wordrush-avatar-${currentProfileId}` : null;
+}
+
+function getAvatarImageKey() {
+    return currentProfileId ? `wordrush-avatar-image-${currentProfileId}` : null;
 }
 
 function createAvatarSvg(gender, styleIndex) {
@@ -136,8 +144,18 @@ function renderAvatar() {
     const [gender, indexText] = currentAvatar.split("-");
     const index = Number(indexText) || 0;
     const safeGender = gender === "female" ? "female" : "male";
-    avatarPreview.replaceChildren(createAvatarSvg(safeGender, index));
-    profileButtonAvatar.replaceChildren(createAvatarSvg(safeGender, index));
+    const populateAvatar = container => {
+        if (currentAvatarImage) {
+            const image = document.createElement("img");
+            image.src = currentAvatarImage;
+            image.alt = "";
+            container.replaceChildren(image);
+        } else {
+            container.replaceChildren(createAvatarSvg(safeGender, index));
+        }
+    };
+    populateAvatar(avatarPreview);
+    populateAvatar(profileButtonAvatar);
     document.querySelectorAll('input[name="avatarGender"]').forEach(input => {
         input.checked = input.value === gender;
     });
@@ -148,10 +166,13 @@ function renderAvatar() {
         button.className = "avatar-choice";
         button.appendChild(createAvatarSvg(safeGender, styleIndex));
         button.setAttribute("aria-label", `${safeGender} ${style.name} style`);
-        button.setAttribute("aria-pressed", String(currentAvatar === `${gender}-${styleIndex}`));
+        button.setAttribute("aria-pressed", String(!currentAvatarImage && currentAvatar === `${gender}-${styleIndex}`));
         button.addEventListener("click", () => {
             currentAvatar = `${gender}-${styleIndex}`;
+            currentAvatarImage = null;
+            if (getAvatarImageKey()) localStorage.removeItem(getAvatarImageKey());
             if (getAvatarKey()) localStorage.setItem(getAvatarKey(), currentAvatar);
+            avatarUploadMessage.textContent = "";
             renderAvatar();
         });
         avatarChoices.appendChild(button);
@@ -161,9 +182,60 @@ function renderAvatar() {
 document.querySelectorAll('input[name="avatarGender"]').forEach(input => {
     input.addEventListener("change", () => {
         currentAvatar = `${input.value}-0`;
+        currentAvatarImage = null;
+        if (getAvatarImageKey()) localStorage.removeItem(getAvatarImageKey());
         if (getAvatarKey()) localStorage.setItem(getAvatarKey(), currentAvatar);
+        avatarUploadMessage.textContent = "";
         renderAvatar();
     });
+});
+
+avatarUpload.addEventListener("change", async () => {
+    const file = avatarUpload.files?.[0];
+    if (!file) return;
+    avatarUploadMessage.textContent = "";
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type) || file.size > 8 * 1024 * 1024) {
+        avatarUploadMessage.textContent = "CHOOSE A PNG, JPG, OR WEBP IMAGE UNDER 8 MB.";
+        avatarUpload.value = "";
+        return;
+    }
+    if (!currentProfileId) {
+        avatarUploadMessage.textContent = "SIGN IN BEFORE SAVING A PROFILE PICTURE.";
+        avatarUpload.value = "";
+        return;
+    }
+    let objectUrl;
+    try {
+        const image = new Image();
+        objectUrl = URL.createObjectURL(file);
+        image.src = objectUrl;
+        await image.decode();
+        const size = Math.min(image.naturalWidth, image.naturalHeight);
+        const sx = (image.naturalWidth - size) / 2;
+        const sy = (image.naturalHeight - size) / 2;
+        const canvas = document.createElement("canvas");
+        canvas.width = 256;
+        canvas.height = 256;
+        const context = canvas.getContext("2d");
+        context.drawImage(image, sx, sy, size, size, 0, 0, 256, 256);
+        currentAvatarImage = canvas.toDataURL("image/webp", 0.82);
+        localStorage.setItem(getAvatarImageKey(), currentAvatarImage);
+        avatarUploadMessage.textContent = "PROFILE PICTURE UPDATED.";
+        renderAvatar();
+    } catch (error) {
+        avatarUploadMessage.textContent = "COULD NOT LOAD THAT IMAGE. TRY ANOTHER FILE.";
+        console.error("AVATAR IMAGE LOAD ERROR:", error);
+    } finally {
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        avatarUpload.value = "";
+    }
+});
+
+useCharacterAvatar.addEventListener("click", () => {
+    currentAvatarImage = null;
+    if (getAvatarImageKey()) localStorage.removeItem(getAvatarImageKey());
+    avatarUploadMessage.textContent = "";
+    renderAvatar();
 });
 renderAvatar();
 
@@ -686,6 +758,7 @@ async function loadProfile() {
         currentProfileId = user.id;
         currentAvatar = localStorage.getItem(getAvatarKey()) || "male-0";
         if (!/^(male|female)-[0-2]$/.test(currentAvatar)) currentAvatar = "male-0";
+        currentAvatarImage = localStorage.getItem(getAvatarImageKey());
         renderAvatar();
 
 

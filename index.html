@@ -226,18 +226,6 @@
 
         <div class="profile-content">
 
-            <div id="profileAvatarPreview" class="profile-icon profile-avatar-preview" aria-hidden="true"></div>
-            <fieldset class="avatar-picker">
-                <legend>EDIT YOUR CHARACTER</legend>
-                <p class="avatar-picker-hint">Choose a character and one of three portrait styles.</p>
-                <div class="avatar-gender-options">
-                    <label><input type="radio" name="avatarGender" value="male" checked><span>Male</span></label>
-                    <label><input type="radio" name="avatarGender" value="female"><span>Female</span></label>
-                </div>
-                <div id="avatarChoices" class="avatar-choices" aria-label="Avatar styles"></div>
-            </fieldset>
-
-
             <h2>
                 WELCOME TO WORDRUSH
             </h2>
@@ -294,9 +282,22 @@
 
             <!-- PROFILE ICON -->
 
-            <div class="profile-icon">
-                <svg aria-hidden="true"><use href="#icon-user"/></svg>
-            </div>
+            <div id="profileAvatarPreview" class="profile-icon profile-avatar-preview" aria-hidden="true"></div>
+            <fieldset class="avatar-picker">
+                <legend>EDIT YOUR CHARACTER</legend>
+                <p class="avatar-picker-hint">Choose a portrait style or upload your own picture.</p>
+                <div class="avatar-gender-options">
+                    <label><input type="radio" name="avatarGender" value="male" checked><span>Male</span></label>
+                    <label><input type="radio" name="avatarGender" value="female"><span>Female</span></label>
+                </div>
+                <div id="avatarChoices" class="avatar-choices" aria-label="Avatar styles"></div>
+                <div class="avatar-upload-controls">
+                    <label class="avatar-upload-button" for="avatarUpload">UPLOAD YOUR PICTURE</label>
+                    <input id="avatarUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+                    <button id="useCharacterAvatar" class="avatar-reset-button" type="button">USE CHARACTER INSTEAD</button>
+                </div>
+                <p id="avatarUploadMessage" class="avatar-picker-hint" role="status"></p>
+            </fieldset>
 
 
             <!-- USERNAME -->
