@@ -4432,6 +4432,12 @@ main {
     font-weight: 500;
 }
 
+.daily-reset-countdown {
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
 .mode-card-arrow {
     position: absolute;
     top: 50%;

@@ -578,6 +578,28 @@ async function updateDailyButton() {
 
 }
 
+function updateDailyResetCountdown() {
+    const countdown = document.getElementById("dailyResetCountdown");
+    if (!countdown) return;
+
+    const now = new Date();
+    const nextReset = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1);
+    const remainingSeconds = Math.max(0, Math.floor((nextReset - now.getTime()) / 1000));
+    const hours = String(Math.floor(remainingSeconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((remainingSeconds % 3600) / 60)).padStart(2, "0");
+    const seconds = String(remainingSeconds % 60).padStart(2, "0");
+    countdown.textContent = `New puzzle in ${hours}:${minutes}:${seconds} (UTC)`;
+
+    const currentDate = getTodayDate();
+    if (countdown.dataset.date !== currentDate) {
+        countdown.dataset.date = currentDate;
+        void updateDailyButton();
+    }
+}
+
+updateDailyResetCountdown();
+setInterval(updateDailyResetCountdown, 1000);
+
 
 // ========================================
 // UPDATE HEADER STREAK
