@@ -362,6 +362,17 @@ const passwordInput =
         "passwordInput"
     );
 
+const togglePasswordVisibility =
+    document.getElementById("togglePasswordVisibility");
+
+togglePasswordVisibility.addEventListener("click", () => {
+    const showPassword = passwordInput.type === "password";
+    passwordInput.type = showPassword ? "text" : "password";
+    togglePasswordVisibility.textContent = showPassword ? "Hide" : "Show";
+    togglePasswordVisibility.setAttribute("aria-label", showPassword ? "Hide password" : "Show password");
+    togglePasswordVisibility.setAttribute("aria-pressed", String(showPassword));
+});
+
 const authUsernameInput =
     document.getElementById(
         "authUsernameInput"

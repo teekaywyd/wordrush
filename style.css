@@ -1921,6 +1921,33 @@ main {
 
 #authModal [hidden] { display: none !important; }
 
+.auth-password-field {
+    position: relative;
+}
+
+.auth-password-field:has(#passwordInput[hidden]) .auth-password-toggle {
+    display: none;
+}
+
+#authModal .auth-password-field input {
+    padding-right: 64px;
+}
+
+#authModal .auth-password-toggle {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    width: auto;
+    margin: 0;
+    padding: 13px 6px;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .auth-password-requirements {
     margin: -4px 0 7px;
     padding-bottom: 16px;
