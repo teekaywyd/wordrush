@@ -81,6 +81,8 @@ const closeProfileBottom =
 
 const profileUsername =
     document.getElementById("profileUsername");
+const profileAvatarPicker = document.getElementById("profileAvatarPicker");
+const profileUsernameEditor = document.getElementById("profileUsernameEditor");
 const profileUsernameInput = document.getElementById("profileUsernameInput");
 const saveUsernameButton = document.getElementById("saveUsernameButton");
 const usernameEditMessage = document.getElementById("usernameEditMessage");
@@ -259,6 +261,9 @@ const bestStreak =
 
 const totalScore =
     document.getElementById("totalScore");
+const profileStats = document.getElementById("profileStats");
+const profileScore = document.getElementById("profileScore");
+const guestStatsNotice = document.getElementById("guestStatsNotice");
 
 
 // ========================================
@@ -267,6 +272,20 @@ const totalScore =
 
 const logoutButton =
     document.getElementById("logoutButton");
+const guestAccountButton = document.getElementById("guestAccountButton");
+let isAuthenticated = false;
+
+function updateProfileAccountUI() {
+    logoutButton.hidden = !isAuthenticated;
+    guestAccountButton.hidden = isAuthenticated;
+    deleteAccountButton.hidden = !isAuthenticated;
+    profileStats.hidden = !isAuthenticated;
+    profileScore.hidden = !isAuthenticated;
+    guestStatsNotice.hidden = isAuthenticated;
+    profileAvatarPicker.hidden = !isAuthenticated;
+    profileUsernameEditor.hidden = !isAuthenticated;
+    if (!isAuthenticated) profileUsername.textContent = "GUEST PLAYER";
+}
 
 const deleteAccountButton =
     document.getElementById(
@@ -533,6 +552,20 @@ async function updateDailyButton() {
 
     const dailyStatus = dailyButton.querySelector(".daily-mode-status");
 
+    if (!isAuthenticated) {
+        try {
+            const guestState = JSON.parse(localStorage.getItem(`wordrush-guest-daily-${todayDate}`) || "null");
+            dailyStatus.textContent = guestState?.status && guestState.status !== "active"
+                ? "Completed today"
+                : guestState?.guesses?.length
+                    ? "Continue today's puzzle"
+                    : "Play today's puzzle";
+        } catch {
+            dailyStatus.textContent = "Play today's puzzle";
+        }
+        return;
+    }
+
 
     try {
 
@@ -730,6 +763,15 @@ async function loadOnlinePlayer() {
 
 async function loadProfile() {
 
+    if (!isAuthenticated) {
+        currentProfileId = null;
+        currentAvatar = "male-0";
+        currentAvatarImage = null;
+        renderAvatar();
+        updateProfileAccountUI();
+        return;
+    }
+
     try {
 
         const {
@@ -789,6 +831,7 @@ async function loadProfile() {
         }
 
         currentProfileId = user.id;
+        updateProfileAccountUI();
         currentAvatar = localStorage.getItem(getAvatarKey()) || "male-0";
         if (!/^(male|female)-[0-2]$/.test(currentAvatar)) currentAvatar = "male-0";
         currentAvatarImage = localStorage.getItem(getAvatarImageKey());
@@ -897,6 +940,26 @@ profileButton.addEventListener(
     }
 );
 
+guestAccountButton.addEventListener("click", () => {
+    profileModal.style.display = "none";
+    isLoginMode = true;
+    passwordResetAction = "none";
+    authTitle.textContent = "LOGIN";
+    authSubmit.textContent = "LOGIN";
+    authSwitch.textContent = "CREATE ACCOUNT";
+    authUsernameInput.style.display = "none";
+    emailInput.hidden = false;
+    emailInput.type = "text";
+    emailInput.placeholder = "Username";
+    emailInput.autocomplete = "username";
+    passwordInput.hidden = false;
+    passwordInput.autocomplete = "current-password";
+    passwordRequirements.hidden = true;
+    forgotPasswordButton.hidden = false;
+    authMessage.textContent = "CREATE AN ACCOUNT OR LOG IN TO SAVE YOUR STATS.";
+    authModal.style.display = "flex";
+});
+
 
 // ========================================
 // CLOSE PROFILE
@@ -961,51 +1024,12 @@ logoutButton.addEventListener(
             }
 
 
-            profileModal.style.display =
-                "none";
-
-
-            authModal.style.display =
-                "flex";
-
-
-            authTitle.textContent =
-                "LOGIN";
-
-
-            authMessage.textContent =
-                "YOU HAVE BEEN LOGGED OUT.";
-
-
-            emailInput.value =
-                "";
-
-            passwordInput.value =
-                "";
-
-            authUsernameInput.value =
-                "";
-
-
-            isLoginMode = true;
-
-
-            authSubmit.textContent =
-                "LOGIN";
-
-
-            authSwitch.textContent =
-                "CREATE ACCOUNT";
-
-
-            authUsernameInput.style.display =
-                "none";
-            emailInput.hidden = false;
-            passwordInput.hidden = false;
-            authUsernameInput.hidden = false;
-            emailInput.type = "text";
-            emailInput.placeholder = "Username";
-            emailInput.autocomplete = "username";
+            isAuthenticated = false;
+            player.resetGuest();
+            updateHeaderStreak();
+            updateProfileAccountUI();
+            await loadProfile();
+            await updateDailyButton();
 
 
         } catch (error) {
@@ -1694,6 +1718,35 @@ themeOptions.forEach(
 
 async function startDailyWord() {
     try {
+        if (!isAuthenticated) {
+            const wordDate = getTodayDate();
+            const storageKey = `wordrush-guest-daily-${wordDate}`;
+            let state = null;
+            try {
+                state = JSON.parse(localStorage.getItem(storageKey) || "null");
+            } catch {
+                localStorage.removeItem(storageKey);
+            }
+            if (!state || state.wordDate !== wordDate || !state.answer) {
+                let hash = 0;
+                for (const character of wordDate) hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+                state = {
+                    wordDate,
+                    answer: wordManager.words[hash % wordManager.words.length],
+                    guesses: [],
+                    currentGuess: "",
+                    status: "active",
+                    hintUsed: false,
+                    isGuest: true
+                };
+            } else {
+                state.isGuest = true;
+            }
+            game.startDailyGame(wordDate, state);
+            await updateDailyButton();
+            return;
+        }
+
         let state = await player.getDailyGameState();
         const legacyKey = `wordrush-daily-${state.wordDate || getTodayDate()}`;
         try {
@@ -2240,6 +2293,8 @@ authSubmit.addEventListener(
             authMessage.textContent =
                 "LOGIN SUCCESSFUL.";
 
+            isAuthenticated = true;
+            updateProfileAccountUI();
 
             authModal.style.display =
                 "none";
@@ -2343,6 +2398,8 @@ authSubmit.addEventListener(
 
         if (data.session) {
             authMessage.textContent = "ACCOUNT CREATED.";
+            isAuthenticated = true;
+            updateProfileAccountUI();
             authModal.style.display = "none";
             authSubmit.disabled = false;
             showHomeScreen();
@@ -2398,24 +2455,19 @@ supabase.auth.onAuthStateChange(
             "SIGNED_IN" &&
             session
         ) {
-
+            isAuthenticated = true;
+            updateProfileAccountUI();
             await loadOnlinePlayer();
-
+            if (profileModal.style.display === "flex") await loadProfile();
         }
 
 
-        if (
-            event ===
-            "SIGNED_OUT"
-        ) {
-
-            profileModal.style.display =
-                "none";
-
-
-            leaderboardModal.style.display =
-                "none";
-
+        if (event === "SIGNED_OUT") {
+            isAuthenticated = false;
+            player.resetGuest();
+            updateHeaderStreak();
+            updateProfileAccountUI();
+            await updateDailyButton();
         }
 
     }
@@ -2445,15 +2497,9 @@ async function checkSession() {
             await supabase.auth.getSession();
 
 
-        if (!session) {
-
-            authModal.style.display =
-                "flex";
-
-
-            return;
-
-        }
+        isAuthenticated = Boolean(session);
+        updateProfileAccountUI();
+        if (!session) return;
 
 
         await loadOnlinePlayer();
@@ -2470,8 +2516,8 @@ async function checkSession() {
         );
 
 
-        authModal.style.display =
-            "flex";
+        isAuthenticated = false;
+        updateProfileAccountUI();
 
     }
 

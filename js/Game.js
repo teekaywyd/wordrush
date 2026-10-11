@@ -46,6 +46,7 @@ export class Game {
         this.practiceGuesses = [];
 
         this.dailyStorageKey = null;
+        this.isGuestDaily = false;
         this.practiceStorageKey = "wordrush-practice-progress";
 
 
@@ -63,6 +64,7 @@ export class Game {
         this.clearPracticeProgress();
 
         this.gameMode = "practice";
+        this.isGuestDaily = false;
 
         this.dailyWordDate = null;
 
@@ -287,8 +289,10 @@ export class Game {
             wordDate;
 
 
-        this.dailyStorageKey =
-            `wordrush-daily-${wordDate}`;
+        this.isGuestDaily = Boolean(state.isGuest);
+        this.dailyStorageKey = this.isGuestDaily
+            ? `wordrush-guest-daily-${wordDate}`
+            : `wordrush-daily-${wordDate}`;
 
 
         this.dailyGuesses = [];
@@ -307,7 +311,7 @@ export class Game {
         this.statsSaved = false;
 
 
-        this.wordManager.secretWord = null;
+        this.wordManager.secretWord = this.isGuestDaily ? state.answer : null;
         this.dailyAnswer = state.answer || null;
         this.dailyBusy = false;
 
@@ -321,8 +325,8 @@ export class Game {
 
         try {
             const legacy = JSON.parse(localStorage.getItem(this.dailyStorageKey) || "null");
-            this.currentGuess = legacy?.currentGuess || "";
-            localStorage.setItem(this.dailyStorageKey, JSON.stringify({ wordDate, currentGuess: this.currentGuess }));
+            this.currentGuess = state.currentGuess || legacy?.currentGuess || "";
+            if (!this.isGuestDaily) localStorage.setItem(this.dailyStorageKey, JSON.stringify({ wordDate, currentGuess: this.currentGuess }));
         } catch { localStorage.removeItem(this.dailyStorageKey); }
 
 
@@ -579,6 +583,11 @@ export class Game {
 
         }
 
+        if (this.isGuestDaily) {
+            this.saveGuestDailyProgress();
+            return;
+        }
+
 
         try {
 
@@ -610,6 +619,25 @@ export class Game {
 
         }
 
+    }
+
+    saveGuestDailyProgress(status = "active") {
+        if (!this.isGuestDaily || !this.dailyStorageKey) return;
+        try {
+            const guesses = this.dailyGuesses.map(guess => ({
+                guess,
+                result: this.wordManager.checkGuess(guess)
+            }));
+            localStorage.setItem(this.dailyStorageKey, JSON.stringify({
+                wordDate: this.dailyWordDate,
+                answer: this.dailyAnswer,
+                guesses,
+                currentGuess: this.currentGuess,
+                status
+            }));
+        } catch (error) {
+            console.error("GUEST DAILY PROGRESS SAVE ERROR:", error);
+        }
     }
 
 
@@ -924,6 +952,19 @@ export class Game {
     async submitDailyGuess() {
         if (this.dailyBusy) return;
         const guess = this.currentGuess;
+        if (this.isGuestDaily) {
+            const result = this.wordManager.checkGuess(guess);
+            this.board.showResult(this.currentRow, result);
+            this.dailyGuesses.push(guess);
+            this.currentGuess = "";
+            this.currentRow = this.dailyGuesses.length;
+            const won = guess === this.dailyAnswer;
+            this.saveGuestDailyProgress(won ? "completed" : this.currentRow >= this.maxAttempts ? "lost" : "active");
+            if (won) await this.gameWon();
+            else if (this.currentRow >= this.maxAttempts) await this.gameLost();
+            window.dispatchEvent(new Event("wordrush-game-state-changed"));
+            return;
+        }
         this.dailyBusy = true;
         try {
             const response = await this.player.submitDailyGuess(guess);
@@ -1053,7 +1094,9 @@ export class Game {
         if (
             this.gameMode === "daily"
         ) {
-
+            if (this.isGuestDaily) {
+                this.saveGuestDailyProgress("completed");
+            } else {
             await this.player.saveDailyResult(
 
                 this.dailyWordDate,
@@ -1073,6 +1116,7 @@ export class Game {
             // Daily is now permanently complete.
 
             this.clearDailyProgress();
+            }
 
         }
 
@@ -1249,7 +1293,9 @@ export class Game {
         if (
             this.gameMode === "daily"
         ) {
-
+            if (this.isGuestDaily) {
+                this.saveGuestDailyProgress("lost");
+            } else {
             await this.player.saveDailyResult(
 
                 this.dailyWordDate,
@@ -1269,6 +1315,7 @@ export class Game {
             // Daily is now permanently complete.
 
             this.clearDailyProgress();
+            }
 
         }
 

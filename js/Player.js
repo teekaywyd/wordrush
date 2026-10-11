@@ -30,6 +30,18 @@ export class Player {
 
     }
 
+    resetGuest() {
+        this.username = "GUEST PLAYER";
+        this.gamesPlayed = 0;
+        this.wins = 0;
+        this.losses = 0;
+        this.currentStreak = 0;
+        this.bestStreak = 0;
+        this.totalScore = 0;
+        this.dailyCurrentStreak = 0;
+        this.dailyBestStreak = 0;
+    }
+
 
     // ========================================
     // LOAD ONLINE PROFILE

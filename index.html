@@ -284,7 +284,7 @@
             <!-- PROFILE ICON -->
 
             <div id="profileAvatarPreview" class="profile-icon profile-avatar-preview" aria-hidden="true"></div>
-            <fieldset class="avatar-picker">
+            <fieldset id="profileAvatarPicker" class="avatar-picker">
                 <legend>EDIT YOUR CHARACTER</legend>
                 <p class="avatar-picker-hint">Choose a portrait style or upload your own picture.</p>
                 <div class="avatar-gender-options">
@@ -307,7 +307,7 @@
                 PLAYER
             </h2>
 
-            <div class="profile-username-editor">
+            <div id="profileUsernameEditor" class="profile-username-editor">
                 <input id="profileUsernameInput" type="text" maxlength="15" autocomplete="username" aria-label="New username" placeholder="New username">
                 <button id="saveUsernameButton" type="button">SAVE USERNAME</button>
                 <p id="usernameEditMessage" role="status"></p>
@@ -324,7 +324,8 @@
                  PROFILE STATISTICS
             ========================================= -->
 
-            <div class="profile-stats">
+            <p id="guestStatsNotice" class="guest-stats-notice" hidden>Playing as a guest. Your game stats are not saved. Create an account or log in to keep them.</p>
+            <div id="profileStats" class="profile-stats">
 
 
                 <div class="stat-card">
@@ -463,7 +464,7 @@
                  TOTAL SCORE
             ========================================= -->
 
-            <div class="profile-score">
+            <div id="profileScore" class="profile-score">
 
                 <span>
                     TOTAL SCORE
@@ -498,6 +499,7 @@
                     <button
                         id="logoutButton"
                         class="account-button logout-button"
+                        type="button"
                     >
 
                         <span class="account-button-icon">
@@ -524,6 +526,15 @@
 
                     </button>
 
+                    <button id="guestAccountButton" class="account-button logout-button" type="button" hidden>
+                        <span class="account-button-icon" aria-hidden="true">↗</span>
+                        <span class="account-button-content">
+                            <strong>LOG IN / CREATE ACCOUNT</strong>
+                            <small>Save your stats across devices</small>
+                        </span>
+                        <span class="account-button-arrow" aria-hidden="true">›</span>
+                    </button>
+
 
 
                     <!-- DELETE ACCOUNT -->
@@ -531,6 +542,7 @@
                     <button
                         id="deleteAccountButton"
                         class="account-button delete-button"
+                        type="button"
                     >
 
                         <span class="account-button-icon">
