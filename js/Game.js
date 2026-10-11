@@ -290,6 +290,7 @@ export class Game {
 
 
         this.isGuestDaily = Boolean(state.isGuest);
+        this.guestId = state.guestId || null;
         this.dailyStorageKey = this.isGuestDaily
             ? `wordrush-guest-daily-${wordDate}`
             : `wordrush-daily-${wordDate}`;
@@ -311,7 +312,7 @@ export class Game {
         this.statsSaved = false;
 
 
-        this.wordManager.secretWord = this.isGuestDaily ? state.answer : null;
+        this.wordManager.secretWord = null;
         this.dailyAnswer = state.answer || null;
         this.dailyBusy = false;
 
@@ -621,19 +622,12 @@ export class Game {
 
     }
 
-    saveGuestDailyProgress(status = "active") {
+    saveGuestDailyProgress() {
         if (!this.isGuestDaily || !this.dailyStorageKey) return;
         try {
-            const guesses = this.dailyGuesses.map(guess => ({
-                guess,
-                result: this.wordManager.checkGuess(guess)
-            }));
             localStorage.setItem(this.dailyStorageKey, JSON.stringify({
                 wordDate: this.dailyWordDate,
-                answer: this.dailyAnswer,
-                guesses,
-                currentGuess: this.currentGuess,
-                status
+                currentGuess: this.currentGuess
             }));
         } catch (error) {
             console.error("GUEST DAILY PROGRESS SAVE ERROR:", error);
@@ -953,16 +947,40 @@ export class Game {
         if (this.dailyBusy) return;
         const guess = this.currentGuess;
         if (this.isGuestDaily) {
-            const result = this.wordManager.checkGuess(guess);
-            this.board.showResult(this.currentRow, result);
-            this.dailyGuesses.push(guess);
-            this.currentGuess = "";
-            this.currentRow = this.dailyGuesses.length;
-            const won = guess === this.dailyAnswer;
-            this.saveGuestDailyProgress(won ? "completed" : this.currentRow >= this.maxAttempts ? "lost" : "active");
-            if (won) await this.gameWon();
-            else if (this.currentRow >= this.maxAttempts) await this.gameLost();
-            window.dispatchEvent(new Event("wordrush-game-state-changed"));
+            this.dailyBusy = true;
+            try {
+                const response = await this.player.submitGuestDailyGuess(this.guestId, guess);
+                if (!response.accepted) {
+                    this.showMessage(response.reason === "completed" ? "TODAY'S PUZZLE IS COMPLETE" : "WORD NOT FOUND");
+                    if (response.reason !== "completed") this.board.shakeRow(this.currentRow);
+                    return;
+                }
+                this.board.showResult(this.currentRow, response.result);
+                this.dailyGuesses.push(guess);
+                this.currentGuess = "";
+                this.currentRow = this.dailyGuesses.length;
+                this.dailyAnswer = response.answer || null;
+                this.gameOver = response.status !== "active";
+                this.statsSaved = this.gameOver;
+                this.saveDailyProgress();
+                window.dispatchEvent(new Event("wordrush-game-state-changed"));
+                if (this.gameOver) {
+                    this.clearDailyProgress();
+                    if (response.won) {
+                        setTimeout(() => {
+                            this.board.celebrateRow(this.currentRow - 1);
+                            setTimeout(() => this.showWinModal(response.score, response.attempts), 700);
+                        }, 450);
+                    } else {
+                        setTimeout(() => this.showGameOverModal(), 450);
+                    }
+                }
+            } catch (error) {
+                console.error("GUEST DAILY GUESS ERROR:", error);
+                this.showMessage("COULD NOT SUBMIT GUESS. TRY AGAIN.");
+            } finally {
+                this.dailyBusy = false;
+            }
             return;
         }
         this.dailyBusy = true;

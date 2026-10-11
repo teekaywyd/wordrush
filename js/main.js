@@ -275,6 +275,18 @@ const logoutButton =
 const guestAccountButton = document.getElementById("guestAccountButton");
 let isAuthenticated = false;
 
+function getGuestId() {
+    let guestId = localStorage.getItem("wordrush-guest-id");
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(guestId || "")) {
+        guestId = crypto.randomUUID?.() || "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, character => {
+            const random = Math.random() * 16 | 0;
+            return (character === "x" ? random : (random & 0x3 | 0x8)).toString(16);
+        });
+        localStorage.setItem("wordrush-guest-id", guestId);
+    }
+    return guestId;
+}
+
 function updateProfileAccountUI() {
     logoutButton.hidden = !isAuthenticated;
     guestAccountButton.hidden = isAuthenticated;
@@ -554,10 +566,10 @@ async function updateDailyButton() {
 
     if (!isAuthenticated) {
         try {
-            const guestState = JSON.parse(localStorage.getItem(`wordrush-guest-daily-${todayDate}`) || "null");
-            dailyStatus.textContent = guestState?.status && guestState.status !== "active"
+            const guestState = await player.getGuestDailyGameState(getGuestId());
+            dailyStatus.textContent = guestState.status && guestState.status !== "active"
                 ? "Completed today"
-                : guestState?.guesses?.length
+                : guestState.guesses?.length
                     ? "Continue today's puzzle"
                     : "Play today's puzzle";
         } catch {
@@ -1338,9 +1350,11 @@ async function shareWinResult() {
                 context.fillStyle = tileStyles?.backgroundColor || secondary;
                 pathRoundedRect(x, y, tileSize, tileSize, 10);
                 context.fill();
-                context.fillStyle = tileStyles?.color || "#ffffff";
-                context.font = "700 44px Arial, sans-serif";
-                context.fillText(guess[column] || "", x + tileSize / 2, y + 57);
+                if (!isDaily) {
+                    context.fillStyle = tileStyles?.color || "#ffffff";
+                    context.font = "700 44px Arial, sans-serif";
+                    context.fillText(guess[column] || "", x + tileSize / 2, y + 57);
+                }
             }
         });
 
@@ -1721,27 +1735,21 @@ async function startDailyWord() {
         if (!isAuthenticated) {
             const wordDate = getTodayDate();
             const storageKey = `wordrush-guest-daily-${wordDate}`;
-            let state = null;
+            const guestId = getGuestId();
+            let draft = null;
             try {
-                state = JSON.parse(localStorage.getItem(storageKey) || "null");
+                draft = JSON.parse(localStorage.getItem(storageKey) || "null");
             } catch {
                 localStorage.removeItem(storageKey);
             }
-            if (!state || state.wordDate !== wordDate || !state.answer) {
-                let hash = 0;
-                for (const character of wordDate) hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
-                state = {
-                    wordDate,
-                    answer: wordManager.words[hash % wordManager.words.length],
-                    guesses: [],
-                    currentGuess: "",
-                    status: "active",
-                    hintUsed: false,
-                    isGuest: true
-                };
-            } else {
-                state.isGuest = true;
+            if (draft?.answer || draft?.guesses?.length) {
+                draft = null;
+                localStorage.removeItem(storageKey);
             }
+            const state = await player.getGuestDailyGameState(guestId);
+            state.currentGuess = draft?.wordDate === wordDate ? draft.currentGuess || "" : "";
+            state.isGuest = true;
+            state.guestId = guestId;
             game.startDailyGame(wordDate, state);
             await updateDailyButton();
             return;

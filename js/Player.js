@@ -740,8 +740,25 @@ export class Player {
         return data;
     }
 
+    async getGuestDailyGameState(guestId) {
+        const { data, error } = await supabase.rpc("get_guest_daily_game_state", {
+            p_guest_id: guestId
+        });
+        if (error) throw error;
+        return data;
+    }
+
     async submitDailyGuess(guess) {
         const { data, error } = await supabase.rpc("submit_daily_guess", { p_guess: guess });
+        if (error) throw error;
+        return data;
+    }
+
+    async submitGuestDailyGuess(guestId, guess) {
+        const { data, error } = await supabase.rpc("submit_guest_daily_guess", {
+            p_guest_id: guestId,
+            p_guess: guess
+        });
         if (error) throw error;
         return data;
     }
